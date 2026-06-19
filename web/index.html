@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="台灣公共安全、裁判資料與輿論訊號的本機分析平台" />
+  <title>公共安全與司法洞察平台</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳至主要內容</a>
+
+  <header class="app-header">
+    <div class="brand-block">
+      <div class="brand-line">
+        <span class="brand-mark" aria-hidden="true">法</span>
+        <div>
+          <p class="eyebrow">PUBLIC SAFETY INTEGRITY ANALYTICS</p>
+          <h1>公共安全與司法洞察平台</h1>
+        </div>
+      </div>
+      <p class="subtitle">裁判索引、輿論訊號與人工複核分層呈現；所有摘要保留方法與證據狀態。</p>
+    </div>
+    <div class="status-group" aria-label="系統狀態">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>本機唯讀模式</span>
+      <span class="status-divider" aria-hidden="true"></span>
+      <span id="header-record-count">資料載入中</span>
+    </div>
+  </header>
+
+  <section class="query-shell" aria-labelledby="query-title">
+    <div class="query-heading">
+      <span id="query-title">跨資料查詢</span>
+      <small>原告、被告目前為索引片段初篩</small>
+    </div>
+    <form id="global-query" class="query-grid">
+      <label>資料月份
+        <select id="month" name="month" aria-label="資料月份"></select>
+      </label>
+      <label>案由
+        <input id="query-title-input" name="title" placeholder="例如：詐欺等" autocomplete="off" />
+      </label>
+      <label>法院／庭別
+        <input id="query-court" name="court" placeholder="例如：臺灣高等法院" autocomplete="off" />
+      </label>
+      <label>原告
+        <input id="query-plaintiff" name="plaintiff" placeholder="姓名或名稱" autocomplete="off" />
+      </label>
+      <label>被告
+        <input id="query-defendant" name="defendant" placeholder="姓名或名稱" autocomplete="off" />
+      </label>
+      <button class="primary-action" type="submit">查詢裁判</button>
+    </form>
+  </section>
+
+  <nav class="tabs" aria-label="主要頁面">
+    <button class="tab is-active" type="button" data-route="overview" aria-current="page">總覽儀表板</button>
+    <button class="tab" type="button" data-route="opinion">輿論情報</button>
+    <button class="tab" type="button" data-route="cross-observation">交叉觀測</button>
+    <button class="tab" type="button" data-route="database">裁判資料庫</button>
+  </nav>
+
+  <main id="main-content">
+    <section id="page-overview" class="page is-active" data-page="overview">
+      <div class="page-heading">
+        <div>
+          <p class="section-kicker">JUDICIAL DATA OVERVIEW</p>
+          <h2>裁判資料總覽</h2>
+          <p>先看量體與分布，再進入逐案審閱。候選分類不等同最終法律定性。</p>
+        </div>
+        <span class="method-badge">資料：司法院裁判索引</span>
+      </div>
+
+      <section class="summary-strip" aria-labelledby="overview-summary-title">
+        <div>
+          <span class="summary-label" id="overview-summary-title">系統摘要</span>
+          <p id="overview-summary">正在整理本月資料。</p>
+        </div>
+        <span class="confidence-badge">描述性統計 · 需人工複核</span>
+      </section>
+
+      <section class="metrics" id="metrics" aria-label="核心指標"></section>
+
+      <section class="dashboard-grid overview-primary">
+        <article class="panel panel-wide">
+          <div class="panel-head">
+            <div>
+              <h3>每日裁判量</h3>
+              <p>觀察月份內的量體變化；點位可顯示當日筆數。</p>
+            </div>
+            <span class="chart-type">曲線圖</span>
+          </div>
+          <div id="daily-trend" class="line-chart" role="img" aria-label="每日裁判量曲線圖"></div>
+          <details class="data-fallback">
+            <summary>查看數值表</summary>
+            <div id="daily-table"></div>
+          </details>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>議題候選分布</h3>
+              <p>同一裁判可能同時符合多個關鍵字分類。</p>
+            </div>
+            <span class="chart-type">圓環圖</span>
+          </div>
+          <div class="donut-layout">
+            <div id="category-donut" class="donut-chart" role="img" aria-label="議題候選量圓環圖"></div>
+            <div id="category-legend" class="chart-legend"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid overview-secondary">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>法院／庭別排行</h3>
+              <p>以水平長條比較前十名量體。</p>
+            </div>
+            <span class="chart-type">長條圖</span>
+          </div>
+          <div id="court-list" class="bars"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>主要案由</h3>
+              <p>文字較長，使用表格保留完整可讀性。</p>
+            </div>
+            <span class="chart-type">表格</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>排名</th><th>案由</th><th class="numeric">件數</th></tr></thead>
+              <tbody id="title-table"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <section id="page-opinion" class="page" data-page="opinion">
+      <div class="page-heading">
+        <div>
+          <p class="section-kicker">PUBLIC DISCUSSION INTELLIGENCE</p>
+          <h2>輿論情報</h2>
+          <p>按月份、來源與議題整理討論量與摘要；此頁不以輿論取代裁判事實。</p>
+        </div>
+        <span id="opinion-status-badge" class="method-badge is-pending">爬蟲尚未啟動</span>
+      </div>
+
+      <form id="opinion-filters" class="filter-band" aria-label="輿論情報篩選器">
+        <label>月份
+          <select id="opinion-month"></select>
+        </label>
+        <label>時間範圍
+          <select id="opinion-range">
+            <option value="month">整月</option>
+            <option value="first-half">上半月</option>
+            <option value="second-half">下半月</option>
+          </select>
+        </label>
+        <label>議題
+          <select id="opinion-topic">
+            <option value="">全部議題</option>
+            <option value="fraud">詐欺／詐騙</option>
+            <option value="money_laundering">洗錢</option>
+            <option value="sexual_offense">妨害性自主／性侵</option>
+            <option value="injury">傷害／重傷</option>
+            <option value="public_integrity">廉政／貪污</option>
+          </select>
+        </label>
+        <label>來源
+          <select id="opinion-source">
+            <option value="">全部來源</option>
+            <option value="ptt">PTT</option>
+            <option value="dcard">Dcard</option>
+            <option value="news">新聞媒體</option>
+            <option value="legal">法律／司改評論</option>
+          </select>
+        </label>
+        <button type="submit">套用條件</button>
+      </form>
+
+      <section class="metrics compact" id="opinion-metrics" aria-label="輿論資料狀態"></section>
+
+      <section class="dashboard-grid opinion-grid">
+        <article class="panel panel-wide">
+          <div class="panel-head">
+            <div>
+              <h3>每月討論趨勢</h3>
+              <p>爬蟲接入後顯示各論壇每日討論量，並可切換月份。</p>
+            </div>
+            <span class="chart-type">曲線圖</span>
+          </div>
+          <div id="opinion-trend" class="chart-empty"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>來源涵蓋狀態</h3>
+              <p>只列入已完成使用條款與 robots 檢查的來源。</p>
+            </div>
+          </div>
+          <div id="opinion-sources" class="source-list"></div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>月份議題摘要</h3>
+            <p>預計輸出討論焦點、主要立場、代表來源與關聯裁判編號。</p>
+          </div>
+          <span class="summary-provider">摘要來源：尚未設定</span>
+        </div>
+        <div id="opinion-summaries" class="summary-list"></div>
+      </section>
+    </section>
+
+    <section id="page-cross-observation" class="page" data-page="cross-observation">
+      <div class="page-heading">
+        <div>
+          <p class="section-kicker">CROSS-SOURCE OBSERVATION</p>
+          <h2>交叉觀測</h2>
+          <p>比較裁判資料量、公共討論與人工複核進度，只呈現訊號，不直接判定公正與否。</p>
+        </div>
+        <span class="method-badge">中性研判模式</span>
+      </div>
+
+      <section class="metrics compact" id="cross-metrics" aria-label="交叉觀測指標"></section>
+
+      <section class="dashboard-grid cross-grid">
+        <article class="panel panel-wide">
+          <div class="panel-head">
+            <div>
+              <h3>議題對照矩陣</h3>
+              <p>司法資料是真實索引量；輿論與人工複核欄位尚未接入時明確標示。</p>
+            </div>
+            <span class="chart-type">對照表</span>
+          </div>
+          <div class="table-wrap">
+            <table class="comparison-table">
+              <thead><tr><th>議題</th><th class="numeric">裁判候選</th><th>輿論訊號</th><th>人工複核</th><th>下一步</th></tr></thead>
+              <tbody id="cross-table"></tbody>
+            </table>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>系統研判摘要</h3>
+              <p>以已接入資料描述差距，不做公平性定論。</p>
+            </div>
+          </div>
+          <div id="cross-summary" class="analysis-note"></div>
+          <div class="method-note">
+            <strong>摘要策略</strong>
+            <p>目前採規則式可追溯摘要；Ollama 可作本機選配，OpenAI API 留待正式上線。</p>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <section id="page-database" class="page" data-page="database">
+      <div class="page-heading">
+        <div>
+          <p class="section-kicker">JUDGMENT REVIEW DATABASE</p>
+          <h2>裁判資料庫</h2>
+          <p>以條件查詢、摘要與來源證據逐案審閱。資料庫頁固定放在最後，承接其他儀表板的 drill-down。</p>
+        </div>
+        <span class="method-badge">100,000+ 筆本機索引</span>
+      </div>
+
+      <section class="panel database-shell">
+        <div class="database-toolbar">
+          <div class="filters" aria-label="裁判資料篩選器">
+            <label>議題分類
+              <select id="category-filter">
+                <option value="">全部議題</option>
+                <option value="fraud">詐欺／詐騙</option>
+                <option value="money_laundering">洗錢</option>
+                <option value="injury">傷害／重傷</option>
+                <option value="traffic_injury">交通傷害</option>
+                <option value="sexual_offense">妨害性自主／性侵</option>
+                <option value="public_integrity">貪污／瀆職／圖利／賄賂</option>
+                <option value="election_law">選罷法／賄選</option>
+              </select>
+            </label>
+            <label>案件領域
+              <select id="domain-filter">
+                <option value="">全部領域</option>
+                <option value="criminal">刑事</option>
+                <option value="civil">民事</option>
+                <option value="administrative">行政</option>
+                <option value="constitutional">憲法</option>
+                <option value="disciplinary">懲戒</option>
+                <option value="other">其他</option>
+              </select>
+            </label>
+            <label>全文索引
+              <input id="search" placeholder="JID、關鍵字或片段" autocomplete="off" />
+            </label>
+          </div>
+          <button id="clear-filters" class="secondary-action" type="button">清除條件</button>
+        </div>
+
+        <div id="search-warnings" class="warning-region" aria-live="polite"></div>
+        <div class="results-head">
+          <div id="case-count" class="count-line">正在載入裁判資料。</div>
+          <span class="summary-provider">摘要：extractive_rule_v1</span>
+        </div>
+        <div id="cases" class="case-list" aria-live="polite"></div>
+        <nav class="pagination" aria-label="裁判資料分頁">
+          <button id="previous-page" class="secondary-action" type="button">上一頁</button>
+          <span id="page-status">第 1 頁</span>
+          <button id="next-page" class="secondary-action" type="button">下一頁</button>
+        </nav>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
