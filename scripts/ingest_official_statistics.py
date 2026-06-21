@@ -100,11 +100,15 @@ def select_month_rows(
     dimension_name: str, rows: list[dict[str, str]]
 ) -> tuple[list[dict[str, str]], int]:
     """Prefer explicit monthly rows over duplicate single-month range rows."""
-    monthly_rows = [row for row in rows if "(" not in row[dimension_name]]
-    range_rows = [row for row in rows if "(" in row[dimension_name]]
+    import re
+    # Monthly rows always contain something like "12月/" or "4月/"
+    # Range rows either contain "年/" (for December accumulated year) or "(1~6月)/"
+    monthly_rows = [row for row in rows if re.search(r"\d+月/", row[dimension_name])]
+    range_rows = [row for row in rows if not re.search(r"\d+月/", row[dimension_name])]
+    
     monthly_geographies = {geography_name(row[dimension_name]) for row in monthly_rows}
     range_geographies = {geography_name(row[dimension_name]) for row in range_rows}
-    if monthly_rows and monthly_geographies == range_geographies:
+    if monthly_rows and range_rows and monthly_geographies == range_geographies:
         return monthly_rows, len(range_rows)
     return rows, 0
 

@@ -130,29 +130,50 @@ function renderLineChart(rows) {
   }
   const width = 900;
   const height = 280;
-  const pad = { top: 18, right: 24, bottom: 36, left: 58 };
-  const max = Math.max(...rows.map(row => row.count), 1);
+  const pad = { top: 18, right: 24, bottom: 36, left: 62 };
+  
+  const counts = rows.map(row => row.count);
+  const minCount = Math.min(...counts);
+  const maxCount = Math.max(...counts);
+  
+  // Calculate dynamic bounds to avoid flat horizontal line
+  let minVal, maxVal;
+  if (maxCount === minCount) {
+    minVal = Math.max(0, Math.floor(minCount * 0.9));
+    maxVal = Math.ceil(maxCount * 1.1);
+  } else {
+    const diff = maxCount - minCount;
+    minVal = Math.max(0, Math.floor(minCount - diff * 0.15));
+    maxVal = Math.ceil(maxCount + diff * 0.15);
+  }
+  if (maxVal === minVal) maxVal = minVal + 1; // avoid divide by zero
+  
   const x = index => rows.length === 1
     ? (pad.left + width - pad.right) / 2
     : pad.left + (index * (width - pad.left - pad.right)) / (rows.length - 1);
-  const y = value => height - pad.bottom - (value / max) * (height - pad.top - pad.bottom);
+  const y = value => height - pad.bottom - ((value - minVal) / (maxVal - minVal)) * (height - pad.top - pad.bottom);
   const points = rows.map((row, index) => `${x(index)},${y(row.count)}`).join(' ');
+  
   const yTicks = [0, 0.25, 0.5, 0.75, 1];
   const grids = yTicks.map(ratio => {
-    const yy = y(max * ratio);
+    const val = minVal + (maxVal - minVal) * ratio;
+    const yy = y(val);
     return `<line x1="${pad.left}" y1="${yy}" x2="${width - pad.right}" y2="${yy}" class="grid-line" />
-      <text x="${pad.left - 10}" y="${yy + 4}" text-anchor="end">${fmt.format(Math.round(max * ratio))}</text>`;
+      <text x="${pad.left - 10}" y="${yy + 4}" text-anchor="end">${fmt.format(Math.round(val))}</text>`;
   }).join('');
+  
   const labelStep = Math.max(Math.ceil(rows.length / 6), 1);
   const xLabels = rows.map((row, index) => index % labelStep === 0 || index === rows.length - 1
     ? `<text x="${x(index)}" y="${height - 10}" text-anchor="middle">${escapeHtml(formatMonthLabel(row.month))}</text>` : '').join('');
   const dots = rows.map((row, index) => `<circle cx="${x(index)}" cy="${y(row.count)}" r="4" tabindex="0">
     <title>${escapeHtml(formatMonth(row.month))}：${fmt.format(row.count)} 件</title></circle>`).join('');
+  
   container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true" preserveAspectRatio="none">
     ${grids}${xLabels}
     <polyline points="${points}" class="trend-line" />
     ${dots}
   </svg>`;
+  
   el('monthly-table').innerHTML = `<div class="table-wrap"><table><thead><tr><th>月份</th><th class="numeric">件數</th></tr></thead><tbody>${rows.map(row =>
     `<tr><td>${escapeHtml(formatMonth(row.month))}</td><td class="numeric">${fmt.format(row.count)}</td></tr>`).join('')}</tbody></table></div>`;
 }
