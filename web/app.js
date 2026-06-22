@@ -108,11 +108,14 @@ async function loadMonths() {
 }
 
 function renderMetrics() {
+  const fs = state.summary.flags_summary || { cyber: 0, weapon: 0, domestic: 0, organized_fraud: 0 };
   const items = [
+    ['加權治安指數', state.summary.safety_index || 0, '嚴重度乘以件數計算之治安安全指標', 'red'],
     ['刑事案件總量', state.summary.total_cases, formatChange(state.summary.total_change_pct), 'neutral'],
-    ['詐欺背信', categoryCount('fraud'), formatChange(categoryItem('fraud').change_pct), 'blue'],
-    ['傷害', categoryCount('injury'), formatChange(categoryItem('injury').change_pct), 'amber'],
-    ['妨害性自主罪', categoryCount('sexual_offense'), formatChange(categoryItem('sexual_offense').change_pct), 'red']
+    ['特徵：網路犯罪', fs.cyber, '手法涉及網路、電腦之案件量', 'blue'],
+    ['特徵：暴力槍枝', fs.weapon, '涉及槍枝、暴力手法之案件量', 'amber'],
+    ['特徵：家庭暴力', fs.domestic, '標記為家暴、家庭衝突之案件量', 'purple'],
+    ['特徵：詐欺集團', fs.organized_fraud, '涉及詐欺集團、組織性詐騙之案件量', 'red']
   ];
   el('metrics').innerHTML = items.map(([label, value, note, tone]) => `
     <article class="metric metric-${tone}">
@@ -178,25 +181,87 @@ function renderLineChart(rows) {
     `<tr><td>${escapeHtml(formatMonth(row.month))}</td><td class="numeric">${fmt.format(row.count)}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
-function renderCategoryBars(rows) {
-  const max = Math.max(...rows.map(row => row.count), 1);
-  el('category-bars').innerHTML = rows.map((row, index) => `
-    <div class="bar-row">
-      <div class="bar-label">
-        <span title="${escapeHtml(row.label)}">${escapeHtml(row.label)}</span>
-        <strong>${fmt.format(row.count)}</strong>
+function renderIccsClassification(iccs) {
+  const container = el('iccs-container');
+  if (!container) return;
+  if (!iccs || !iccs.length) {
+    container.innerHTML = '<div class="chart-empty"><p>暫無聯合國 ICCS 分類資料</p></div>';
+    return;
+  }
+  
+  const maxVal = Math.max(...iccs.map(item => item.count), 1);
+  
+  container.innerHTML = iccs.map((item, index) => {
+    const isExpanded = state.expandedIccs === item.code;
+    const childrenHtml = isExpanded ? `
+      <div class="iccs-children">
+        <table>
+          <thead>
+            <tr>
+              <th>本地法規案類 (Level 2)</th>
+              <th class="numeric">件數</th>
+              <th class="numeric">嚴重度權重</th>
+              <th class="numeric">加權分數</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${item.children.map(child => `
+              <tr>
+                <td>${escapeHtml(child.metric)}</td>
+                <td class="numeric">${fmt.format(child.count)}</td>
+                <td class="numeric">${child.severity_score}</td>
+                <td class="numeric">${fmt.format(child.weighted_score)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
       </div>
-      <div class="bar-track" aria-hidden="true"><div class="bar-fill" style="width:${Math.max((row.count / max) * 100, 1)}%;background:${chartColors[index % chartColors.length]}"></div></div>
-      <small>${escapeHtml(formatChange(row.change_pct))}</small>
-    </div>`).join('');
+    ` : '';
+    
+    return `
+      <div class="iccs-row-group">
+        <div class="iccs-main-row" onclick="toggleIccs('${item.code}')" role="button" aria-expanded="${isExpanded}">
+          <div class="iccs-header-info">
+            <span class="iccs-code-badge">Div ${escapeHtml(item.code)}</span>
+            <span class="iccs-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</span>
+            <span class="iccs-count-badge">${fmt.format(item.count)} 件 / 權重分 ${fmt.format(item.weighted_score)}</span>
+          </div>
+          <div class="iccs-progress-container">
+            <div class="iccs-progress-bar" style="width: ${Math.max((item.count / maxVal) * 100, 1)}%; background: ${chartColors[index % chartColors.length]}"></div>
+          </div>
+          <div class="iccs-toggle-icon">${isExpanded ? '▼' : '▶'}</div>
+        </div>
+        ${childrenHtml}
+      </div>
+    `;
+  }).join('');
 }
 
+window.toggleIccs = function(code) {
+  if (state.expandedIccs === code) {
+    state.expandedIccs = null;
+  } else {
+    state.expandedIccs = code;
+  }
+  renderIccsClassification(state.summary.iccs_breakdown);
+};
+
 function renderRegionBars(rows) {
-  const max = Math.max(...rows.map(row => row.count), 1);
+  if (!rows || !rows.length) {
+    el('region-list').innerHTML = '<div class="chart-empty"><p>暫無地區加權治安排行資料</p></div>';
+    return;
+  }
+  const max = Math.max(...rows.map(row => row.weighted_score), 1);
   el('region-list').innerHTML = rows.slice(0, 10).map(row => `
     <div class="bar-row">
-      <div class="bar-label"><span>${escapeHtml(row.geography)}</span><strong>${fmt.format(row.count)}</strong></div>
-      <div class="bar-track" aria-hidden="true"><div class="bar-fill" style="width:${Math.max((row.count / max) * 100, 1)}%"></div></div>
+      <div class="bar-label">
+        <span>${escapeHtml(row.geography)}</span>
+        <strong>權重分: ${fmt.format(row.weighted_score)}</strong>
+      </div>
+      <div class="bar-track" aria-hidden="true">
+        <div class="bar-fill" style="width:${Math.max((row.weighted_score / max) * 100, 1)}%; background: linear-gradient(90deg, #3b82f6, #ef4444)"></div>
+      </div>
+      <small>案件量: ${fmt.format(row.count)} 件</small>
     </div>`).join('');
 }
 
@@ -222,28 +287,92 @@ async function loadSummary() {
   sourceLink.href = safeUrl(state.summary.source_url) || '#';
   renderMetrics();
   renderLineChart(state.summary.monthly_counts || []);
-  renderCategoryBars(state.summary.category_counts || []);
-  renderRegionBars(state.summary.region_counts || []);
+  renderIccsClassification(state.summary.iccs_breakdown || []);
+  renderRegionBars(state.summary.region_weighted_counts || []);
   renderQualityTable(state.summary.quality || {});
   renderCrossObservation();
 }
 
 async function loadOpinion() {
   const selectedMonth = el('opinion-month').value || currentMonth();
-  state.opinion = await getJson(`/api/opinion?month=${encodeURIComponent(selectedMonth)}`);
+  const selectedTopic = el('opinion-topic').value;
+  const selectedSource = el('opinion-source').value;
+  
+  // Construct query url with active filters
+  let url = `/api/opinion?month=${encodeURIComponent(selectedMonth)}`;
+  if (selectedTopic) url += `&topic=${encodeURIComponent(selectedTopic)}`;
+  if (selectedSource) url += `&source=${encodeURIComponent(selectedSource)}`;
+  
+  state.opinion = await getJson(url);
   const ready = state.opinion.status === 'ready';
   el('opinion-status-badge').textContent = ready ? '資料已更新' : '爬蟲尚未啟動';
   el('opinion-status-badge').classList.toggle('is-pending', !ready);
+  
+  const postCount = state.opinion.topic_summaries?.length || 0;
   el('opinion-metrics').innerHTML = [
-    ['本月文章', 0, '尚未收集'], ['已接來源', 0, `共 ${state.opinion.sources.length} 個規劃來源`],
-    ['已分類文章', 0, '等待類別標記'], ['可比月份', 0, '等待輿論資料']
-  ].map(([label, value, note]) => `<article class="metric"><span>${label}</span><strong>${fmt.format(value)}</strong><small>${escapeHtml(note)}</small></article>`).join('');
-  el('opinion-trend').innerHTML = `<strong>尚無可繪製的討論資料</strong><p>${escapeHtml(state.opinion.message)}</p>`;
-  el('opinion-sources').innerHTML = state.opinion.sources.map(source => `<article class="source-card">
-    <div><h4>${escapeHtml(source.name)}</h4><p>完成來源條款檢查後接入</p></div><span class="source-status">待設定</span>
-  </article>`).join('');
-  el('opinion-summaries').innerHTML = `<div class="empty-state"><strong>${escapeHtml(formatMonth(selectedMonth))} 尚無輿論摘要</strong>
-    <p>n8n 排程接入後，這裡會依議題顯示討論焦點、來源連結、時間分布與摘要方法。</p></div>`;
+    ['本月文章', postCount, ready ? '已完成排程抓取' : '尚未收集'], 
+    ['已接來源', state.opinion.sources.length, ready ? '已上線運作中' : `共 ${state.opinion.sources.length} 個規劃來源`],
+    ['已分類文章', postCount, ready ? '依犯罪類別完成標記' : '等待類別標記'], 
+    ['可比月份', ready ? 1 : 0, ready ? '提供對照與差距計算' : '等待輿論資料']
+  ].map(([label, value, note]) => `<article class="metric"><span>${label}</span><strong>${typeof value === 'number' ? fmt.format(value) : value}</strong><small>${escapeHtml(note)}</small></article>`).join('');
+  
+  if (ready && state.opinion.daily_counts?.length) {
+    const maxVal = Math.max(...state.opinion.daily_counts.map(d => d.count), 1);
+    el('opinion-trend').innerHTML = `
+      <div class="bars" style="padding:10px 0; max-height:220px; overflow-y:auto;">
+        ${state.opinion.daily_counts.map(d => `
+          <div class="bar-row">
+            <div class="bar-label" style="width:70px;"><span>${d.day} 日</span><strong>${d.count} 篇</strong></div>
+            <div class="bar-track" aria-hidden="true" style="height:10px;"><div class="bar-fill" style="width:${(d.count/maxVal)*100}%; height:100%; background:#0891b2;"></div></div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    el('opinion-trend').innerHTML = `<div class="chart-empty"><strong>尚無可繪製的討論資料</strong><p>${escapeHtml(state.opinion.message)}</p></div>`;
+  }
+  
+  el('opinion-sources').innerHTML = state.opinion.sources.map(source => `
+    <article class="source-card">
+      <div>
+        <h4>${escapeHtml(source.name)}</h4>
+        <p>${ready ? '已連接資料庫實時更新' : '完成來源條款檢查後接入'}</p>
+      </div>
+      <span class="source-status ${ready ? 'state-ready' : ''}">${ready ? '已連線' : '待設定'}</span>
+    </article>
+  `).join('');
+  
+  if (ready && state.opinion.topic_summaries?.length) {
+    el('opinion-summaries').innerHTML = state.opinion.topic_summaries.map(item => {
+      const sentimentText = item.sentiment < -0.4 ? '顯著負面' : (item.sentiment < 0 ? '微幅負面' : (item.sentiment > 0.4 ? '顯著正面' : (item.sentiment > 0 ? '微幅正面' : '中性')));
+      const sentimentClass = item.sentiment < 0 ? 'state-pending' : 'state-ready';
+      return `
+        <article class="case-card" style="margin-bottom:12px; padding:15px; border:1px solid #dce2e7; border-radius:6px; background:#fff;">
+          <div class="case-record">
+            <div class="case-topline" style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                <h3 style="margin:0 0 6px 0; font-size:16px;">
+                  <a href="${escapeHtml(safeUrl(item.url))}" target="_blank" rel="noreferrer" style="color:#075e54; text-decoration:none; font-weight:bold;">${escapeHtml(item.title)}</a>
+                </h3>
+                <p class="case-meta" style="margin:0; font-size:12px; color:#607080;">發布日期：${escapeHtml(item.publish_date)} · 來源：${escapeHtml(item.source)}</p>
+              </div>
+              <span class="state-chip ${sentimentClass}" style="font-size:11px; padding:3px 8px; border-radius:4px;">${sentimentText} (${item.sentiment})</span>
+            </div>
+            <div class="record-summary" style="margin-top:10px; font-size:13px; line-height:1.5; color:#17212b;">
+              <p style="margin:0;">${escapeHtml(item.excerpt)}</p>
+            </div>
+            <div class="tags" style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+              <span class="tag" style="background:#e8edf1; color:#075e54; font-size:11px; padding:2px 8px; border-radius:4px;">${escapeHtml(categoryLabels[item.topic] || item.topic)}</span>
+              ${(item.keywords || []).map(kw => `<span class="keyword" style="background:#f4f6f8; color:#607080; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e3e7ea;">${escapeHtml(kw)}</span>`).join('')}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  } else {
+    el('opinion-summaries').innerHTML = `<div class="empty-state"><strong>${escapeHtml(formatMonth(selectedMonth))} 尚無輿論摘要</strong>
+      <p>${escapeHtml(state.opinion.message)}</p></div>`;
+  }
 }
 
 function renderCrossObservation() {

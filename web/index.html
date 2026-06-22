@@ -95,12 +95,12 @@
         <article class="panel">
           <div class="panel-head">
             <div>
-              <h3>關注類別件數</h3>
-              <p>使用官方 CSV 的原始欄位名稱，不進行案件文字推測。</p>
+              <h3>聯合國 ICCS 犯罪分類 (Level 1 / Level 2)</h3>
+              <p>以聯合國 ICCS 分類為主分類，點擊可展開檢視台灣本地法規案類與嚴重度得分。</p>
             </div>
-            <span class="chart-type">長條圖</span>
+            <span class="chart-type">互動分類</span>
           </div>
-          <div id="category-bars" class="bars" role="img" aria-label="關注類別件數長條圖"></div>
+          <div id="iccs-container" class="iccs-list"></div>
         </article>
       </section>
 
@@ -108,10 +108,10 @@
         <article class="panel">
           <div class="panel-head">
             <div>
-              <h3>詐欺背信地區分布</h3>
-              <p>排除全國總計與署所屬機關，顯示前十個縣市。</p>
+              <h3>各縣市加權治安風險排行</h3>
+              <p>以刑事案件數量乘以案件嚴重度權重累加計算，排除全國總計與署所屬機關。</p>
             </div>
-            <span class="chart-type">長條圖</span>
+            <span class="chart-type">風險排名</span>
           </div>
           <div id="region-list" class="bars"></div>
         </article>

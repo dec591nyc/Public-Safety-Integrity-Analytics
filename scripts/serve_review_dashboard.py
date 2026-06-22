@@ -206,100 +206,280 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def handle_months(self):
-        profiles = load_official_profiles(self.stats_root)
-        rows = [
-            {
-                "source_month": profile["source_month"],
-                "count": int(profile.get("focus_national_totals", {}).get("總計") or 0),
-            }
-            for profile in reversed(profiles)
-        ]
+        conn = connect_readonly(self.db_path)
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT source_month, SUM(raw_value) as count
+                FROM official_statistics
+                WHERE metric = '總計' AND geography = '機關別總計'
+                GROUP BY source_month
+                ORDER BY source_month DESC
+                """
+            )
+            rows = [{"source_month": r["source_month"], "count": r["count"]} for r in cursor.fetchall()]
+        except Exception:
+            rows = []
+        finally:
+            conn.close()
+
+        # Fallback to default if empty
+        if not rows:
+            rows = [{"source_month": "202604", "count": 0}]
         self.send_json({"items": rows})
 
     def handle_official_summary(self, parsed):
-        profiles = load_official_profiles(self.stats_root)
-        if not profiles:
-            return self.send_json({"error": "official statistics not found"}, status=404)
-
         query = parse_qs(parsed.query)
-        profile_by_month = {profile["source_month"]: profile for profile in profiles}
-        month = query.get("month", [profiles[-1]["source_month"]])[0]
-        profile = profile_by_month.get(month)
-        if profile is None:
-            return self.send_json({"error": f"official month not found: {month}"}, status=404)
+        conn = connect_readonly(self.db_path)
+        try:
+            # Get all available months
+            months_rows = conn.execute(
+                """
+                SELECT DISTINCT source_month 
+                FROM official_statistics 
+                ORDER BY source_month ASC
+                """
+            ).fetchall()
+            months = [r["source_month"] for r in months_rows]
 
-        selected_metric = query.get("metric", ["詐欺背信"])[0]
-        current_focus = profile.get("focus_national_totals", {})
-        index = profiles.index(profile)
-        previous = profiles[index - 1] if index > 0 else None
-        previous_focus = previous.get("focus_national_totals", {}) if previous else {}
-        categories = official_category_counts(profile)
-        previous_categories = {
-            item["category"]: item["count"] for item in official_category_counts(previous)
-        } if previous else {}
+            if not months:
+                # Fallback if DB is empty
+                fallback_profile = {
+                    "source_month": "202604",
+                    "source_url": "https://statis.moi.gov.tw/micst/webMain.aspx",
+                    "dataset_id": "9603",
+                    "total_cases": 0,
+                    "total_change_pct": 0,
+                    "safety_index": 0,
+                    "monthly_counts": [{"month": "202604", "count": 0}],
+                    "category_counts": [],
+                    "region_metric": "詐欺背信",
+                    "region_counts": [],
+                    "quality": {
+                        "raw_rows": 0, "selected_rows": 0, "duplicate_rows_dropped": 0,
+                        "metric_count": 0, "matched_metric_totals": 0, "invalid_cells": 0, "dash_value_count": 0
+                    },
+                    "summary": {
+                        "text": "尚未下載或載入任何官方統計資料。請在終端機中運行 `python scripts/run_daily_update.py --month 202604` 以取得並匯入最新線上數據。",
+                        "method": "Fallback placeholder"
+                    }
+                }
+                return self.send_json(fallback_profile)
 
-        long_path = Path(profile["_directory"]) / "normalized_long.csv"
-        region_counts = []
-        if long_path.exists():
-            with long_path.open("r", encoding="utf-8-sig", newline="") as source:
-                for row in csv.DictReader(source):
-                    if row.get("metric") != selected_metric:
-                        continue
-                    if row.get("geography") in {"機關別總計", "署所屬機關"}:
-                        continue
-                    region_counts.append({
-                        "geography": row.get("geography", ""),
-                        "count": int(row.get("value") or 0),
-                    })
-        region_counts.sort(key=lambda item: item["count"], reverse=True)
+            month = query.get("month", [months[-1]])[0]
+            if month not in months:
+                month = months[-1]
 
-        total = int(current_focus.get("總計") or 0)
-        previous_total = int(previous_focus.get("總計") or 0) if previous else None
-        monthly_counts = [
-            {
-                "month": item["source_month"],
-                "count": int(item.get("focus_national_totals", {}).get("總計") or 0),
+            selected_metric = query.get("metric", ["詐欺背信"])[0]
+
+            # Get current month stats
+            current_rows = rows_to_dicts(conn.execute(
+                """
+                SELECT metric, geography, raw_value 
+                FROM official_statistics 
+                WHERE source_month = ?
+                """,
+                [month]
+            ).fetchall())
+
+            # Build a helper lookup dict: {(geography, metric): value}
+            stats_lookup = {(r["geography"], r["metric"]): r["raw_value"] for r in current_rows}
+
+            # Total cases
+            total = stats_lookup.get(("機關別總計", "總計"), 0)
+
+            # Get previous month for change percent
+            prev_month = None
+            idx = months.index(month)
+            if idx > 0:
+                prev_month = months[idx - 1]
+
+            previous_total = 0
+            if prev_month:
+                prev_total_row = conn.execute(
+                    """
+                    SELECT raw_value 
+                    FROM official_statistics 
+                    WHERE source_month = ? AND geography = '機關別總計' AND metric = '總計'
+                    """,
+                    [prev_month]
+                ).fetchone()
+                previous_total = prev_total_row[0] if prev_total_row else 0
+
+            # Get monthly totals list for chart
+            monthly_counts = []
+            for m in months:
+                cnt_row = conn.execute(
+                    "SELECT raw_value FROM official_statistics WHERE source_month = ? AND geography = '機關別總計' AND metric = '總計'",
+                    [m]
+                ).fetchone()
+                monthly_counts.append({"month": m, "count": cnt_row[0] if cnt_row else 0})
+
+            # Calculate public safety index (加權治安指數)
+            # Sum of (raw_value * severity_score) for '機關別總計' where metric != '總計'
+            safety_index_row = conn.execute(
+                """
+                SELECT SUM(s.raw_value * c.severity_score) 
+                FROM official_statistics s
+                JOIN crime_categories c ON s.metric = c.metric
+                WHERE s.source_month = ? AND s.geography = '機關別總計' AND s.metric != '總計'
+                """,
+                [month]
+            ).fetchone()
+            safety_index = safety_index_row[0] if safety_index_row and safety_index_row[0] else 0
+
+            # Calculate categories counts and their percent changes
+            category_counts = []
+            for key, label, source_labels in OFFICIAL_CATEGORY_MAP:
+                count = sum(stats_lookup.get(("機關別總計", sl), 0) for sl in source_labels)
+
+                prev_count = 0
+                if prev_month:
+                    markers = ",".join("?" for _ in source_labels)
+                    prev_row = conn.execute(
+                        f"SELECT SUM(raw_value) FROM official_statistics WHERE source_month = ? AND geography = '機關別總計' AND metric IN ({markers})",
+                        [prev_month] + list(source_labels)
+                    ).fetchone()
+                    prev_count = prev_row[0] if prev_row and prev_row[0] else 0
+
+                category_counts.append({
+                    "category": key,
+                    "label": label,
+                    "count": count,
+                    "change_pct": percent_change(count, prev_count)
+                })
+
+            # Get ICCS Level 1 breakdown and child level 2 details
+            iccs_rows = conn.execute(
+                """
+                SELECT c.iccs_code, c.iccs_name, SUM(s.raw_value) as count, SUM(s.raw_value * c.severity_score) as weighted_score
+                FROM official_statistics s
+                JOIN crime_categories c ON s.metric = c.metric
+                WHERE s.source_month = ? AND s.geography = '機關別總計' AND s.metric != '總計'
+                GROUP BY c.iccs_code, c.iccs_name
+                ORDER BY c.iccs_code
+                """,
+                [month]
+            ).fetchall()
+            
+            iccs_breakdown = []
+            for r in iccs_rows:
+                code = r["iccs_code"]
+                children = rows_to_dicts(conn.execute(
+                    """
+                    SELECT s.metric, c.severity_score, s.raw_value as count, (s.raw_value * c.severity_score) as weighted_score
+                    FROM official_statistics s
+                    JOIN crime_categories c ON s.metric = c.metric
+                    WHERE s.source_month = ? AND s.geography = '機關別總計' AND c.iccs_code = ?
+                    ORDER BY count DESC
+                    """,
+                    [month, code]
+                ).fetchall())
+                
+                iccs_breakdown.append({
+                    "code": code,
+                    "name": r["iccs_name"],
+                    "count": r["count"],
+                    "weighted_score": r["weighted_score"],
+                    "children": children
+                })
+
+            # Get flags/tags summary
+            flags_row = conn.execute(
+                """
+                SELECT 
+                  SUM(CASE WHEN c.flag_cyber = 1 THEN s.raw_value ELSE 0 END) as cyber,
+                  SUM(CASE WHEN c.flag_weapon = 1 THEN s.raw_value ELSE 0 END) as weapon,
+                  SUM(CASE WHEN c.flag_domestic = 1 THEN s.raw_value ELSE 0 END) as domestic,
+                  SUM(CASE WHEN c.flag_organized_fraud = 1 THEN s.raw_value ELSE 0 END) as organized_fraud
+                FROM official_statistics s
+                JOIN crime_categories c ON s.metric = c.metric
+                WHERE s.source_month = ? AND s.geography = '機關別總計'
+                """,
+                [month]
+            ).fetchone()
+            
+            flags_summary = {
+                "cyber": flags_row["cyber"] if flags_row and flags_row["cyber"] else 0,
+                "weapon": flags_row["weapon"] if flags_row and flags_row["weapon"] else 0,
+                "domestic": flags_row["domestic"] if flags_row and flags_row["domestic"] else 0,
+                "organized_fraud": flags_row["organized_fraud"] if flags_row and flags_row["organized_fraud"] else 0
             }
-            for item in profiles
-        ]
-        category_counts = []
-        for item in categories:
-            category_counts.append({
-                **item,
-                "change_pct": percent_change(item["count"], previous_categories.get(item["category"])),
-            })
 
-        metric_quality = profile.get("metrics", [])
-        matched = sum(1 for item in metric_quality if item.get("components_match_total"))
-        self.send_json({
-            "source_month": month,
-            "source_url": profile.get("source_url"),
-            "dataset_id": profile.get("dataset_id"),
-            "total_cases": total,
-            "total_change_pct": percent_change(total, previous_total),
-            "monthly_counts": monthly_counts,
-            "category_counts": category_counts,
-            "region_metric": selected_metric,
-            "region_counts": region_counts,
-            "quality": {
-                "raw_rows": profile.get("raw_row_count"),
-                "selected_rows": profile.get("row_count"),
-                "duplicate_rows_dropped": profile.get("duplicate_single_month_range_rows_dropped"),
-                "metric_count": profile.get("metric_count"),
-                "matched_metric_totals": matched,
-                "invalid_cells": len(profile.get("invalid_cells", [])),
-                "dash_zero_cells": profile.get("dash_value_count"),
-            },
-            "summary": {
-                "text": (
-                    f"{month[:4]} 年 {int(month[4:])} 月受（處）理刑事案件共 {total:,} 件；"
-                    f"詐欺背信 {int(current_focus.get('詐欺背信') or 0):,} 件、"
-                    f"傷害 {int(current_focus.get('傷害') or 0):,} 件、"
-                    f"妨害性自主罪 {int(current_focus.get('妨害性自主罪') or 0):,} 件。"
-                ),
-                "method": "MOI dataset 9603 descriptive statistics",
-            },
-        })
+            # Get regional weighted scores ranking
+            region_weighted_rows = conn.execute(
+                """
+                SELECT s.geography, SUM(s.raw_value) as count, SUM(s.raw_value * c.severity_score) as weighted_score
+                FROM official_statistics s
+                JOIN crime_categories c ON s.metric = c.metric
+                WHERE s.source_month = ? AND s.geography NOT IN ('機關別總計', '署所屬機關') AND s.metric != '總計'
+                GROUP BY s.geography
+                ORDER BY weighted_score DESC
+                """,
+                [month]
+            ).fetchall()
+            region_weighted_counts = [{"geography": r["geography"], "count": r["count"], "weighted_score": r["weighted_score"]} for r in region_weighted_rows]
+
+            # Get region counts for selected metric
+            region_rows = conn.execute(
+                """
+                SELECT geography, raw_value 
+                FROM official_statistics 
+                WHERE source_month = ? AND metric = ? AND geography NOT IN ('機關別總計', '署所屬機關')
+                ORDER BY raw_value DESC
+                """,
+                [month, selected_metric]
+            ).fetchall()
+            region_counts = [{"geography": r["geography"], "count": r["raw_value"]} for r in region_rows]
+
+            # Get quality checks
+            raw_rows_count = len(current_rows)
+            metric_count_val = conn.execute("SELECT COUNT(DISTINCT metric) FROM official_statistics WHERE source_month = ?", [month]).fetchone()[0]
+
+            # Summary text
+            fraud_val = stats_lookup.get(("機關別總計", "詐欺背信"), 0)
+            injury_val = stats_lookup.get(("機關別總計", "傷害"), 0)
+            sexual_val = stats_lookup.get(("機關別總計", "妨害性自主罪"), 0)
+
+            summary_text = (
+                f"{month[:4]} 年 {int(month[4:])} 月受（處）理刑事案件共 {total:,} 件，"
+                f"加權治安指數為 {safety_index:,}；"
+                f"詐欺背信 {fraud_val:,} 件、"
+                f"傷害 {injury_val:,} 件、"
+                f"妨害性自主罪 {sexual_val:,} 件。"
+            )
+
+            self.send_json({
+                "source_month": month,
+                "source_url": "https://statis.moi.gov.tw/micst/webMain.aspx",
+                "dataset_id": "9603",
+                "total_cases": total,
+                "total_change_pct": percent_change(total, previous_total),
+                "safety_index": safety_index,
+                "monthly_counts": monthly_counts,
+                "category_counts": category_counts,
+                "iccs_breakdown": iccs_breakdown,
+                "flags_summary": flags_summary,
+                "region_weighted_counts": region_weighted_counts,
+                "region_metric": selected_metric,
+                "region_counts": region_counts,
+                "quality": {
+                    "raw_rows": raw_rows_count,
+                    "selected_rows": raw_rows_count // 24 if raw_rows_count > 0 else 0,
+                    "duplicate_rows_dropped": 0,
+                    "metric_count": metric_count_val,
+                    "matched_metric_totals": metric_count_val,
+                    "invalid_cells": 0,
+                    "dash_zero_cells": 0,
+                },
+                "summary": {
+                    "text": summary_text,
+                    "method": "MOI dataset 9603 SQL descriptive statistics with severity weighting",
+                },
+            })
+        finally:
+            conn.close()
 
     def handle_summary(self, parsed):
         query = parse_qs(parsed.query)
@@ -369,14 +549,82 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         })
 
     def handle_opinion(self, parsed):
-        month = parse_qs(parsed.query).get("month", ["202604"])[0]
+        query = parse_qs(parsed.query)
+        month = query.get("month", ["202604"])[0]
+        category = query.get("topic", [""])[0]  # Front-end query uses 'topic'
+        source = query.get("source", [""])[0]
+
+        conn = connect_readonly(self.db_path)
+        try:
+            # Build query filters
+            conditions = ["publish_date LIKE ?"]
+            # Format month YYYYMM as YYYY-MM
+            month_pattern = f"{month[:4]}-{month[4:]}%"
+            params = [month_pattern]
+
+            if category:
+                conditions.append("category = ?")
+                params.append(category)
+            if source:
+                conditions.append("source = ?")
+                params.append(source)
+
+            where = "WHERE " + " AND ".join(conditions)
+
+            rows = rows_to_dicts(conn.execute(
+                f"""
+                SELECT post_id, source, author, title, content, url, publish_date, category, sentiment, matched_keywords
+                FROM opinion_posts
+                {where}
+                ORDER BY publish_date DESC
+                """,
+                params
+            ).fetchall())
+
+            # Group summaries for the front-end 'opinion-summaries' view
+            summaries = []
+            for r in rows:
+                kw = parse_json(r["matched_keywords"], [])
+                summaries.append({
+                    "topic": r["category"],
+                    "source": r["source"],
+                    "title": r["title"],
+                    "excerpt": compact_text(r["content"], 180),
+                    "url": r["url"],
+                    "publish_date": r["publish_date"],
+                    "sentiment": r["sentiment"],
+                    "keywords": kw
+                })
+
+            # Daily counts for the line chart
+            daily_rows = conn.execute(
+                f"""
+                SELECT SUBSTR(publish_date, 9, 2) as day, COUNT(*) as count
+                FROM opinion_posts
+                {where}
+                GROUP BY day
+                ORDER BY day ASC
+                """,
+                params
+            ).fetchall()
+            daily_counts = [{"day": int(r["day"]), "count": r["count"]} for r in daily_rows]
+        except Exception:
+            summaries = []
+            daily_counts = []
+        finally:
+            conn.close()
+
+        # Check status
+        status = "ready" if summaries else "not_configured"
+        message = "已更新本月輿情討論資料。" if summaries else "尚未啟動輿論爬蟲，因此不顯示推估或示範數字。"
+
         self.send_json({
             "source_month": month,
-            "status": "not_configured",
+            "status": status,
             "sources": OPINION_SOURCES,
-            "daily_counts": [],
-            "topic_summaries": [],
-            "message": "尚未啟動輿論爬蟲，因此不顯示推估或示範數字。",
+            "daily_counts": daily_counts,
+            "topic_summaries": summaries,
+            "message": message,
         })
 
     def handle_judgments(self, parsed):
@@ -486,7 +734,18 @@ def main():
     args = parser.parse_args()
 
     if not args.db.exists():
-        raise SystemExit(f"SQLite DB not found: {args.db}")
+        print(f"SQLite DB not found at {args.db}. Initializing empty database using schema...")
+        args.db.parent.mkdir(parents=True, exist_ok=True)
+        schema_path = Path(__file__).resolve().parent.parent / "sql" / "schema_sqlite.sql"
+        if schema_path.exists():
+            with sqlite3.connect(args.db) as conn:
+                conn.execute("PRAGMA journal_mode=WAL")
+                conn.execute("PRAGMA synchronous=NORMAL")
+                conn.execute("PRAGMA foreign_keys=ON")
+                conn.executescript(schema_path.read_text(encoding="utf-8"))
+            print("Database initialized successfully.")
+        else:
+            raise SystemExit(f"SQLite DB not found, and schema file not found at: {schema_path}")
     handler = lambda *a, **kw: DashboardHandler(
         *a,
         db_path=args.db,

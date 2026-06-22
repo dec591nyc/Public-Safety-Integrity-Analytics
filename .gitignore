@@ -1,8 +1,7 @@
-data/local/*.sqlite
-data/local/*.sqlite-*
-data/exports/*.csv
+data/
+db_data/
+cookie.txt
+scratch_*
 __pycache__/
 *.pyc
-data/202604
-data/official/
 .playwright-cli
