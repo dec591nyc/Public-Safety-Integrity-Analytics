@@ -2,7 +2,7 @@
 
 💡 **以數據為基石，探索官方犯罪統計與公眾輿論聲量之間的維度偏差與聚焦關聯。**
 
-🔗 [**Live Demo 網頁展示**](https://dec591nyc.github.io/Public-Safety-Integrity-Analytics/)
+🔗 [**Live Demo**](https://public-safety-integrity-analytics.vercel.app/#overview)
 
 ---
 
