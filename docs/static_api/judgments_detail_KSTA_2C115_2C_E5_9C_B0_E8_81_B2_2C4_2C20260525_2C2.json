@@ -1,0 +1,31 @@
+{
+  "jid": "KSTA,115,地聲,4,20260525,2",
+  "source_month": "202605",
+  "court_folder": "KSTA",
+  "case_domain": "administrative",
+  "jyear": "115",
+  "jcase": "地聲",
+  "jno": "4",
+  "jdate": "2026-05-25",
+  "jtitle": "聲請迴避",
+  "jpdf": "",
+  "text_length": 0,
+  "excerpt": "",
+  "category_flags": {
+    "fraud": false,
+    "money_laundering": false,
+    "sexual_offense": false,
+    "injury": false,
+    "traffic_injury": false,
+    "public_integrity": false,
+    "election_law": false
+  },
+  "matched_keywords": [],
+  "summary": {
+    "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
+    "provider": "extractive_rule_v1",
+    "confidence": "insufficient",
+    "needs_manual_review": true,
+    "evidence_snippets": []
+  }
+}

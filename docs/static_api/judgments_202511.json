@@ -1,0 +1,13 @@
+{
+  "total": 0,
+  "limit": 150,
+  "offset": 0,
+  "items": [],
+  "warnings": [],
+  "search_capabilities": {
+    "title": "static_in_memory",
+    "court": "static_in_memory",
+    "plaintiff": "static_in_memory",
+    "defendant": "static_in_memory"
+  }
+}

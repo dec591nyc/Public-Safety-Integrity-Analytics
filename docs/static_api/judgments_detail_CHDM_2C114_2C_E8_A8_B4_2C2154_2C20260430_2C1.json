@@ -1,0 +1,38 @@
+{
+  "jid": "CHDM,114,訴,2154,20260430,1",
+  "source_month": "202604",
+  "court_folder": "臺灣彰化地方法院刑事",
+  "case_domain": "criminal",
+  "jyear": "114",
+  "jcase": "訴",
+  "jno": "2154",
+  "jdate": "20260430",
+  "jtitle": "加重詐欺等",
+  "jpdf": "https://data.judicial.gov.tw/opendl/JDocFile/CHDM/114%2c%e8%a8%b4%2c2154%2c20260430%2c1.pdf",
+  "text_length": 6921,
+  "excerpt": "臺灣彰化地方法院刑事判決\r\n114年度訴字第2154號\r\n公  訴  人  臺灣彰化地方檢察署檢察官    \r\n被      告  SIVANESAN SATHASIVAM (馬來西亞籍)  \r\n\r\n\r\n\r\n\r\n上列被告因詐欺等案件，經檢察官提起公訴(114年度偵字第2216\r\n1號)，被告於準備程序中就被訴事實為有罪之陳述，經告知簡式\r\n審判程序之旨，並聽取公訴人及被告之意見後，由本院裁定進行\r\n簡式審判程序，判決如下：\r\n　　主　　　　　文\r\nSIVANESAN SATHASIVAM犯三人以上共同詐欺取財罪，處有期徒刑\r\n壹年貳月。並於刑之執行完畢或赦免後，驅逐出境。\r\n　　犯罪事實及理由\r\n一、被告SIVANESAN SATHASIVAM所犯並非死刑、無期徒刑、最輕\r\n    本刑為3年以上有期徒刑之罪，或高等法院管轄第一審之案\r\n    件。被告於準備程序中，就被訴事實為有罪之陳述。經本院\r\n    告知簡式審判程序之旨，並聽取公訴人與被告之意見後，本\r\n    院認適宜進行簡式審判程序，爰依刑事訴訟法第273條之1第\r\n    1項規定，裁定進行簡式審判程序。且依刑事訴訟法第",
+  "category_flags": {
+    "fraud": true,
+    "money_laundering": true,
+    "sexual_offense": false,
+    "injury": false,
+    "traffic_injury": false,
+    "public_integrity": false,
+    "election_law": false
+  },
+  "matched_keywords": [
+    "fraud:詐欺",
+    "fraud:詐騙",
+    "money_laundering:洗錢"
+  ],
+  "summary": {
+    "text": "加重詐欺等：臺灣彰化地方法院刑事判決 114年度訴字第2154號 公 訴 人 臺灣彰化地方檢察署檢察官 被 告 SIVANESAN SATHASIVAM (馬來西亞籍) 上列被告因詐欺等案件，經檢察官提起公訴(114年度偵字第2216 1號)，被告於準備程序中就被訴事實為有罪之陳述，經告知簡式 審判程序之旨，並聽取公訴人及被告之意見後，由本院裁定進行 簡式審判程序，判… 犯罪事實及理由 一、被告SIVANESAN SATHASIVAM所犯並非死刑、無期徒刑、最輕 本刑為3年以上有期徒刑之罪，或高等法院管轄第一審之案 件。",
+    "provider": "extractive_rule_v1",
+    "confidence": "low",
+    "needs_manual_review": true,
+    "evidence_snippets": [
+      "臺灣彰化地方法院刑事判決 114年度訴字第2154號 公 訴 人 臺灣彰化地方檢察署檢察官 被 告 SIVANESAN SATHASIVAM (馬來西亞籍) 上列被告因詐欺等案件，經檢察官提起公訴(114年度偵字第2216 1號)，被告於準備程序中就被訴事實為有罪之陳述，經告知簡式 審判程序之旨，並聽取公訴人及被告之意見後，由本院裁定進行 簡式審判程序，判…",
+      "犯罪事實及理由 一、被告SIVANESAN SATHASIVAM所犯並非死刑、無期徒刑、最輕 本刑為3年以上有期徒刑之罪，或高等法院管轄第一審之案 件。"
+    ]
+  }
+}

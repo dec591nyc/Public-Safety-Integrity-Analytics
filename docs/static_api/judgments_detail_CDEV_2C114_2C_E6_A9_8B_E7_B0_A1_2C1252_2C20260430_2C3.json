@@ -1,0 +1,33 @@
+{
+  "jid": "CDEV,114,橋簡,1252,20260430,3",
+  "source_month": "202604",
+  "court_folder": "橋頭簡易庭民事",
+  "case_domain": "civil",
+  "jyear": "114",
+  "jcase": "橋簡",
+  "jno": "1252",
+  "jdate": "20260430",
+  "jtitle": "塗銷抵押權",
+  "jpdf": "https://data.judicial.gov.tw/opendl/JDocFile/CDEV/114%2c%e6%a9%8b%e7%b0%a1%2c1252%2c20260430%2c3.pdf",
+  "text_length": 3771,
+  "excerpt": "臺灣橋頭地方法院民事裁定\r\n114年度橋簡字第1252號\r\n原      告  楊淑齡  \r\n\r\n            楊淑賢  \r\n            楊嘉銘  \r\n            楊世美  \r\n            林嘉彬  \r\n共      同\r\n訴訟代理人  歐致豪律師\r\n            李慈容律師\r\n            吳昀宸律師\r\n被      告  林港    \r\n            曾劉和菊\r\n            曾淨蘭  \r\n            曾雯蘭  \r\n            曾麗錦  \r\n\r\n\r\n\r\n            曾麒頴  \r\n\r\n            戴陳月娥\r\n            陳呈祥  \r\n\r\n            陳弘毅  \r\n            陳宏仁  \r\n\r\n            陳宏德  \r\n            陳碧珠  \r\n\r\n            馬博文即陳碧華之承受訴訟人\r\n\r\n            馬麗君即陳碧華之承受訴訟人\r\n\r\n\r\n            馬博",
+  "category_flags": {
+    "fraud": false,
+    "money_laundering": false,
+    "sexual_offense": false,
+    "injury": false,
+    "traffic_injury": false,
+    "public_integrity": false,
+    "election_law": false
+  },
+  "matched_keywords": [],
+  "summary": {
+    "text": "塗銷抵押權：臺灣橋頭地方法院民事裁定 114年度橋簡字第1252號 原 告 楊淑齡 楊淑賢 楊嘉銘 楊世美 林嘉彬 共 同 訴訟代理人 歐致豪律師 李慈容律師 吳昀宸律師 被 告 林港 曾劉和菊 曾淨蘭 曾雯蘭 曾麗錦 曾麒頴 戴陳月娥 陳呈祥 陳弘毅 陳宏仁 陳宏德 陳碧珠 馬博文即陳碧華之承受訴訟人 馬麗君即陳碧華之承受訴訟人 馬博",
+    "provider": "extractive_rule_v1",
+    "confidence": "low",
+    "needs_manual_review": true,
+    "evidence_snippets": [
+      "臺灣橋頭地方法院民事裁定 114年度橋簡字第1252號 原 告 楊淑齡 楊淑賢 楊嘉銘 楊世美 林嘉彬 共 同 訴訟代理人 歐致豪律師 李慈容律師 吳昀宸律師 被 告 林港 曾劉和菊 曾淨蘭 曾雯蘭 曾麗錦 曾麒頴 戴陳月娥 陳呈祥 陳弘毅 陳宏仁 陳宏德 陳碧珠 馬博文即陳碧華之承受訴訟人 馬麗君即陳碧華之承受訴訟人 馬博"
+    ]
+  }
+}

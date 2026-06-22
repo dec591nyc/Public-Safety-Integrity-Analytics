@@ -1,0 +1,56 @@
+{
+  "items": [
+    {
+      "source_month": "202606",
+      "count": 51381
+    },
+    {
+      "source_month": "202605",
+      "count": 51381
+    },
+    {
+      "source_month": "202604",
+      "count": 51381
+    },
+    {
+      "source_month": "202603",
+      "count": 52098
+    },
+    {
+      "source_month": "202602",
+      "count": 36573
+    },
+    {
+      "source_month": "202601",
+      "count": 50842
+    },
+    {
+      "source_month": "202512",
+      "count": 50112
+    },
+    {
+      "source_month": "202511",
+      "count": 48671
+    },
+    {
+      "source_month": "202510",
+      "count": 51741
+    },
+    {
+      "source_month": "202509",
+      "count": 50329
+    },
+    {
+      "source_month": "202508",
+      "count": 51525
+    },
+    {
+      "source_month": "202507",
+      "count": 53492
+    },
+    {
+      "source_month": "202506",
+      "count": 53214
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "jid": "CTDV,115,司促,5561,20260525,1",
+  "source_month": "202605",
+  "court_folder": "CTDV",
+  "case_domain": "civil",
+  "jyear": "115",
+  "jcase": "司促",
+  "jno": "5561",
+  "jdate": "2026-05-25",
+  "jtitle": "支付命令",
+  "jpdf": "",
+  "text_length": 0,
+  "excerpt": "",
+  "category_flags": {
+    "fraud": false,
+    "money_laundering": false,
+    "sexual_offense": false,
+    "injury": false,
+    "traffic_injury": false,
+    "public_integrity": false,
+    "election_law": false
+  },
+  "matched_keywords": [],
+  "summary": {
+    "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
+    "provider": "extractive_rule_v1",
+    "confidence": "insufficient",
+    "needs_manual_review": true,
+    "evidence_snippets": []
+  }
+}

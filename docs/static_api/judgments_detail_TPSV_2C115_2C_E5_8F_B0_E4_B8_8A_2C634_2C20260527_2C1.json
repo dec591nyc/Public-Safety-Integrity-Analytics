@@ -1,0 +1,31 @@
+{
+  "jid": "TPSV,115,台上,634,20260527,1",
+  "source_month": "202605",
+  "court_folder": "TPSV",
+  "case_domain": "civil",
+  "jyear": "115",
+  "jcase": "台上",
+  "jno": "634",
+  "jdate": "2026-05-27",
+  "jtitle": "請求給付違約金",
+  "jpdf": "",
+  "text_length": 0,
+  "excerpt": "",
+  "category_flags": {
+    "fraud": false,
+    "money_laundering": false,
+    "sexual_offense": false,
+    "injury": false,
+    "traffic_injury": false,
+    "public_integrity": false,
+    "election_law": false
+  },
+  "matched_keywords": [],
+  "summary": {
+    "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
+    "provider": "extractive_rule_v1",
+    "confidence": "insufficient",
+    "needs_manual_review": true,
+    "evidence_snippets": []
+  }
+}

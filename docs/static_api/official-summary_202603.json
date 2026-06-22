@@ -1,0 +1,598 @@
+{
+  "source_month": "202603",
+  "source_url": "https://statis.moi.gov.tw/micst/webMain.aspx",
+  "dataset_id": "9603",
+  "total_cases": 52098,
+  "total_change_pct": 42.45,
+  "safety_index": 421522,
+  "monthly_counts": [
+    {
+      "month": "202506",
+      "count": 53214
+    },
+    {
+      "month": "202507",
+      "count": 53492
+    },
+    {
+      "month": "202508",
+      "count": 51525
+    },
+    {
+      "month": "202509",
+      "count": 50329
+    },
+    {
+      "month": "202510",
+      "count": 51741
+    },
+    {
+      "month": "202511",
+      "count": 48671
+    },
+    {
+      "month": "202512",
+      "count": 50112
+    },
+    {
+      "month": "202601",
+      "count": 50842
+    },
+    {
+      "month": "202602",
+      "count": 36573
+    },
+    {
+      "month": "202603",
+      "count": 52098
+    },
+    {
+      "month": "202604",
+      "count": 51381
+    },
+    {
+      "month": "202605",
+      "count": 51381
+    },
+    {
+      "month": "202606",
+      "count": 51381
+    }
+  ],
+  "category_counts": [
+    {
+      "category": "fraud",
+      "label": "詐欺背信",
+      "count": 15768,
+      "change_pct": 78.07
+    },
+    {
+      "category": "injury",
+      "label": "傷害",
+      "count": 2385,
+      "change_pct": 21.75
+    },
+    {
+      "category": "sexual_offense",
+      "label": "妨害性自主罪",
+      "count": 467,
+      "change_pct": 58.84
+    },
+    {
+      "category": "public_integrity",
+      "label": "貪污／瀆職",
+      "count": 34,
+      "change_pct": 126.67
+    },
+    {
+      "category": "election_law",
+      "label": "違反選罷法",
+      "count": 3,
+      "change_pct": 50.0
+    }
+  ],
+  "iccs_breakdown": [
+    {
+      "code": "01",
+      "name": "Acts leading to death or intending to cause death",
+      "count": 27,
+      "weighted_score": 2700,
+      "children": [
+        {
+          "metric": "殺人",
+          "severity_score": 100,
+          "count": 27,
+          "weighted_score": 2700
+        }
+      ]
+    },
+    {
+      "code": "02",
+      "name": "Acts causing harm or intending to cause harm to the person",
+      "count": 5799,
+      "weighted_score": 69915,
+      "children": [
+        {
+          "metric": "駕駛過失",
+          "severity_score": 10,
+          "count": 3414,
+          "weighted_score": 34140
+        },
+        {
+          "metric": "傷害",
+          "severity_score": 15,
+          "count": 2385,
+          "weighted_score": 35775
+        }
+      ]
+    },
+    {
+      "code": "03",
+      "name": "Injurious acts of a sexual nature",
+      "count": 587,
+      "weighted_score": 33890,
+      "children": [
+        {
+          "metric": "妨害性自主罪",
+          "severity_score": 70,
+          "count": 467,
+          "weighted_score": 32690
+        },
+        {
+          "metric": "妨害風化",
+          "severity_score": 10,
+          "count": 120,
+          "weighted_score": 1200
+        }
+      ]
+    },
+    {
+      "code": "04",
+      "name": "Acts of violence or threatened violence against a person that involve property",
+      "count": 122,
+      "weighted_score": 4360,
+      "children": [
+        {
+          "metric": "恐嚇取財",
+          "severity_score": 30,
+          "count": 108,
+          "weighted_score": 3240
+        },
+        {
+          "metric": "強盜搶奪",
+          "severity_score": 80,
+          "count": 14,
+          "weighted_score": 1120
+        },
+        {
+          "metric": "擄人勒贖",
+          "severity_score": 95,
+          "count": 0,
+          "weighted_score": 0
+        }
+      ]
+    },
+    {
+      "code": "05",
+      "name": "Acts against property only",
+      "count": 10005,
+      "weighted_score": 50950,
+      "children": [
+        {
+          "metric": "竊盜",
+          "severity_score": 5,
+          "count": 6287,
+          "weighted_score": 31435
+        },
+        {
+          "metric": "侵占",
+          "severity_score": 6,
+          "count": 2248,
+          "weighted_score": 13488
+        },
+        {
+          "metric": "毀棄損壞",
+          "severity_score": 4,
+          "count": 1305,
+          "weighted_score": 5220
+        },
+        {
+          "metric": "竊佔",
+          "severity_score": 5,
+          "count": 88,
+          "weighted_score": 440
+        },
+        {
+          "metric": "重利",
+          "severity_score": 5,
+          "count": 68,
+          "weighted_score": 340
+        },
+        {
+          "metric": "贓物",
+          "severity_score": 3,
+          "count": 9,
+          "weighted_score": 27
+        }
+      ]
+    },
+    {
+      "code": "06",
+      "name": "Acts involving controlled substances or other psychoactive substances",
+      "count": 4622,
+      "weighted_score": 55416,
+      "children": [
+        {
+          "metric": "違反毒品危害防制條例",
+          "severity_score": 12,
+          "count": 4610,
+          "weighted_score": 55320
+        },
+        {
+          "metric": "違反藥事法",
+          "severity_score": 8,
+          "count": 12,
+          "weighted_score": 96
+        }
+      ]
+    },
+    {
+      "code": "07",
+      "name": "Acts involving fraud, deception or corruption",
+      "count": 16553,
+      "weighted_score": 133064,
+      "children": [
+        {
+          "metric": "詐欺背信",
+          "severity_score": 8,
+          "count": 15768,
+          "weighted_score": 126144
+        },
+        {
+          "metric": "偽造文書印文",
+          "severity_score": 8,
+          "count": 745,
+          "weighted_score": 5960
+        },
+        {
+          "metric": "瀆職",
+          "severity_score": 25,
+          "count": 29,
+          "weighted_score": 725
+        },
+        {
+          "metric": "偽造有價證券",
+          "severity_score": 10,
+          "count": 6,
+          "weighted_score": 60
+        },
+        {
+          "metric": "違反貪污治罪條例",
+          "severity_score": 35,
+          "count": 5,
+          "weighted_score": 175
+        }
+      ]
+    },
+    {
+      "code": "08",
+      "name": "Acts against public order and authority",
+      "count": 216,
+      "weighted_score": 1957,
+      "children": [
+        {
+          "metric": "妨害秩序",
+          "severity_score": 8,
+          "count": 109,
+          "weighted_score": 872
+        },
+        {
+          "metric": "妨害公務",
+          "severity_score": 10,
+          "count": 104,
+          "weighted_score": 1040
+        },
+        {
+          "metric": "違反選罷法",
+          "severity_score": 15,
+          "count": 3,
+          "weighted_score": 45
+        }
+      ]
+    },
+    {
+      "code": "09",
+      "name": "Acts against public safety and national security",
+      "count": 4706,
+      "weighted_score": 56472,
+      "children": [
+        {
+          "metric": "公共危險",
+          "severity_score": 12,
+          "count": 4706,
+          "weighted_score": 56472
+        },
+        {
+          "metric": "內亂",
+          "severity_score": 90,
+          "count": 0,
+          "weighted_score": 0
+        }
+      ]
+    },
+    {
+      "code": "10",
+      "name": "Acts against the natural environment",
+      "count": 15,
+      "weighted_score": 75,
+      "children": [
+        {
+          "metric": "違反森林法",
+          "severity_score": 5,
+          "count": 15,
+          "weighted_score": 75
+        }
+      ]
+    },
+    {
+      "code": "11",
+      "name": "Other criminal acts not elsewhere classified",
+      "count": 1663,
+      "weighted_score": 12723,
+      "children": [
+        {
+          "metric": "妨害電腦使用",
+          "severity_score": 8,
+          "count": 1518,
+          "weighted_score": 12144
+        },
+        {
+          "metric": "違反著作權法",
+          "severity_score": 4,
+          "count": 70,
+          "weighted_score": 280
+        },
+        {
+          "metric": "違反商標法",
+          "severity_score": 3,
+          "count": 38,
+          "weighted_score": 114
+        },
+        {
+          "metric": "妨害家庭及婚姻",
+          "severity_score": 5,
+          "count": 37,
+          "weighted_score": 185
+        },
+        {
+          "metric": "違反專利法",
+          "severity_score": 3,
+          "count": 0,
+          "weighted_score": 0
+        }
+      ]
+    }
+  ],
+  "flags_summary": {
+    "cyber": 1518,
+    "weapon": 41,
+    "domestic": 37,
+    "organized_fraud": 15768
+  },
+  "region_weighted_counts": [
+    {
+      "geography": "新北市",
+      "count": 8157,
+      "weighted_score": 76888
+    },
+    {
+      "geography": "臺中市",
+      "count": 5226,
+      "weighted_score": 48802
+    },
+    {
+      "geography": "桃園市",
+      "count": 5094,
+      "weighted_score": 47779
+    },
+    {
+      "geography": "高雄市",
+      "count": 4932,
+      "weighted_score": 46369
+    },
+    {
+      "geography": "臺北市",
+      "count": 4491,
+      "weighted_score": 42475
+    },
+    {
+      "geography": "臺南市",
+      "count": 3656,
+      "weighted_score": 36265
+    },
+    {
+      "geography": "彰化縣",
+      "count": 1879,
+      "weighted_score": 17932
+    },
+    {
+      "geography": "屏東縣",
+      "count": 1456,
+      "weighted_score": 13066
+    },
+    {
+      "geography": "苗栗縣",
+      "count": 1046,
+      "weighted_score": 10608
+    },
+    {
+      "geography": "雲林縣",
+      "count": 1079,
+      "weighted_score": 10271
+    },
+    {
+      "geography": "新竹縣",
+      "count": 1039,
+      "weighted_score": 9738
+    },
+    {
+      "geography": "新竹市",
+      "count": 885,
+      "weighted_score": 8609
+    },
+    {
+      "geography": "宜蘭縣",
+      "count": 852,
+      "weighted_score": 7808
+    },
+    {
+      "geography": "南投縣",
+      "count": 756,
+      "weighted_score": 7561
+    },
+    {
+      "geography": "基隆市",
+      "count": 739,
+      "weighted_score": 7273
+    },
+    {
+      "geography": "嘉義縣",
+      "count": 692,
+      "weighted_score": 6968
+    },
+    {
+      "geography": "嘉義市",
+      "count": 541,
+      "weighted_score": 5521
+    },
+    {
+      "geography": "花蓮縣",
+      "count": 579,
+      "weighted_score": 5492
+    },
+    {
+      "geography": "臺東縣",
+      "count": 399,
+      "weighted_score": 4298
+    },
+    {
+      "geography": "澎湖縣",
+      "count": 153,
+      "weighted_score": 1528
+    },
+    {
+      "geography": "金門縣",
+      "count": 115,
+      "weighted_score": 1478
+    },
+    {
+      "geography": "連江縣",
+      "count": 5,
+      "weighted_score": 37
+    }
+  ],
+  "region_metric": "詐欺背信",
+  "region_counts": [
+    {
+      "geography": "新北市",
+      "count": 2981
+    },
+    {
+      "geography": "臺中市",
+      "count": 2232
+    },
+    {
+      "geography": "桃園市",
+      "count": 1801
+    },
+    {
+      "geography": "高雄市",
+      "count": 1724
+    },
+    {
+      "geography": "臺北市",
+      "count": 1557
+    },
+    {
+      "geography": "臺南市",
+      "count": 1297
+    },
+    {
+      "geography": "彰化縣",
+      "count": 690
+    },
+    {
+      "geography": "屏東縣",
+      "count": 457
+    },
+    {
+      "geography": "新竹縣",
+      "count": 435
+    },
+    {
+      "geography": "新竹市",
+      "count": 390
+    },
+    {
+      "geography": "雲林縣",
+      "count": 338
+    },
+    {
+      "geography": "苗栗縣",
+      "count": 330
+    },
+    {
+      "geography": "南投縣",
+      "count": 257
+    },
+    {
+      "geography": "嘉義縣",
+      "count": 249
+    },
+    {
+      "geography": "基隆市",
+      "count": 241
+    },
+    {
+      "geography": "宜蘭縣",
+      "count": 241
+    },
+    {
+      "geography": "花蓮縣",
+      "count": 187
+    },
+    {
+      "geography": "嘉義市",
+      "count": 169
+    },
+    {
+      "geography": "臺東縣",
+      "count": 96
+    },
+    {
+      "geography": "澎湖縣",
+      "count": 45
+    },
+    {
+      "geography": "金門縣",
+      "count": 30
+    },
+    {
+      "geography": "連江縣",
+      "count": 4
+    }
+  ],
+  "quality": {
+    "raw_rows": 1248,
+    "selected_rows": 52,
+    "duplicate_rows_dropped": 0,
+    "metric_count": 52,
+    "matched_metric_totals": 52,
+    "invalid_cells": 0,
+    "dash_zero_cells": 0
+  },
+  "summary": {
+    "text": "2026 年 3 月受（處）理刑事案件共 52,098 件，加權治安指數為 421,522；詐欺背信 15,768 件、傷害 2,385 件、妨害性自主罪 467 件。",
+    "method": "MOI dataset 9603 SQL descriptive statistics with severity weighting"
+  }
+}

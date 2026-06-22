@@ -1,0 +1,31 @@
+{
+  "jid": "MLDM,115,聲保,62,20260616,1",
+  "source_month": "202606",
+  "court_folder": "MLDM",
+  "case_domain": "criminal",
+  "jyear": "115",
+  "jcase": "聲保",
+  "jno": "62",
+  "jdate": "2026-06-16",
+  "jtitle": "假釋中付保護管束",
+  "jpdf": "",
+  "text_length": 0,
+  "excerpt": "",
+  "category_flags": {
+    "fraud": false,
+    "money_laundering": false,
+    "sexual_offense": false,
+    "injury": false,
+    "traffic_injury": false,
+    "public_integrity": false,
+    "election_law": false
+  },
+  "matched_keywords": [],
+  "summary": {
+    "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
+    "provider": "extractive_rule_v1",
+    "confidence": "insufficient",
+    "needs_manual_review": true,
+    "evidence_snippets": []
+  }
+}

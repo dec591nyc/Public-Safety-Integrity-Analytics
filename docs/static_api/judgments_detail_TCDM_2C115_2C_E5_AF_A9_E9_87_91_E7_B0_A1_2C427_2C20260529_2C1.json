@@ -1,0 +1,33 @@
+{
+  "jid": "TCDM,115,審金簡,427,20260529,1",
+  "source_month": "202605",
+  "court_folder": "TCDM",
+  "case_domain": "criminal",
+  "jyear": "115",
+  "jcase": "審金簡",
+  "jno": "427",
+  "jdate": "2026-05-29",
+  "jtitle": "詐欺等",
+  "jpdf": "",
+  "text_length": 0,
+  "excerpt": "",
+  "category_flags": {
+    "fraud": true,
+    "money_laundering": false,
+    "sexual_offense": false,
+    "injury": false,
+    "traffic_injury": false,
+    "public_integrity": false,
+    "election_law": false
+  },
+  "matched_keywords": [
+    "fraud:詐欺"
+  ],
+  "summary": {
+    "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
+    "provider": "extractive_rule_v1",
+    "confidence": "insufficient",
+    "needs_manual_review": true,
+    "evidence_snippets": []
+  }
+}
