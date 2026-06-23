@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="台灣公共安全官方統計與輿論數據對照平台" />
-  <title>公共安全統計與輿情分析平台</title>
+  <title>JusticeWatch: Public Safety & Integrity Tracker</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -16,8 +16,8 @@
       <div class="brand-line">
         <span class="brand-mark" aria-hidden="true">法</span>
         <div>
-          <p class="eyebrow">PUBLIC SAFETY INTEGRITY ANALYTICS</p>
-          <h1>公共安全統計與輿情分析平台</h1>
+          <p class="eyebrow">JUSTICEWATCH: PUBLIC SAFETY & INTEGRITY TRACKER</p>
+          <h1>JusticeWatch: 公共安全與輿情分析平台</h1>
         </div>
       </div>
       <p class="subtitle">以官方統計觀察犯罪類別與地區分布，並逐步加入輿論聲量的數據對照。</p>
@@ -101,6 +101,46 @@
             <span class="chart-type">互動分類</span>
           </div>
           <div id="iccs-container" class="iccs-list"></div>
+        </article>
+      </section>
+
+      <!-- Defendant Demographics Profile Section -->
+      <section class="dashboard-grid overview-demographics" style="margin-top: 14px;">
+        <article class="panel panel-wide">
+          <div class="panel-head">
+            <div>
+              <p class="section-kicker">DEFENDANT DEMOGRAPHIC PROFILE</p>
+              <h3>司法裁判被告人口特徵分析</h3>
+              <p>分析起訴與判決書中特徵化提取的性別、年齡、職業、教育程度、收入水準及出生地分佈。</p>
+            </div>
+            <span class="chart-type">特徵統計</span>
+          </div>
+          <div class="demographics-grid">
+            <div class="demo-card">
+              <h4>被告性別比例</h4>
+              <div id="demographics-gender" class="demo-chart-container"></div>
+            </div>
+            <div class="demo-card">
+              <h4>被告年齡分布</h4>
+              <div id="demographics-age" class="demo-chart-container"></div>
+            </div>
+            <div class="demo-card">
+              <h4>被告前八大職業</h4>
+              <div id="demographics-occupation" class="demo-chart-container"></div>
+            </div>
+            <div class="demo-card">
+              <h4>被告教育程度</h4>
+              <div id="demographics-education" class="demo-chart-container"></div>
+            </div>
+            <div class="demo-card">
+              <h4>被告收入水準</h4>
+              <div id="demographics-income" class="demo-chart-container"></div>
+            </div>
+            <div class="demo-card">
+              <h4>被告出生地/居住地縣市</h4>
+              <div id="demographics-city" class="demo-chart-container"></div>
+            </div>
+          </div>
         </article>
       </section>
 

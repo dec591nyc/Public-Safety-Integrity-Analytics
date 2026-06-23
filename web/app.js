@@ -387,6 +387,150 @@ function renderQualityTable(quality) {
   </tr>`).join('');
 }
 
+function renderCategoryBars(containerId, dict, fillColor) {
+  const container = el(containerId);
+  if (!container) return;
+  
+  const entries = Object.entries(dict || {})
+    .map(([key, value]) => ({ key, value: Number(value) }))
+    .sort((a, b) => b.value - a.value);
+    
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">無資料</p></div>';
+    return;
+  }
+  
+  const sum = entries.reduce((acc, curr) => acc + curr.value, 0);
+  const max = Math.max(...entries.map(e => e.value), 1);
+  
+  const translateKey = (k) => {
+    if (k === 'Unknown' || k === 'unknown' || k === 'null' || !k) return '未詳／未知';
+    if (k === 'Under 20') return '20歲以下';
+    if (k === '60+') return '60歲以上';
+    return k;
+  };
+
+  container.innerHTML = entries.map(entry => {
+    const percentOfTotal = sum > 0 ? ((entry.value / sum) * 100).toFixed(1) : '0.0';
+    const fillPercent = max > 0 ? (entry.value / max) * 100 : 0;
+    return `
+      <div class="demo-bar-row">
+        <div class="demo-bar-info">
+          <span class="demo-bar-label" title="${escapeHtml(entry.key)}">${escapeHtml(translateKey(entry.key))}</span>
+          <span class="demo-bar-value">${fmt.format(entry.value)} 筆 (${percentOfTotal}%)</span>
+        </div>
+        <div class="demo-bar-track">
+          <div class="demo-bar-fill" style="width: ${Math.max(fillPercent, 1)}%; background: ${fillColor}"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderAgeBars(containerId, ageData, fillColor) {
+  const container = el(containerId);
+  if (!container) return;
+  
+  const order = ['Under 20', '20-29', '30-39', '40-49', '50-59', '60+', 'Unknown'];
+  const entries = order.map(key => ({
+    key,
+    value: Number(ageData?.[key] || 0)
+  })).filter(e => e.value > 0);
+  
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">無資料</p></div>';
+    return;
+  }
+  
+  const sum = entries.reduce((acc, curr) => acc + curr.value, 0);
+  const max = Math.max(...entries.map(e => e.value), 1);
+  
+  const translateKey = (k) => {
+    if (k === 'Unknown') return '未詳／未知';
+    if (k === 'Under 20') return '20歲以下';
+    if (k === '60+') return '60歲以上';
+    return k + ' 歲';
+  };
+
+  container.innerHTML = entries.map(entry => {
+    const percentOfTotal = sum > 0 ? ((entry.value / sum) * 100).toFixed(1) : '0.0';
+    const fillPercent = max > 0 ? (entry.value / max) * 100 : 0;
+    return `
+      <div class="demo-bar-row">
+        <div class="demo-bar-info">
+          <span class="demo-bar-label">${escapeHtml(translateKey(entry.key))}</span>
+          <span class="demo-bar-value">${fmt.format(entry.value)} 筆 (${percentOfTotal}%)</span>
+        </div>
+        <div class="demo-bar-track">
+          <div class="demo-bar-fill" style="width: ${Math.max(fillPercent, 1)}%; background: ${fillColor}"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderGenderBar(containerId, genderData) {
+  const container = el(containerId);
+  if (!container) return;
+  
+  const male = Number(genderData?.Male || genderData?.male || genderData?.['男'] || 0);
+  const female = Number(genderData?.Female || genderData?.female || genderData?.['女'] || 0);
+  const unknown = Number(genderData?.Unknown || genderData?.unknown || genderData?.['Unknown'] || genderData?.['unknown'] || 0);
+  const total = male + female + unknown;
+  
+  if (total === 0) {
+    container.innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">無資料</p></div>';
+    return;
+  }
+  
+  const pMale = ((male / total) * 100).toFixed(1);
+  const pFemale = ((female / total) * 100).toFixed(1);
+  const pUnknown = ((unknown / total) * 100).toFixed(1);
+  
+  container.innerHTML = `
+    <div class="gender-bar-wrapper">
+      <div class="gender-bar">
+        ${male > 0 ? `<div class="gender-segment male" style="width: ${pMale}%" title="男性: ${male} 筆 (${pMale}%)">${pMale}%</div>` : ''}
+        ${female > 0 ? `<div class="gender-segment female" style="width: ${pFemale}%" title="女性: ${female} 筆 (${pFemale}%)">${pFemale}%</div>` : ''}
+        ${unknown > 0 ? `<div class="gender-segment unknown" style="width: ${pUnknown}%" title="未知: ${unknown} 筆 (${pUnknown}%)">${pUnknown}%</div>` : ''}
+      </div>
+      <div class="gender-legend">
+        <div class="gender-legend-item">
+          <span class="gender-dot male"></span>
+          <span>男: <strong>${fmt.format(male)}</strong> 筆</span>
+        </div>
+        <div class="gender-legend-item">
+          <span class="gender-dot female"></span>
+          <span>女: <strong>${fmt.format(female)}</strong> 筆</span>
+        </div>
+        <div class="gender-legend-item">
+          <span class="gender-dot unknown"></span>
+          <span>未知: <strong>${fmt.format(unknown)}</strong> 筆</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderDemographics(demographics) {
+  if (!demographics) {
+    el('demographics-gender').innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">暫無資料</p></div>';
+    el('demographics-age').innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">暫無資料</p></div>';
+    el('demographics-occupation').innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">暫無資料</p></div>';
+    el('demographics-education').innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">暫無資料</p></div>';
+    el('demographics-income').innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">暫無資料</p></div>';
+    el('demographics-city').innerHTML = '<div class="chart-empty" style="min-height: 80px; padding: 10px;"><p style="font-size:12px; margin:0;">暫無資料</p></div>';
+    return;
+  }
+  
+  renderGenderBar('demographics-gender', demographics.gender);
+  renderAgeBars('demographics-age', demographics.age, 'linear-gradient(90deg, #0284c7, #0369a1)');
+  renderCategoryBars('demographics-occupation', demographics.occupation, 'linear-gradient(90deg, #818cf8, #4f46e5)');
+  renderCategoryBars('demographics-education', demographics.education, 'linear-gradient(90deg, #34d399, #059669)');
+  renderCategoryBars('demographics-income', demographics.income_level, 'linear-gradient(90deg, #fbbf24, #d97706)');
+  renderCategoryBars('demographics-city', demographics.birth_city, 'linear-gradient(90deg, #94a3b8, #475569)');
+}
+
 async function loadSummary() {
   state.summary = await getJson(`/api/official-summary?month=${encodeURIComponent(currentMonth())}`);
   el('header-record-count').textContent = `${formatMonth(state.summary.source_month)} · ${fmt.format(state.summary.total_cases)} 件`;
@@ -398,6 +542,7 @@ async function loadSummary() {
   renderIccsClassification(state.summary.iccs_breakdown || []);
   renderRegionBars(state.summary.region_weighted_counts || []);
   renderQualityTable(state.summary.quality || {});
+  renderDemographics(state.summary.demographics);
   renderCrossObservation();
 }
 
@@ -537,12 +682,24 @@ function renderCases(data) {
       .map(keyword => `<span class="keyword">${escapeHtml(keyword)}</span>`).join('');
     const pdf = safeUrl(item.jpdf);
     const evidence = (item.summary?.evidence_snippets || []).map(snippet => `<li>${escapeHtml(snippet)}</li>`).join('');
+    
+    // Demographic details string
+    const demoItems = [];
+    if (item.gender) demoItems.push(`性別: ${item.gender === 'Male' ? '男' : item.gender === 'Female' ? '女' : '未詳'}`);
+    if (item.age) demoItems.push(`年齡: ${item.age}歲`);
+    if (item.occupation && item.occupation !== 'Unknown') demoItems.push(`職業: ${item.occupation}`);
+    if (item.education && item.education !== 'Unknown') demoItems.push(`教育: ${item.education}`);
+    if (item.income_level && item.income_level !== 'Unknown') demoItems.push(`收入: ${item.income_level}`);
+    if (item.birth_city && item.birth_city !== 'Unknown') demoItems.push(`出生地: ${item.birth_city}`);
+    const demoText = demoItems.length > 0 ? `<p class="case-meta" style="margin-top: 4px; color: var(--primary); font-weight: 550;">被告特徵：${escapeHtml(demoItems.join(' · '))}</p>` : '';
+    
     return `<article class="case-card">
       <div class="case-record">
         <div class="case-topline">
           <div>
             <h3>${escapeHtml(item.jtitle || '未標示案由')}</h3>
             <p class="case-meta">${escapeHtml(item.jdate || '日期未載')} · ${escapeHtml(item.court_folder || '法院未載')} · ${escapeHtml(domainLabels[item.case_domain] || item.case_domain || '')}</p>
+            ${demoText}
           </div>
           <span class="jid">${escapeHtml(item.jid)}</span>
         </div>

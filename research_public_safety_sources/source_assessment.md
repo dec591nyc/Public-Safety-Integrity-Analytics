@@ -1,82 +1,63 @@
-# Public Safety Integrity Data Source Assessment
+# Public Safety & Integrity Data Source Assessment
 
-Date: 2026-06-19
+Date: 2026-06-23
 
 ## Summary
 
-Official open-data sources are preferable to page scraping for the first version. Crime statistics and election/party data can be acquired without accounts or API keys. Court judgment bulk data is available as monthly RAR files on the Judicial Yuan open-data platform, but the judgment datasets are marked as member-limited and should be treated as requiring an account/session workflow.
+The project prioritizes targeted, dynamic web scraping and concise query-based daily updates over heavy bulk dataset warehousing. By scraping the Judicial Yuan public search system for recent court judgments, we extract core public demographics (Age, Gender, Income, Birth-City, Occupation, Education-Level). We also prepare for a phased integration with the Central Election Commission (CEC) database to cross-reference case defendants for political/party backgrounds as an advanced future feature.
 
-## Tested Sources
+## Primary Sources
 
-### 1. Ministry of the Interior / National Police Crime Statistics
+### 1. Judicial Yuan Court Judgments (Scraping & Targeted Ingestion)
 
-- Source: Government Data Open Platform dataset `9603`, "受(處)理刑事案件發生件數-按機關別分"
-- Detail API: `https://data.gov.tw/api/front/dataset/detail?nid=9603`
-- Data URL: `https://statis.moi.gov.tw/micst/webMain.aspx?...funid=c0620101...ym=11101&ymt=11112`
-- Access: no account, no API key observed
-- Format: UTF-8 CSV
-- Useful columns: total, theft, injury, fraud/breach of trust, offenses against sexual autonomy, corruption, malfeasance, election/recall-law violation, and other criminal categories
-- Automation fit: high. n8n can call HTTP Request and parse CSV directly.
+- **Search Portal:** `https://judgment.judicial.gov.tw/`
+- **Open Data Portal:** `https://opendata.judicial.gov.tw/`
+- **Methodology:** Scraping recent daily judgments via HTTP queries/Playwright. By querying recent dates and specific crime types (e.g., fraud, violent crimes, or political corruption/bribery), we download only the HTML/metadata of relevant judgments instead of multi-gigabyte monthly RAR archives.
+- **Demographic Extraction Columns:**
+  - **Age (年齡):** Extracted using regex patterns from the defendant description header (e.g., `民國XX年生` or `XX歲`).
+  - **Gender (性別):** Extracted from keywords like `男` or `女`.
+  - **Income (收入/經濟狀況):** Extracted from sentencing factors mentioning financial conditions (e.g., `家庭經濟狀況勉可維持`, `家庭生活狀況貧寒`).
+  - **Birth-City (出生地/戶籍地):** Parsed from defendant's registered address details or birth notes.
+  - **Occupation (職業):** Extracted from headers or context details (e.g., `職業為臨時工`, `從事餐飲業`).
+  - **Education-Level (教育程度):** Extracted from sentencing factors regarding education (e.g., `國中畢業`, `大學肄業`).
+- **Automation Fit:** High for daily, lightweight incremental routine scrapes. Low-cost and suitable for local/free-tier hosting.
 
-Sample row fetched:
+### 2. Central Election Commission (CEC) Election Database (Advanced Phase)
 
-```csv
-"刑事案件發生件數","總計","竊盜","贓物","賭博","傷害","詐欺背信","妨害自由","殺人","駕駛過失","妨害家庭及婚姻","妨害風化","妨害性自主罪",...
-"111年/ 機關別總計",265518,37670,67,3135,13972,30876,14438,254,21172,349,849,4520,...
+- **Portal:** `https://db.cec.gov.tw/ElecTable`
+- **Data Formats:** Static JSON databases of political parties, candidates, and elected candidates (e.g., `ELC_L0.json`).
+- **Integration Objective:** Once the defendant name is parsed, check if it matches a candidate or elected officer name in the CEC database within the same constituency. This allows automatic party-affiliation labeling (e.g., KMT, DPP, TPP, Independent) to trace the political backgrounds of crimes.
+- **Automation Fit:** High. The dataset is static/slow-changing, so we only need to sync candidate lists after major elections.
+
+### 3. Ministry of the Interior / National Police Crime Statistics (Secondary Context)
+
+- **Source:** Government Data Open Platform dataset `9603`, "受(處)理刑事案件發生件數-按機關別分"
+- **Access:** No account required, CSV format.
+- **Use Case:** Used only as a secondary context to compare official incident counts against actual court judgment statistics and public attention, highlighting coverage/attention gaps.
+
+## Scraping vs Bulk Download
+
+| Metric | Targeted Web Scraping (Current) | Bulk RAR Download (Legacy) |
+| --- | --- | --- |
+| **Storage Overhead** | Very Low (< 50 MB total SQLite DB) | High (> 7 GiB/year uncompressed JSON) |
+| **Credentials Required** | None (public web search) | Yes (portal account for member datasets) |
+| **Processing Delay** | Near Real-time (Daily routine checks) | Monthly (RARs released weeks late) |
+| **Scope of Data** | Concise (Only matched cases & metrics) | Massive (All civil, criminal, administrative documents) |
+
+## Recommended Daily Routine Ingestion Flow
+
+```mermaid
+flowchart TD
+    A[Daily Cron Trigger] --> B[Scrape Judicial Yuan Public Index]
+    B -->|Filter: Recent Judgments| C[Extract Defendant Profile Headers]
+    C -->|Regex Rules| D[Identify Age, Gender, Occupation, Education]
+    D -->|Optional Match| E[CEC Database: Cross-Reference Political Candidates]
+    E --> F[Calculate Public Opinion Sentiment]
+    F --> G[Save Concise Stats to local SQLite / Supabase]
 ```
 
-### 2. Police Thematic PDF Reports
+## Key Limitations & Guardrails
 
-- Example source: Government Data Open Platform dataset `176659`, "114年第2季傷害案件"
-- File URL: `https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/5541BB10-EBEE-40F4-A647-61599BEA0A9B/resource/B85219A3-DC0C-4407-86D6-6898BAD7B6AE/download`
-- Access: no account observed
-- Format: PDF
-- Automation fit: medium. Useful for reports and narrative context, but less ideal than CSV for dashboards.
-
-### 3. Judicial Yuan Court Judgments
-
-- Platform: `https://opendata.judicial.gov.tw/`
-- Dataset search API: `https://opendata.judicial.gov.tw/api/Datasets?keyword=裁判書&page=1&pageSize=10`
-- File download pattern: `https://opendata.judicial.gov.tw/api/FilesetLists/{fileSetId}/file`
-- Access: judgment bulk datasets are marked `categoryDataset = B`; frontend hides file links unless logged in. A no-session GET test on a judgment RAR file returned HTTP 500 JSON.
-- Format: monthly RAR files; fields shown by API include `ID`, `JYEAR`, `JCASE`, `JNO`, `JDATE`, `JTITLE`, `JFULL`, `JPDF`.
-- Automation fit: medium if account/session handling is acceptable; low if no login is allowed.
-
-### 4. Central Election Commission Election Database
-
-- Platform: `https://db.cec.gov.tw/ElecTable`
-- Static list example: `https://db.cec.gov.tw/static/elections/list/ELC_L0.json`
-- Party distribution example: `https://db.cec.gov.tw/static/elections/data/summaries/L0/e06c04a91fcb0bb3f9a563fe93395ad5.json`
-- Access: no account, no API key observed
-- Format: static JSON
-- Automation fit: high. Good source for party/candidate/elected-office enrichment.
-
-Sample JSON fetched:
-
-```json
-[
-  {"party_code":16,"party_name":"民主進步黨","distribution_num":36},
-  {"party_code":1,"party_name":"中國國民黨","distribution_num":36},
-  {"party_code":999,"party_name":"無黨籍及未經政黨推薦","distribution_num":1}
-]
-```
-
-## Scraping vs Open Data
-
-Use official open-data endpoints first. They are more stable, structured, and easier to schedule in n8n. Browser scraping should be reserved for gaps such as individual news events, prosecutor press releases, or judicial search pages when bulk court data access is unavailable.
-
-## Recommended n8n Flow
-
-1. Cron Trigger
-2. HTTP Request: fetch crime CSV from MOI statistics endpoint
-3. Spreadsheet File or Code node: parse UTF-8 CSV
-4. Normalize categories: `詐欺背信`, `妨害性自主罪`, `傷害`, `貪污`, `瀆職`, `違反選罷法`
-5. HTTP Request: fetch CEC JSON party/candidate reference data
-6. Optional HTTP Request: Judicial Yuan dataset list and file download
-7. If Judicial Yuan RAR is used: binary download -> external unzip/unrar step -> parse CSV/XML/JSON payload
-8. Store in PostgreSQL/Supabase or local DuckDB
-9. Dashboard/API refresh
-
-## Key Limitation
-
-Official crime statistics are aggregate counts, not individual offender identities. Analysis of "officials or party members involved in fraud/illegal conduct" requires a separate entity-resolution layer using court judgments, prosecutor press releases, Control Yuan records, election candidate lists, and possibly manual review. This should be presented as evidence-linked case analysis, not as a simple official aggregate statistic.
+1. **Name Collision in CEC Matching:** Common names will match multiple candidates. We must implement a heuristic matching algorithm (checking region, county, age, and case context) and mark high-confidence political matches clearly.
+2. **Text Variability:** Defendant profiles in judgments are written in natural Chinese text. Regular expressions must be robust and degrade gracefully (setting values to `unknown`) when a demographic attribute cannot be parsed with certainty.
+3. **Scraping Limits:** Respect the Judicial Yuan server rules, implement crawl delays (throttling), and avoid aggressive multi-threaded hits.\n

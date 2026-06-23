@@ -14,6 +14,12 @@ CREATE TABLE IF NOT EXISTS judgments (
   excerpt TEXT,
   category_flags TEXT NOT NULL DEFAULT '{}',
   matched_keywords TEXT NOT NULL DEFAULT '[]',
+  age INTEGER,
+  gender TEXT,
+  occupation TEXT,
+  education TEXT,
+  income_level TEXT,
+  birth_city TEXT,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

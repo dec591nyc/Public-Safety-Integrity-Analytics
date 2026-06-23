@@ -433,6 +433,58 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             ).fetchall()
             region_counts = [{"geography": r["geography"], "count": r["raw_value"]} for r in region_rows]
 
+            # Demographics aggregations
+            where_clause = "WHERE source_month = ?"
+            params_val = [month]
+            demographics = {
+                "gender": {},
+                "age": {},
+                "occupation": {},
+                "education": {},
+                "income_level": {},
+                "birth_city": {}
+            }
+            
+            # Gender counts
+            for r in conn.execute(f"SELECT COALESCE(gender, 'Unknown') as g, COUNT(*) FROM judgments {where_clause} GROUP BY g", params_val).fetchall():
+                demographics["gender"][r[0]] = r[1]
+                
+            # Age group counts
+            age_sql = f"""
+            SELECT 
+              CASE 
+                WHEN age IS NULL THEN 'Unknown'
+                WHEN age < 20 THEN 'Under 20'
+                WHEN age >= 20 AND age < 30 THEN '20-29'
+                WHEN age >= 30 AND age < 40 THEN '30-39'
+                WHEN age >= 40 AND age < 50 THEN '40-49'
+                WHEN age >= 50 AND age < 60 THEN '50-59'
+                ELSE '60+'
+              END as age_group,
+              COUNT(*)
+            FROM judgments
+            {where_clause}
+            GROUP BY age_group
+            """
+            for r in conn.execute(age_sql, params_val).fetchall():
+                demographics["age"][r[0]] = r[1]
+                
+            # Occupation counts
+            for r in conn.execute(f"SELECT COALESCE(occupation, 'Unknown') as occ, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY occ ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+                demographics["occupation"][r[0]] = r[1]
+                
+            # Education counts
+            for r in conn.execute(f"SELECT COALESCE(education, 'Unknown') as edu, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY edu ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+                demographics["education"][r[0]] = r[1]
+                
+            # Income level counts
+            for r in conn.execute(f"SELECT COALESCE(income_level, 'Unknown') as inc, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY inc ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+                demographics["income_level"][r[0]] = r[1]
+                
+            # Birth city counts
+            for r in conn.execute(f"SELECT COALESCE(birth_city, 'Unknown') as city, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY city ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+                demographics["birth_city"][r[0]] = r[1]
+
             # Get quality checks
             raw_rows_count = len(current_rows)
             metric_count_val = conn.execute("SELECT COUNT(DISTINCT metric) FROM official_statistics WHERE source_month = ?", [month]).fetchone()[0]
@@ -464,6 +516,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 "region_weighted_counts": region_weighted_counts,
                 "region_metric": selected_metric,
                 "region_counts": region_counts,
+                "demographics": demographics,
                 "quality": {
                     "raw_rows": raw_rows_count,
                     "selected_rows": raw_rows_count // 24 if raw_rows_count > 0 else 0,
@@ -536,6 +589,57 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             """,
             params,
         ).fetchall())
+        
+        # Demographics aggregations
+        demographics = {
+            "gender": {},
+            "age": {},
+            "occupation": {},
+            "education": {},
+            "income_level": {},
+            "birth_city": {}
+        }
+        
+        # Gender counts
+        for r in conn.execute(f"SELECT COALESCE(gender, 'Unknown') as g, COUNT(*) FROM judgments {where} GROUP BY g", params).fetchall():
+            demographics["gender"][r[0]] = r[1]
+            
+        # Age group counts
+        age_sql = f"""
+        SELECT 
+          CASE 
+            WHEN age IS NULL THEN 'Unknown'
+            WHEN age < 20 THEN 'Under 20'
+            WHEN age >= 20 AND age < 30 THEN '20-29'
+            WHEN age >= 30 AND age < 40 THEN '30-39'
+            WHEN age >= 40 AND age < 50 THEN '40-49'
+            WHEN age >= 50 AND age < 60 THEN '50-59'
+            ELSE '60+'
+          END as age_group,
+          COUNT(*)
+        FROM judgments
+        {where}
+        GROUP BY age_group
+        """
+        for r in conn.execute(age_sql, params).fetchall():
+            demographics["age"][r[0]] = r[1]
+            
+        # Occupation counts
+        for r in conn.execute(f"SELECT COALESCE(occupation, 'Unknown') as occ, COUNT(*) as cnt FROM judgments {where} GROUP BY occ ORDER BY cnt DESC LIMIT 8", params).fetchall():
+            demographics["occupation"][r[0]] = r[1]
+            
+        # Education counts
+        for r in conn.execute(f"SELECT COALESCE(education, 'Unknown') as edu, COUNT(*) as cnt FROM judgments {where} GROUP BY edu ORDER BY cnt DESC LIMIT 8", params).fetchall():
+            demographics["education"][r[0]] = r[1]
+            
+        # Income level counts
+        for r in conn.execute(f"SELECT COALESCE(income_level, 'Unknown') as inc, COUNT(*) as cnt FROM judgments {where} GROUP BY inc ORDER BY cnt DESC LIMIT 8", params).fetchall():
+            demographics["income_level"][r[0]] = r[1]
+            
+        # Birth city counts
+        for r in conn.execute(f"SELECT COALESCE(birth_city, 'Unknown') as city, COUNT(*) as cnt FROM judgments {where} GROUP BY city ORDER BY cnt DESC LIMIT 8", params).fetchall():
+            demographics["birth_city"][r[0]] = r[1]
+
         conn.close()
         self.send_json({
             "source_month": month,
@@ -545,6 +649,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             "monthly_counts": monthly_counts,
             "top_courts": top_courts,
             "top_titles": top_titles,
+            "demographics": demographics,
             "summary": aggregate_summary(month, total, by_domain, category_counts),
         })
 
@@ -675,7 +780,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             f"""
             SELECT jid, source_month, court_folder, case_domain, jyear, jcase, jno,
                    jdate, jtitle, jpdf, text_length, excerpt, category_flags,
-                   matched_keywords
+                   matched_keywords, age, gender, occupation, education, income_level, birth_city
             FROM judgments
             {where}
             ORDER BY jdate DESC, jid ASC
@@ -708,7 +813,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             """
             SELECT jid, source_month, court_folder, case_domain, file_path, jyear,
                    jcase, jno, jdate, jtitle, jpdf, text_length, excerpt,
-                   category_flags, matched_keywords
+                   category_flags, matched_keywords, age, gender, occupation, education, income_level, birth_city
             FROM judgments
             WHERE jid = ?
             """,

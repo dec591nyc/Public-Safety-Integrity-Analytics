@@ -16,6 +16,12 @@ CREATE TABLE IF NOT EXISTS judgments (
   excerpt TEXT,
   category_flags JSONB NOT NULL DEFAULT '{}'::jsonb,
   matched_keywords JSONB NOT NULL DEFAULT '[]'::jsonb,
+  age INTEGER,
+  gender TEXT,
+  occupation TEXT,
+  education TEXT,
+  income_level TEXT,
+  birth_city TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

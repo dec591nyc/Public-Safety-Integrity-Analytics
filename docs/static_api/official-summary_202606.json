@@ -3,57 +3,9 @@
   "source_url": "https://statis.moi.gov.tw/micst/webMain.aspx",
   "dataset_id": "9603",
   "total_cases": 51381,
-  "total_change_pct": 0.0,
+  "total_change_pct": null,
   "safety_index": 417585,
   "monthly_counts": [
-    {
-      "month": "202506",
-      "count": 53214
-    },
-    {
-      "month": "202507",
-      "count": 53492
-    },
-    {
-      "month": "202508",
-      "count": 51525
-    },
-    {
-      "month": "202509",
-      "count": 50329
-    },
-    {
-      "month": "202510",
-      "count": 51741
-    },
-    {
-      "month": "202511",
-      "count": 48671
-    },
-    {
-      "month": "202512",
-      "count": 50112
-    },
-    {
-      "month": "202601",
-      "count": 50842
-    },
-    {
-      "month": "202602",
-      "count": 36573
-    },
-    {
-      "month": "202603",
-      "count": 52098
-    },
-    {
-      "month": "202604",
-      "count": 51381
-    },
-    {
-      "month": "202605",
-      "count": 51381
-    },
     {
       "month": "202606",
       "count": 51381
@@ -64,31 +16,31 @@
       "category": "fraud",
       "label": "詐欺背信",
       "count": 15126,
-      "change_pct": 0.0
+      "change_pct": null
     },
     {
       "category": "injury",
       "label": "傷害",
       "count": 2317,
-      "change_pct": 0.0
+      "change_pct": null
     },
     {
       "category": "sexual_offense",
       "label": "妨害性自主罪",
       "count": 460,
-      "change_pct": 0.0
+      "change_pct": null
     },
     {
       "category": "public_integrity",
       "label": "貪污／瀆職",
       "count": 17,
-      "change_pct": 0.0
+      "change_pct": null
     },
     {
       "category": "election_law",
       "label": "違反選罷法",
       "count": 9,
-      "change_pct": 0.0
+      "change_pct": null
     }
   ],
   "iccs_breakdown": [
@@ -582,6 +534,31 @@
       "count": 8
     }
   ],
+  "demographics": {
+    "gender": {
+      "男": 10
+    },
+    "age": {
+      "20-29": 5,
+      "30-39": 5
+    },
+    "occupation": {
+      "餐飲業": 5,
+      "臨時工": 5
+    },
+    "education": {
+      "大學畢業之智識程度": 5,
+      "國中畢業之智識程度": 5
+    },
+    "income_level": {
+      "貧寒": 5,
+      "勉可維持": 5
+    },
+    "birth_city": {
+      "新北市": 5,
+      "台北市": 5
+    }
+  },
   "quality": {
     "raw_rows": 1248,
     "selected_rows": 52,

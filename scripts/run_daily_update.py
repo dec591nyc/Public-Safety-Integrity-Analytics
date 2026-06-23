@@ -12,11 +12,15 @@ import ssl
 import sys
 import uuid
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+
+# Add current scripts directory to sys.path to allow importing scrape_judicial_data
+sys.path.append(str(Path(__file__).resolve().parent))
+from scrape_judicial_data import scrape_and_parse
 
 # Base Configurations
 DATASET_ID = "9603"
@@ -100,6 +104,10 @@ def init_db(conn: Any, db_type: str, db_path: Path) -> None:
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.execute("DROP TABLE IF EXISTS monthly_statistics")
         cursor.execute("DROP TABLE IF EXISTS public_opinions")
+        cursor.execute("DROP TABLE IF EXISTS judgments")
+        cursor.execute("DROP TABLE IF EXISTS judgment_texts")
+        cursor.execute("DROP TABLE IF EXISTS opinion_posts")
+        cursor.execute("DROP TABLE IF EXISTS official_statistics")
         cursor.execute("DROP TABLE IF EXISTS crime_categories")
         cursor.executescript(schema_path.read_text(encoding="utf-8"))
     else:
@@ -375,6 +383,7 @@ def main() -> None:
         db_type = "postgres"
     else:
         print(f"Using SQLite Database ({args.db})...")
+        args.db.parent.mkdir(parents=True, exist_ok=True)
         conn = sqlite3.connect(args.db)
         conn.row_factory = sqlite3.Row
         db_type = "sqlite"
@@ -401,10 +410,28 @@ def main() -> None:
         
         synced_stats = 0
         synced_opinions = 0
+        synced_judgments = 0
         for m in months:
             print(f"\nProcessing month {m}...")
             stats_pts = download_and_ingest_moi(conn, db_type, m)
             synced_stats += stats_pts
+            
+            # Scrape judgments for this month
+            year = int(m[:4])
+            month = int(m[4:])
+            next_mo = month + 1
+            next_yr = year
+            if next_mo > 12:
+                next_mo = 1
+                next_yr += 1
+            last_day = (datetime(next_yr, next_mo, 1) - timedelta(days=1)).day
+            start_date = f"{year}-{month:02d}-01"
+            end_date = f"{year}-{month:02d}-{last_day:02d}"
+            
+            print(f"Scraping judgments for {m} ({start_date} to {end_date})...")
+            # Limit to 10 to keep updates concise and fast
+            judgments_cnt = scrape_and_parse(conn, db_type, start_date, end_date, limit=10)
+            synced_judgments += judgments_cnt
             
             if stats_pts > 0:
                 opinion_pts = generate_mock_opinions(conn, db_type, m)
@@ -413,13 +440,15 @@ def main() -> None:
         print(f"\nSummary of Run:")
         print(f"  Total Statistics Points Synced: {synced_stats}")
         print(f"  Total Opinion Posts Synced:    {synced_opinions}")
+        print(f"  Total Judgments Scraped:        {synced_judgments}")
         
         result = {
             "status": "success",
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "months_processed": months,
             "statistics_count": synced_stats,
-            "opinions_count": synced_opinions
+            "opinions_count": synced_opinions,
+            "judgments_count": synced_judgments
         }
         print(json.dumps(result, ensure_ascii=False, indent=2))
     finally:

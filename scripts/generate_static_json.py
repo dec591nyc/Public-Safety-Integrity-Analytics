@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """Generate static JSON files from SQLite database to enable no-server Live Demo."""
 
 import json
@@ -131,7 +132,7 @@ def main():
     )
     months_rows = [{"source_month": r["source_month"], "count": r["count"]} for r in cursor.fetchall()]
     if not months_rows:
-        months_rows = [{"source_month": "202604", "count": 1248}]
+        months_rows = [{"source_month": "202606", "count": 1248}]
     
     with open(static_api_dir / "months.json", "w", encoding="utf-8") as f:
         json.dump({"items": months_rows}, f, ensure_ascii=False, indent=2)
@@ -300,6 +301,58 @@ def main():
             f"妨害性自主罪 {sexual_val:,} 件。"
         )
 
+        # Demographics aggregations
+        where_clause = "WHERE source_month = ?"
+        params_val = [month]
+        demographics = {
+            "gender": {},
+            "age": {},
+            "occupation": {},
+            "education": {},
+            "income_level": {},
+            "birth_city": {}
+        }
+        
+        # Gender counts
+        for r in conn.execute(f"SELECT COALESCE(gender, 'Unknown') as g, COUNT(*) FROM judgments {where_clause} GROUP BY g", params_val).fetchall():
+            demographics["gender"][r[0]] = r[1]
+            
+        # Age group counts
+        age_sql = f"""
+        SELECT 
+          CASE 
+            WHEN age IS NULL THEN 'Unknown'
+            WHEN age < 20 THEN 'Under 20'
+            WHEN age >= 20 AND age < 30 THEN '20-29'
+            WHEN age >= 30 AND age < 40 THEN '30-39'
+            WHEN age >= 40 AND age < 50 THEN '40-49'
+            WHEN age >= 50 AND age < 60 THEN '50-59'
+            ELSE '60+'
+          END as age_group,
+          COUNT(*)
+        FROM judgments
+        {where_clause}
+        GROUP BY age_group
+        """
+        for r in conn.execute(age_sql, params_val).fetchall():
+            demographics["age"][r[0]] = r[1]
+            
+        # Occupation counts
+        for r in conn.execute(f"SELECT COALESCE(occupation, 'Unknown') as occ, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY occ ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+            demographics["occupation"][r[0]] = r[1]
+            
+        # Education counts
+        for r in conn.execute(f"SELECT COALESCE(education, 'Unknown') as edu, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY edu ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+            demographics["education"][r[0]] = r[1]
+            
+        # Income level counts
+        for r in conn.execute(f"SELECT COALESCE(income_level, 'Unknown') as inc, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY inc ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+            demographics["income_level"][r[0]] = r[1]
+            
+        # Birth city counts
+        for r in conn.execute(f"SELECT COALESCE(birth_city, 'Unknown') as city, COUNT(*) as cnt FROM judgments {where_clause} GROUP BY city ORDER BY cnt DESC LIMIT 8", params_val).fetchall():
+            demographics["birth_city"][r[0]] = r[1]
+
         official_summary_payload = {
             "source_month": month,
             "source_url": "https://statis.moi.gov.tw/micst/webMain.aspx",
@@ -314,6 +367,7 @@ def main():
             "region_weighted_counts": region_weighted_counts,
             "region_metric": selected_metric,
             "region_counts": region_counts,
+            "demographics": demographics,
             "quality": {
                 "raw_rows": raw_rows_count,
                 "selected_rows": raw_rows_count // 24 if raw_rows_count > 0 else 0,
@@ -387,7 +441,7 @@ def main():
         with open(static_api_dir / f"opinion_{month}.json", "w", encoding="utf-8") as f:
             json.dump(opinion_payload, f, ensure_ascii=False, indent=2)
 
-        # 4. Judgments List (Export up to 150 judgments for search demonstration)
+        # 4. Judgments List
         print(f"Generating judgments_{month}.json...")
         
         # Get count of total judgments for the month
@@ -398,7 +452,7 @@ def main():
             """
             SELECT jid, source_month, court_folder, case_domain, jyear, jcase, jno,
                    jdate, jtitle, jpdf, text_length, excerpt, category_flags,
-                   matched_keywords
+                   matched_keywords, age, gender, occupation, education, income_level, birth_city
             FROM judgments
             WHERE source_month = ?
             ORDER BY jdate DESC, jid ASC
@@ -415,8 +469,7 @@ def main():
             item["summary"] = extractive_summary(item)
             judgments_items.append(item)
             
-            # 5. Detail JSON for each of these judgments (for when user clicks to view case details)
-            # URL-encode the JID to be safe, replacing '%' with '_' to prevent directory traversal / IIS issues
+            # 5. Detail JSON for each of these judgments
             clean_jid = urllib.parse.quote(item["jid"]).replace("%", "_")
             
             with open(static_api_dir / f"judgments_detail_{clean_jid}.json", "w", encoding="utf-8") as f:
@@ -442,6 +495,17 @@ def main():
         print(f"Completed month {month}: exported {len(judgments_items)} judgments details.")
 
     conn.close()
+    
+    # Sync generated JSON files to docs/static_api for production GitHub Pages
+    import shutil
+    docs_api_dir = Path("docs/static_api")
+    docs_api_dir.mkdir(parents=True, exist_ok=True)
+    print("\nSyncing generated JSON files to docs/static_api...")
+    for item in static_api_dir.glob("*"):
+        if item.is_file():
+            shutil.copy2(item, docs_api_dir / item.name)
+    print("Sync to docs completed successfully!")
+    
     print("\nStatic API JSON generation completed successfully!")
 
 if __name__ == "__main__":

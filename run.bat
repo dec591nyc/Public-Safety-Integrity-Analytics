@@ -5,15 +5,15 @@ setlocal enabledelayedexpansion
 :menu
 cls
 echo ===================================================
-echo   Public Safety Integrity Analytics Launcher
+echo   JusticeWatch: Public Safety & Integrity Tracker Launcher
 echo ===================================================
 echo.
 echo Please select an action:
 echo   [1] Start Review Dashboard (Web Server)
-echo   [2] Run Unified Daily Update (MOI Stats and Opinion Ingestion)
-echo   [3] Download Judgment Archives (Judicial Yuan Open Data)
-echo   [4] Fetch Real-time Judgment Metadata in Parallel (JID and JTITLE API)
-echo   [5] Build/Sync SQLite Judgment Index from raw JSON files
+echo   [2] Run Unified Daily Ingestion (MOI, Opinions, Judicial Scraper)
+echo   [3] [Legacy] Download Judgment Archives (Judicial Yuan Open Data)
+echo   [4] [Legacy] Fetch Real-time Judgment Metadata in Parallel (API)
+echo   [5] [Legacy] Build SQLite Index from raw JSON files
 echo   [6] Exit
 echo.
 set /p opt="Enter choice (1-6): "
