@@ -1,4 +1,4 @@
-# JusticeWatch: Public Safety & Integrity Tracker (司法治安與廉政追蹤器)
+# Public Safety and Judicial Justice Visualization (公眾治安與司法正義檢視網)
 
 💡 **以數據為基石，探索官方司法裁判人口特徵與公眾輿論聲量之間的維度偏差與聚焦關聯。**
 
