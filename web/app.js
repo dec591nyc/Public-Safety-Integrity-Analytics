@@ -681,6 +681,8 @@ function renderCases(data) {
     const keywords = (item.matched_keywords || []).slice(0, 5)
       .map(keyword => `<span class="keyword">${escapeHtml(keyword)}</span>`).join('');
     const pdf = safeUrl(item.jpdf);
+    const cleanJid = encodeURIComponent(item.jid || '');
+    const htmlUrl = cleanJid ? `https://judgment.judicial.gov.tw/FJUD/data.aspx?id=${cleanJid}` : '';
     const evidence = (item.summary?.evidence_snippets || []).map(snippet => `<li>${escapeHtml(snippet)}</li>`).join('');
     
     // Demographic details string
@@ -693,6 +695,13 @@ function renderCases(data) {
     if (item.birth_city && item.birth_city !== 'Unknown') demoItems.push(`出生地: ${item.birth_city}`);
     const demoText = demoItems.length > 0 ? `<p class="case-meta" style="margin-top: 4px; color: var(--primary); font-weight: 550;">被告特徵：${escapeHtml(demoItems.join(' · '))}</p>` : '';
     
+    const summaryHtml = item.summary?.text ? `
+      <div class="record-summary">
+        <div class="summary-title"><strong>規則式摘要</strong><span>低可信度 · 需人工複核</span></div>
+        <p>${escapeHtml(item.summary.text)}</p>
+      </div>` : '';
+    const evidenceHtml = evidence ? `<details class="evidence"><summary>查看摘要證據片段</summary><ul>${evidence}</ul></details>` : '';
+    
     return `<article class="case-card">
       <div class="case-record">
         <div class="case-topline">
@@ -703,15 +712,13 @@ function renderCases(data) {
           </div>
           <span class="jid">${escapeHtml(item.jid)}</span>
         </div>
-        <div class="record-summary">
-          <div class="summary-title"><strong>規則式摘要</strong><span>低可信度 · 需人工複核</span></div>
-          <p>${escapeHtml(item.summary?.text || '沒有可用摘要。')}</p>
-        </div>
+        ${summaryHtml}
         <div class="tags">${flags}${keywords}</div>
-        ${evidence ? `<details class="evidence"><summary>查看摘要證據片段</summary><ul>${evidence}</ul></details>` : ''}
+        ${evidenceHtml}
       </div>
-      <div class="case-actions">
-        ${pdf ? `<a href="${escapeHtml(pdf)}" target="_blank" rel="noreferrer">開啟 PDF 來源</a>` : '<span>無 PDF 連結</span>'}
+      <div class="case-actions" style="gap: 8px;">
+        ${htmlUrl ? `<a href="${escapeHtml(htmlUrl)}" target="_blank" rel="noreferrer">檢視判決書全文</a>` : ''}
+        ${pdf ? `<a href="${escapeHtml(pdf)}" target="_blank" rel="noreferrer">開啟 PDF 來源</a>` : ''}
       </div>
     </article>`;
   }).join('') || '<div class="empty-state"><strong>沒有符合條件的裁判</strong><p>請放寬月份、案由、法院或當事人條件後再試。</p></div>';

@@ -15,7 +15,6 @@
       "jtitle": "公職人員選舉罷免法",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 67,
-      "excerpt": "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
@@ -32,16 +31,7 @@
       "education": "國中畢業之智識程度",
       "income_level": "貧寒",
       "birth_city": "台北市",
-      "summary": {
-        "text": "公職人員選舉罷免法：被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。 量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_ELECTION_LAW_202606_2",
@@ -55,7 +45,6 @@
       "jtitle": "公職人員選舉罷免法",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 69,
-      "excerpt": "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
@@ -72,16 +61,7 @@
       "education": "大學畢業之智識程度",
       "income_level": "勉可維持",
       "birth_city": "新北市",
-      "summary": {
-        "text": "公職人員選舉罷免法：被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。 量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_FRAUD_202606_1",
@@ -95,7 +75,6 @@
       "jtitle": "詐欺罪",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 67,
-      "excerpt": "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
       "category_flags": {
         "fraud": true,
         "money_laundering": false,
@@ -112,16 +91,7 @@
       "education": "國中畢業之智識程度",
       "income_level": "貧寒",
       "birth_city": "台北市",
-      "summary": {
-        "text": "詐欺罪：被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。 量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_FRAUD_202606_2",
@@ -135,7 +105,6 @@
       "jtitle": "詐欺罪",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 69,
-      "excerpt": "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
       "category_flags": {
         "fraud": true,
         "money_laundering": false,
@@ -152,16 +121,7 @@
       "education": "大學畢業之智識程度",
       "income_level": "勉可維持",
       "birth_city": "新北市",
-      "summary": {
-        "text": "詐欺罪：被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。 量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_INJURY_202606_1",
@@ -175,7 +135,6 @@
       "jtitle": "傷害罪",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 67,
-      "excerpt": "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
@@ -192,16 +151,7 @@
       "education": "國中畢業之智識程度",
       "income_level": "貧寒",
       "birth_city": "台北市",
-      "summary": {
-        "text": "傷害罪：被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。 量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_INJURY_202606_2",
@@ -215,7 +165,6 @@
       "jtitle": "傷害罪",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 69,
-      "excerpt": "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
@@ -232,16 +181,7 @@
       "education": "大學畢業之智識程度",
       "income_level": "勉可維持",
       "birth_city": "新北市",
-      "summary": {
-        "text": "傷害罪：被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。 量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_MONEY_LAUNDERING_202606_1",
@@ -255,7 +195,6 @@
       "jtitle": "違反洗錢防制法",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 67,
-      "excerpt": "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": true,
@@ -272,16 +211,7 @@
       "education": "國中畢業之智識程度",
       "income_level": "貧寒",
       "birth_city": "台北市",
-      "summary": {
-        "text": "違反洗錢防制法：被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。 量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_MONEY_LAUNDERING_202606_2",
@@ -295,7 +225,6 @@
       "jtitle": "違反洗錢防制法",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 69,
-      "excerpt": "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": true,
@@ -312,16 +241,7 @@
       "education": "大學畢業之智識程度",
       "income_level": "勉可維持",
       "birth_city": "新北市",
-      "summary": {
-        "text": "違反洗錢防制法：被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。 量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_PUBLIC_INTEGRITY_202606_1",
@@ -335,7 +255,6 @@
       "jtitle": "貪污治罪條例",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 67,
-      "excerpt": "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
@@ -352,16 +271,7 @@
       "education": "國中畢業之智識程度",
       "income_level": "貧寒",
       "birth_city": "台北市",
-      "summary": {
-        "text": "貪污治罪條例：被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。 量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告0基本資料，性別：男，年齡：24，職業：臨時工，智識程度：國中畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為貧寒，設籍住於台北市..."
-        ]
-      }
+      "summary": null
     },
     {
       "jid": "MOCK_PUBLIC_INTEGRITY_202606_2",
@@ -375,7 +285,6 @@
       "jtitle": "貪污治罪條例",
       "jpdf": "https://judgment.judicial.gov.tw/",
       "text_length": 69,
-      "excerpt": "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
@@ -392,16 +301,7 @@
       "education": "大學畢業之智識程度",
       "income_level": "勉可維持",
       "birth_city": "新北市",
-      "summary": {
-        "text": "貪污治罪條例：被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。 量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市...",
-        "provider": "extractive_rule_v1",
-        "confidence": "low",
-        "needs_manual_review": true,
-        "evidence_snippets": [
-          "被告1基本資料，性別：男，年齡：38，職業：餐飲業，智識程度：大學畢業之智識程度。",
-          "量刑審酌被告家庭生活狀況為勉可維持，設籍住於新北市..."
-        ]
-      }
+      "summary": null
     }
   ],
   "warnings": [],

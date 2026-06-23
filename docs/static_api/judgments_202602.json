@@ -1,224 +1,307 @@
 {
-  "total": 7,
+  "total": 10,
   "limit": 150,
   "offset": 0,
   "items": [
     {
-      "jid": "CTDV,114,司執消債清,33,20260224,1",
+      "jid": "MOCK_ELECTION_LAW_202602_1",
       "source_month": "202602",
-      "court_folder": "CTDV",
-      "case_domain": "civil",
-      "jyear": "114",
-      "jcase": "司執消債清",
-      "jno": "33",
-      "jdate": "2026-02-24",
-      "jtitle": "執行清算事件",
-      "jpdf": "",
-      "text_length": 0,
-      "excerpt": "",
-      "category_flags": {
-        "fraud": false,
-        "money_laundering": false,
-        "sexual_offense": false,
-        "injury": false,
-        "traffic_injury": false,
-        "public_integrity": false,
-        "election_law": false
-      },
-      "matched_keywords": [],
-      "summary": {
-        "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
-        "provider": "extractive_rule_v1",
-        "confidence": "insufficient",
-        "needs_manual_review": true,
-        "evidence_snippets": []
-      }
-    },
-    {
-      "jid": "CTDV,114,司執消債清,43,20260224,2",
-      "source_month": "202602",
-      "court_folder": "CTDV",
-      "case_domain": "civil",
-      "jyear": "114",
-      "jcase": "司執消債清",
-      "jno": "43",
-      "jdate": "2026-02-24",
-      "jtitle": "執行清算事件",
-      "jpdf": "",
-      "text_length": 0,
-      "excerpt": "",
-      "category_flags": {
-        "fraud": false,
-        "money_laundering": false,
-        "sexual_offense": false,
-        "injury": false,
-        "traffic_injury": false,
-        "public_integrity": false,
-        "election_law": false
-      },
-      "matched_keywords": [],
-      "summary": {
-        "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
-        "provider": "extractive_rule_v1",
-        "confidence": "insufficient",
-        "needs_manual_review": true,
-        "evidence_snippets": []
-      }
-    },
-    {
-      "jid": "CTDV,114,司執消債清,164,20260223,1",
-      "source_month": "202602",
-      "court_folder": "CTDV",
-      "case_domain": "civil",
-      "jyear": "114",
-      "jcase": "司執消債清",
-      "jno": "164",
-      "jdate": "2026-02-23",
-      "jtitle": "執行清算事件",
-      "jpdf": "",
-      "text_length": 0,
-      "excerpt": "",
-      "category_flags": {
-        "fraud": false,
-        "money_laundering": false,
-        "sexual_offense": false,
-        "injury": false,
-        "traffic_injury": false,
-        "public_integrity": false,
-        "election_law": false
-      },
-      "matched_keywords": [],
-      "summary": {
-        "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
-        "provider": "extractive_rule_v1",
-        "confidence": "insufficient",
-        "needs_manual_review": true,
-        "evidence_snippets": []
-      }
-    },
-    {
-      "jid": "CTDV,114,司執消債清,31,20260223,1",
-      "source_month": "202602",
-      "court_folder": "CTDV",
-      "case_domain": "civil",
-      "jyear": "114",
-      "jcase": "司執消債清",
-      "jno": "31",
-      "jdate": "2026-02-23",
-      "jtitle": "執行清算事件",
-      "jpdf": "",
-      "text_length": 0,
-      "excerpt": "",
-      "category_flags": {
-        "fraud": false,
-        "money_laundering": false,
-        "sexual_offense": false,
-        "injury": false,
-        "traffic_injury": false,
-        "public_integrity": false,
-        "election_law": false
-      },
-      "matched_keywords": [],
-      "summary": {
-        "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
-        "provider": "extractive_rule_v1",
-        "confidence": "insufficient",
-        "needs_manual_review": true,
-        "evidence_snippets": []
-      }
-    },
-    {
-      "jid": "CTDV,114,司執消債清,92,20260223,1",
-      "source_month": "202602",
-      "court_folder": "CTDV",
-      "case_domain": "civil",
-      "jyear": "114",
-      "jcase": "司執消債清",
-      "jno": "92",
-      "jdate": "2026-02-23",
-      "jtitle": "執行清算事件",
-      "jpdf": "",
-      "text_length": 0,
-      "excerpt": "",
-      "category_flags": {
-        "fraud": false,
-        "money_laundering": false,
-        "sexual_offense": false,
-        "injury": false,
-        "traffic_injury": false,
-        "public_integrity": false,
-        "election_law": false
-      },
-      "matched_keywords": [],
-      "summary": {
-        "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
-        "provider": "extractive_rule_v1",
-        "confidence": "insufficient",
-        "needs_manual_review": true,
-        "evidence_snippets": []
-      }
-    },
-    {
-      "jid": "HLDV,115,司促,82,20260223,1",
-      "source_month": "202602",
-      "court_folder": "HLDV",
-      "case_domain": "civil",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
       "jyear": "115",
-      "jcase": "司促",
-      "jno": "82",
-      "jdate": "2026-02-23",
-      "jtitle": "支付命令",
-      "jpdf": "",
-      "text_length": 0,
-      "excerpt": "",
+      "jcase": "訴",
+      "jno": "100",
+      "jdate": "2026-02-01",
+      "jtitle": "公職人員選舉罷免法",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 67,
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
-        "sexual_offense": false,
         "injury": false,
-        "traffic_injury": false,
         "public_integrity": false,
-        "election_law": false
+        "election_law": true
       },
-      "matched_keywords": [],
-      "summary": {
-        "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
-        "provider": "extractive_rule_v1",
-        "confidence": "insufficient",
-        "needs_manual_review": true,
-        "evidence_snippets": []
-      }
+      "matched_keywords": [
+        "選罷法"
+      ],
+      "age": 24,
+      "gender": "男",
+      "occupation": "臨時工",
+      "education": "國中畢業之智識程度",
+      "income_level": "貧寒",
+      "birth_city": "台北市",
+      "summary": null
     },
     {
-      "jid": "PTDV,114,司執消債清,49,20260202,1",
+      "jid": "MOCK_ELECTION_LAW_202602_2",
       "source_month": "202602",
-      "court_folder": "PTDV",
-      "case_domain": "civil",
-      "jyear": "114",
-      "jcase": "司執消債清",
-      "jno": "49",
-      "jdate": "2026-02-02",
-      "jtitle": "清算事件",
-      "jpdf": "",
-      "text_length": 0,
-      "excerpt": "",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "101",
+      "jdate": "2026-02-01",
+      "jtitle": "公職人員選舉罷免法",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 69,
       "category_flags": {
         "fraud": false,
         "money_laundering": false,
-        "sexual_offense": false,
         "injury": false,
-        "traffic_injury": false,
+        "public_integrity": false,
+        "election_law": true
+      },
+      "matched_keywords": [
+        "選罷法"
+      ],
+      "age": 38,
+      "gender": "男",
+      "occupation": "餐飲業",
+      "education": "大學畢業之智識程度",
+      "income_level": "勉可維持",
+      "birth_city": "新北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_FRAUD_202602_1",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "100",
+      "jdate": "2026-02-01",
+      "jtitle": "詐欺罪",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 67,
+      "category_flags": {
+        "fraud": true,
+        "money_laundering": false,
+        "injury": false,
         "public_integrity": false,
         "election_law": false
       },
-      "matched_keywords": [],
-      "summary": {
-        "text": "索引中沒有足夠文字可供摘要，請開啟來源 PDF 人工審閱。",
-        "provider": "extractive_rule_v1",
-        "confidence": "insufficient",
-        "needs_manual_review": true,
-        "evidence_snippets": []
-      }
+      "matched_keywords": [
+        "詐欺"
+      ],
+      "age": 24,
+      "gender": "男",
+      "occupation": "臨時工",
+      "education": "國中畢業之智識程度",
+      "income_level": "貧寒",
+      "birth_city": "台北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_FRAUD_202602_2",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "101",
+      "jdate": "2026-02-01",
+      "jtitle": "詐欺罪",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 69,
+      "category_flags": {
+        "fraud": true,
+        "money_laundering": false,
+        "injury": false,
+        "public_integrity": false,
+        "election_law": false
+      },
+      "matched_keywords": [
+        "詐欺"
+      ],
+      "age": 38,
+      "gender": "男",
+      "occupation": "餐飲業",
+      "education": "大學畢業之智識程度",
+      "income_level": "勉可維持",
+      "birth_city": "新北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_INJURY_202602_1",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "100",
+      "jdate": "2026-02-01",
+      "jtitle": "傷害罪",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 67,
+      "category_flags": {
+        "fraud": false,
+        "money_laundering": false,
+        "injury": true,
+        "public_integrity": false,
+        "election_law": false
+      },
+      "matched_keywords": [
+        "傷害"
+      ],
+      "age": 24,
+      "gender": "男",
+      "occupation": "臨時工",
+      "education": "國中畢業之智識程度",
+      "income_level": "貧寒",
+      "birth_city": "台北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_INJURY_202602_2",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "101",
+      "jdate": "2026-02-01",
+      "jtitle": "傷害罪",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 69,
+      "category_flags": {
+        "fraud": false,
+        "money_laundering": false,
+        "injury": true,
+        "public_integrity": false,
+        "election_law": false
+      },
+      "matched_keywords": [
+        "傷害"
+      ],
+      "age": 38,
+      "gender": "男",
+      "occupation": "餐飲業",
+      "education": "大學畢業之智識程度",
+      "income_level": "勉可維持",
+      "birth_city": "新北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_MONEY_LAUNDERING_202602_1",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "100",
+      "jdate": "2026-02-01",
+      "jtitle": "違反洗錢防制法",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 67,
+      "category_flags": {
+        "fraud": false,
+        "money_laundering": true,
+        "injury": false,
+        "public_integrity": false,
+        "election_law": false
+      },
+      "matched_keywords": [
+        "洗錢"
+      ],
+      "age": 24,
+      "gender": "男",
+      "occupation": "臨時工",
+      "education": "國中畢業之智識程度",
+      "income_level": "貧寒",
+      "birth_city": "台北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_MONEY_LAUNDERING_202602_2",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "101",
+      "jdate": "2026-02-01",
+      "jtitle": "違反洗錢防制法",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 69,
+      "category_flags": {
+        "fraud": false,
+        "money_laundering": true,
+        "injury": false,
+        "public_integrity": false,
+        "election_law": false
+      },
+      "matched_keywords": [
+        "洗錢"
+      ],
+      "age": 38,
+      "gender": "男",
+      "occupation": "餐飲業",
+      "education": "大學畢業之智識程度",
+      "income_level": "勉可維持",
+      "birth_city": "新北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_PUBLIC_INTEGRITY_202602_1",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "100",
+      "jdate": "2026-02-01",
+      "jtitle": "貪污治罪條例",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 67,
+      "category_flags": {
+        "fraud": false,
+        "money_laundering": false,
+        "injury": false,
+        "public_integrity": true,
+        "election_law": false
+      },
+      "matched_keywords": [
+        "貪污"
+      ],
+      "age": 24,
+      "gender": "男",
+      "occupation": "臨時工",
+      "education": "國中畢業之智識程度",
+      "income_level": "貧寒",
+      "birth_city": "台北市",
+      "summary": null
+    },
+    {
+      "jid": "MOCK_PUBLIC_INTEGRITY_202602_2",
+      "source_month": "202602",
+      "court_folder": "MOCK",
+      "case_domain": "criminal",
+      "jyear": "115",
+      "jcase": "訴",
+      "jno": "101",
+      "jdate": "2026-02-01",
+      "jtitle": "貪污治罪條例",
+      "jpdf": "https://judgment.judicial.gov.tw/",
+      "text_length": 69,
+      "category_flags": {
+        "fraud": false,
+        "money_laundering": false,
+        "injury": false,
+        "public_integrity": true,
+        "election_law": false
+      },
+      "matched_keywords": [
+        "貪污"
+      ],
+      "age": 38,
+      "gender": "男",
+      "occupation": "餐飲業",
+      "education": "大學畢業之智識程度",
+      "income_level": "勉可維持",
+      "birth_city": "新北市",
+      "summary": null
     }
   ],
   "warnings": [],

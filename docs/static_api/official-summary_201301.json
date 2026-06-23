@@ -1,0 +1,1839 @@
+{
+  "source_month": "201301",
+  "source_url": "https://statis.moi.gov.tw/micst/webMain.aspx",
+  "dataset_id": "9603",
+  "total_cases": 23909,
+  "total_change_pct": 7.07,
+  "safety_index": 216759,
+  "monthly_counts": [
+    {
+      "month": "200001",
+      "count": 33871
+    },
+    {
+      "month": "200002",
+      "count": 27896
+    },
+    {
+      "month": "200003",
+      "count": 33051
+    },
+    {
+      "month": "200004",
+      "count": 32602
+    },
+    {
+      "month": "200005",
+      "count": 36278
+    },
+    {
+      "month": "200006",
+      "count": 33453
+    },
+    {
+      "month": "200007",
+      "count": 38003
+    },
+    {
+      "month": "200008",
+      "count": 39414
+    },
+    {
+      "month": "200009",
+      "count": 39562
+    },
+    {
+      "month": "200010",
+      "count": 42418
+    },
+    {
+      "month": "200011",
+      "count": 41374
+    },
+    {
+      "month": "200012",
+      "count": 40598
+    },
+    {
+      "month": "200101",
+      "count": 37524
+    },
+    {
+      "month": "200102",
+      "count": 34706
+    },
+    {
+      "month": "200103",
+      "count": 40405
+    },
+    {
+      "month": "200104",
+      "count": 40765
+    },
+    {
+      "month": "200105",
+      "count": 42569
+    },
+    {
+      "month": "200106",
+      "count": 39829
+    },
+    {
+      "month": "200107",
+      "count": 41603
+    },
+    {
+      "month": "200108",
+      "count": 44001
+    },
+    {
+      "month": "200109",
+      "count": 38999
+    },
+    {
+      "month": "200110",
+      "count": 45261
+    },
+    {
+      "month": "200111",
+      "count": 43391
+    },
+    {
+      "month": "200112",
+      "count": 41683
+    },
+    {
+      "month": "200201",
+      "count": 41405
+    },
+    {
+      "month": "200202",
+      "count": 38047
+    },
+    {
+      "month": "200203",
+      "count": 43794
+    },
+    {
+      "month": "200204",
+      "count": 44458
+    },
+    {
+      "month": "200205",
+      "count": 43897
+    },
+    {
+      "month": "200206",
+      "count": 40899
+    },
+    {
+      "month": "200207",
+      "count": 42229
+    },
+    {
+      "month": "200208",
+      "count": 43599
+    },
+    {
+      "month": "200209",
+      "count": 40611
+    },
+    {
+      "month": "200210",
+      "count": 44127
+    },
+    {
+      "month": "200211",
+      "count": 40221
+    },
+    {
+      "month": "200212",
+      "count": 40102
+    },
+    {
+      "month": "200301",
+      "count": 42083
+    },
+    {
+      "month": "200302",
+      "count": 33879
+    },
+    {
+      "month": "200303",
+      "count": 39740
+    },
+    {
+      "month": "200304",
+      "count": 41471
+    },
+    {
+      "month": "200305",
+      "count": 41900
+    },
+    {
+      "month": "200306",
+      "count": 43393
+    },
+    {
+      "month": "200307",
+      "count": 44843
+    },
+    {
+      "month": "200308",
+      "count": 43579
+    },
+    {
+      "month": "200309",
+      "count": 41589
+    },
+    {
+      "month": "200310",
+      "count": 43916
+    },
+    {
+      "month": "200311",
+      "count": 38856
+    },
+    {
+      "month": "200312",
+      "count": 39506
+    },
+    {
+      "month": "200401",
+      "count": 34455
+    },
+    {
+      "month": "200402",
+      "count": 38543
+    },
+    {
+      "month": "200403",
+      "count": 42011
+    },
+    {
+      "month": "200404",
+      "count": 39503
+    },
+    {
+      "month": "200405",
+      "count": 42548
+    },
+    {
+      "month": "200406",
+      "count": 41807
+    },
+    {
+      "month": "200407",
+      "count": 43975
+    },
+    {
+      "month": "200408",
+      "count": 45646
+    },
+    {
+      "month": "200409",
+      "count": 48398
+    },
+    {
+      "month": "200410",
+      "count": 49171
+    },
+    {
+      "month": "200411",
+      "count": 49162
+    },
+    {
+      "month": "200412",
+      "count": 47086
+    },
+    {
+      "month": "200501",
+      "count": 45955
+    },
+    {
+      "month": "200502",
+      "count": 35411
+    },
+    {
+      "month": "200503",
+      "count": 47494
+    },
+    {
+      "month": "200504",
+      "count": 46179
+    },
+    {
+      "month": "200505",
+      "count": 48375
+    },
+    {
+      "month": "200506",
+      "count": 45987
+    },
+    {
+      "month": "200507",
+      "count": 47821
+    },
+    {
+      "month": "200508",
+      "count": 52388
+    },
+    {
+      "month": "200509",
+      "count": 46998
+    },
+    {
+      "month": "200510",
+      "count": 48087
+    },
+    {
+      "month": "200511",
+      "count": 46706
+    },
+    {
+      "month": "200512",
+      "count": 43708
+    },
+    {
+      "month": "200601",
+      "count": 43932
+    },
+    {
+      "month": "200602",
+      "count": 41892
+    },
+    {
+      "month": "200603",
+      "count": 43449
+    },
+    {
+      "month": "200604",
+      "count": 42664
+    },
+    {
+      "month": "200605",
+      "count": 43362
+    },
+    {
+      "month": "200606",
+      "count": 40635
+    },
+    {
+      "month": "200607",
+      "count": 42760
+    },
+    {
+      "month": "200608",
+      "count": 46663
+    },
+    {
+      "month": "200609",
+      "count": 42464
+    },
+    {
+      "month": "200610",
+      "count": 42028
+    },
+    {
+      "month": "200611",
+      "count": 43398
+    },
+    {
+      "month": "200612",
+      "count": 39541
+    },
+    {
+      "month": "200701",
+      "count": 40860
+    },
+    {
+      "month": "200702",
+      "count": 36979
+    },
+    {
+      "month": "200703",
+      "count": 40942
+    },
+    {
+      "month": "200704",
+      "count": 37800
+    },
+    {
+      "month": "200705",
+      "count": 40880
+    },
+    {
+      "month": "200706",
+      "count": 38026
+    },
+    {
+      "month": "200707",
+      "count": 44160
+    },
+    {
+      "month": "200708",
+      "count": 43248
+    },
+    {
+      "month": "200709",
+      "count": 42540
+    },
+    {
+      "month": "200710",
+      "count": 44871
+    },
+    {
+      "month": "200711",
+      "count": 40413
+    },
+    {
+      "month": "200712",
+      "count": 41096
+    },
+    {
+      "month": "200801",
+      "count": 41018
+    },
+    {
+      "month": "200802",
+      "count": 34493
+    },
+    {
+      "month": "200803",
+      "count": 40368
+    },
+    {
+      "month": "200804",
+      "count": 39091
+    },
+    {
+      "month": "200805",
+      "count": 39491
+    },
+    {
+      "month": "200806",
+      "count": 38472
+    },
+    {
+      "month": "200807",
+      "count": 41083
+    },
+    {
+      "month": "200808",
+      "count": 41359
+    },
+    {
+      "month": "200809",
+      "count": 36307
+    },
+    {
+      "month": "200810",
+      "count": 36301
+    },
+    {
+      "month": "200811",
+      "count": 32869
+    },
+    {
+      "month": "200812",
+      "count": 32587
+    },
+    {
+      "month": "200901",
+      "count": 32317
+    },
+    {
+      "month": "200902",
+      "count": 33953
+    },
+    {
+      "month": "200903",
+      "count": 34503
+    },
+    {
+      "month": "200904",
+      "count": 32279
+    },
+    {
+      "month": "200905",
+      "count": 31793
+    },
+    {
+      "month": "200906",
+      "count": 31065
+    },
+    {
+      "month": "200907",
+      "count": 33979
+    },
+    {
+      "month": "200908",
+      "count": 32891
+    },
+    {
+      "month": "200909",
+      "count": 31534
+    },
+    {
+      "month": "200910",
+      "count": 31522
+    },
+    {
+      "month": "200911",
+      "count": 30395
+    },
+    {
+      "month": "200912",
+      "count": 29844
+    },
+    {
+      "month": "201001",
+      "count": 29403
+    },
+    {
+      "month": "201002",
+      "count": 34191
+    },
+    {
+      "month": "201003",
+      "count": 34018
+    },
+    {
+      "month": "201004",
+      "count": 29978
+    },
+    {
+      "month": "201005",
+      "count": 32195
+    },
+    {
+      "month": "201006",
+      "count": 29524
+    },
+    {
+      "month": "201007",
+      "count": 31612
+    },
+    {
+      "month": "201008",
+      "count": 33625
+    },
+    {
+      "month": "201009",
+      "count": 30626
+    },
+    {
+      "month": "201010",
+      "count": 30650
+    },
+    {
+      "month": "201011",
+      "count": 28569
+    },
+    {
+      "month": "201012",
+      "count": 27543
+    },
+    {
+      "month": "201101",
+      "count": 33209
+    },
+    {
+      "month": "201102",
+      "count": 28821
+    },
+    {
+      "month": "201103",
+      "count": 30456
+    },
+    {
+      "month": "201104",
+      "count": 28195
+    },
+    {
+      "month": "201105",
+      "count": 29365
+    },
+    {
+      "month": "201106",
+      "count": 27160
+    },
+    {
+      "month": "201107",
+      "count": 31453
+    },
+    {
+      "month": "201108",
+      "count": 31435
+    },
+    {
+      "month": "201109",
+      "count": 27767
+    },
+    {
+      "month": "201110",
+      "count": 27821
+    },
+    {
+      "month": "201111",
+      "count": 27194
+    },
+    {
+      "month": "201112",
+      "count": 24798
+    },
+    {
+      "month": "201201",
+      "count": 28063
+    },
+    {
+      "month": "201202",
+      "count": 27688
+    },
+    {
+      "month": "201203",
+      "count": 27916
+    },
+    {
+      "month": "201204",
+      "count": 27028
+    },
+    {
+      "month": "201205",
+      "count": 27177
+    },
+    {
+      "month": "201206",
+      "count": 23803
+    },
+    {
+      "month": "201207",
+      "count": 29405
+    },
+    {
+      "month": "201208",
+      "count": 27421
+    },
+    {
+      "month": "201209",
+      "count": 25961
+    },
+    {
+      "month": "201210",
+      "count": 26195
+    },
+    {
+      "month": "201211",
+      "count": 24368
+    },
+    {
+      "month": "201212",
+      "count": 22331
+    },
+    {
+      "month": "201301",
+      "count": 23909
+    },
+    {
+      "month": "201302",
+      "count": 29306
+    },
+    {
+      "month": "201303",
+      "count": 23763
+    },
+    {
+      "month": "201304",
+      "count": 22417
+    },
+    {
+      "month": "201305",
+      "count": 22956
+    },
+    {
+      "month": "201306",
+      "count": 22530
+    },
+    {
+      "month": "201307",
+      "count": 25828
+    },
+    {
+      "month": "201308",
+      "count": 25829
+    },
+    {
+      "month": "201309",
+      "count": 25663
+    },
+    {
+      "month": "201310",
+      "count": 26331
+    },
+    {
+      "month": "201311",
+      "count": 25178
+    },
+    {
+      "month": "201312",
+      "count": 25257
+    },
+    {
+      "month": "201401",
+      "count": 32724
+    },
+    {
+      "month": "201402",
+      "count": 25364
+    },
+    {
+      "month": "201403",
+      "count": 26533
+    },
+    {
+      "month": "201404",
+      "count": 26166
+    },
+    {
+      "month": "201405",
+      "count": 24876
+    },
+    {
+      "month": "201406",
+      "count": 24768
+    },
+    {
+      "month": "201407",
+      "count": 26035
+    },
+    {
+      "month": "201408",
+      "count": 24773
+    },
+    {
+      "month": "201409",
+      "count": 24485
+    },
+    {
+      "month": "201410",
+      "count": 24203
+    },
+    {
+      "month": "201411",
+      "count": 23014
+    },
+    {
+      "month": "201412",
+      "count": 23359
+    },
+    {
+      "month": "201501",
+      "count": 22849
+    },
+    {
+      "month": "201502",
+      "count": 29989
+    },
+    {
+      "month": "201503",
+      "count": 24764
+    },
+    {
+      "month": "201504",
+      "count": 24210
+    },
+    {
+      "month": "201505",
+      "count": 24375
+    },
+    {
+      "month": "201506",
+      "count": 24581
+    },
+    {
+      "month": "201507",
+      "count": 24991
+    },
+    {
+      "month": "201508",
+      "count": 25278
+    },
+    {
+      "month": "201509",
+      "count": 24611
+    },
+    {
+      "month": "201510",
+      "count": 24538
+    },
+    {
+      "month": "201511",
+      "count": 24373
+    },
+    {
+      "month": "201512",
+      "count": 23241
+    },
+    {
+      "month": "201601",
+      "count": 22414
+    },
+    {
+      "month": "201602",
+      "count": 21607
+    },
+    {
+      "month": "201603",
+      "count": 25315
+    },
+    {
+      "month": "201604",
+      "count": 24616
+    },
+    {
+      "month": "201605",
+      "count": 26892
+    },
+    {
+      "month": "201606",
+      "count": 24502
+    },
+    {
+      "month": "201607",
+      "count": 26762
+    },
+    {
+      "month": "201608",
+      "count": 26381
+    },
+    {
+      "month": "201609",
+      "count": 22294
+    },
+    {
+      "month": "201610",
+      "count": 25450
+    },
+    {
+      "month": "201611",
+      "count": 25676
+    },
+    {
+      "month": "201612",
+      "count": 22922
+    },
+    {
+      "month": "201702",
+      "count": 20966
+    },
+    {
+      "month": "201703",
+      "count": 25422
+    },
+    {
+      "month": "201704",
+      "count": 22795
+    },
+    {
+      "month": "201705",
+      "count": 25257
+    },
+    {
+      "month": "201706",
+      "count": 23715
+    },
+    {
+      "month": "201707",
+      "count": 27453
+    },
+    {
+      "month": "201708",
+      "count": 27745
+    },
+    {
+      "month": "201709",
+      "count": 24647
+    },
+    {
+      "month": "201710",
+      "count": 24734
+    },
+    {
+      "month": "201711",
+      "count": 24131
+    },
+    {
+      "month": "201712",
+      "count": 21860
+    },
+    {
+      "month": "201801",
+      "count": 23956
+    },
+    {
+      "month": "201802",
+      "count": 19263
+    },
+    {
+      "month": "201803",
+      "count": 25443
+    },
+    {
+      "month": "201804",
+      "count": 24566
+    },
+    {
+      "month": "201805",
+      "count": 25509
+    },
+    {
+      "month": "201806",
+      "count": 23349
+    },
+    {
+      "month": "201807",
+      "count": 25146
+    },
+    {
+      "month": "201808",
+      "count": 25072
+    },
+    {
+      "month": "201809",
+      "count": 23517
+    },
+    {
+      "month": "201810",
+      "count": 24506
+    },
+    {
+      "month": "201811",
+      "count": 22211
+    },
+    {
+      "month": "201812",
+      "count": 22000
+    },
+    {
+      "month": "201901",
+      "count": 23776
+    },
+    {
+      "month": "201902",
+      "count": 17541
+    },
+    {
+      "month": "201903",
+      "count": 24026
+    },
+    {
+      "month": "201904",
+      "count": 22563
+    },
+    {
+      "month": "201905",
+      "count": 22659
+    },
+    {
+      "month": "201906",
+      "count": 21586
+    },
+    {
+      "month": "201907",
+      "count": 24211
+    },
+    {
+      "month": "201908",
+      "count": 23988
+    },
+    {
+      "month": "201909",
+      "count": 22105
+    },
+    {
+      "month": "201910",
+      "count": 22421
+    },
+    {
+      "month": "201911",
+      "count": 21842
+    },
+    {
+      "month": "201912",
+      "count": 21631
+    },
+    {
+      "month": "202001",
+      "count": 18333
+    },
+    {
+      "month": "202002",
+      "count": 20887
+    },
+    {
+      "month": "202003",
+      "count": 23672
+    },
+    {
+      "month": "202004",
+      "count": 21827
+    },
+    {
+      "month": "202005",
+      "count": 22659
+    },
+    {
+      "month": "202006",
+      "count": 21255
+    },
+    {
+      "month": "202007",
+      "count": 22299
+    },
+    {
+      "month": "202008",
+      "count": 22574
+    },
+    {
+      "month": "202009",
+      "count": 20959
+    },
+    {
+      "month": "202010",
+      "count": 20174
+    },
+    {
+      "month": "202011",
+      "count": 22769
+    },
+    {
+      "month": "202012",
+      "count": 22305
+    },
+    {
+      "month": "202101",
+      "count": 21565
+    },
+    {
+      "month": "202102",
+      "count": 17142
+    },
+    {
+      "month": "202103",
+      "count": 22655
+    },
+    {
+      "month": "202104",
+      "count": 20627
+    },
+    {
+      "month": "202105",
+      "count": 21021
+    },
+    {
+      "month": "202106",
+      "count": 15244
+    },
+    {
+      "month": "202107",
+      "count": 17294
+    },
+    {
+      "month": "202108",
+      "count": 21614
+    },
+    {
+      "month": "202109",
+      "count": 21790
+    },
+    {
+      "month": "202110",
+      "count": 21107
+    },
+    {
+      "month": "202111",
+      "count": 22075
+    },
+    {
+      "month": "202112",
+      "count": 20948
+    },
+    {
+      "month": "202201",
+      "count": 19554
+    },
+    {
+      "month": "202202",
+      "count": 17123
+    },
+    {
+      "month": "202203",
+      "count": 22437
+    },
+    {
+      "month": "202204",
+      "count": 21559
+    },
+    {
+      "month": "202205",
+      "count": 26375
+    },
+    {
+      "month": "202206",
+      "count": 19576
+    },
+    {
+      "month": "202207",
+      "count": 24650
+    },
+    {
+      "month": "202208",
+      "count": 23866
+    },
+    {
+      "month": "202209",
+      "count": 21031
+    },
+    {
+      "month": "202210",
+      "count": 22663
+    },
+    {
+      "month": "202211",
+      "count": 23377
+    },
+    {
+      "month": "202212",
+      "count": 23307
+    },
+    {
+      "month": "202301",
+      "count": 19030
+    },
+    {
+      "month": "202302",
+      "count": 20022
+    },
+    {
+      "month": "202303",
+      "count": 23658
+    },
+    {
+      "month": "202304",
+      "count": 21617
+    },
+    {
+      "month": "202305",
+      "count": 25299
+    },
+    {
+      "month": "202306",
+      "count": 21759
+    },
+    {
+      "month": "202307",
+      "count": 24106
+    },
+    {
+      "month": "202308",
+      "count": 24624
+    },
+    {
+      "month": "202309",
+      "count": 23813
+    },
+    {
+      "month": "202310",
+      "count": 24728
+    },
+    {
+      "month": "202311",
+      "count": 23919
+    },
+    {
+      "month": "202312",
+      "count": 22693
+    },
+    {
+      "month": "202401",
+      "count": 20541
+    },
+    {
+      "month": "202402",
+      "count": 17059
+    },
+    {
+      "month": "202403",
+      "count": 20580
+    },
+    {
+      "month": "202404",
+      "count": 21086
+    },
+    {
+      "month": "202405",
+      "count": 18587
+    },
+    {
+      "month": "202406",
+      "count": 20577
+    },
+    {
+      "month": "202407",
+      "count": 21403
+    },
+    {
+      "month": "202408",
+      "count": 26706
+    },
+    {
+      "month": "202409",
+      "count": 57527
+    },
+    {
+      "month": "202410",
+      "count": 61449
+    },
+    {
+      "month": "202411",
+      "count": 58235
+    },
+    {
+      "month": "202412",
+      "count": 56176
+    },
+    {
+      "month": "202501",
+      "count": 45413
+    },
+    {
+      "month": "202502",
+      "count": 40793
+    },
+    {
+      "month": "202503",
+      "count": 54686
+    },
+    {
+      "month": "202504",
+      "count": 53946
+    },
+    {
+      "month": "202505",
+      "count": 54795
+    },
+    {
+      "month": "202506",
+      "count": 53214
+    },
+    {
+      "month": "202507",
+      "count": 53492
+    },
+    {
+      "month": "202508",
+      "count": 51525
+    },
+    {
+      "month": "202509",
+      "count": 50329
+    },
+    {
+      "month": "202510",
+      "count": 51741
+    },
+    {
+      "month": "202511",
+      "count": 48671
+    },
+    {
+      "month": "202512",
+      "count": 50112
+    },
+    {
+      "month": "202601",
+      "count": 50842
+    },
+    {
+      "month": "202602",
+      "count": 36573
+    },
+    {
+      "month": "202603",
+      "count": 52098
+    },
+    {
+      "month": "202604",
+      "count": 51381
+    },
+    {
+      "month": "202605",
+      "count": 51381
+    },
+    {
+      "month": "202606",
+      "count": 51381
+    }
+  ],
+  "category_counts": [
+    {
+      "category": "fraud",
+      "label": "詐欺背信",
+      "count": 1446,
+      "change_pct": -3.79
+    },
+    {
+      "category": "injury",
+      "label": "傷害",
+      "count": 1040,
+      "change_pct": 1.66
+    },
+    {
+      "category": "sexual_offense",
+      "label": "妨害性自主罪",
+      "count": 297,
+      "change_pct": -8.9
+    },
+    {
+      "category": "public_integrity",
+      "label": "貪污／瀆職",
+      "count": 0,
+      "change_pct": -100.0
+    },
+    {
+      "category": "election_law",
+      "label": "違反選罷法",
+      "count": 0,
+      "change_pct": null
+    }
+  ],
+  "iccs_breakdown": [
+    {
+      "code": "01",
+      "name": "Acts leading to death or intending to cause death",
+      "count": 44,
+      "weighted_score": 4400,
+      "children": [
+        {
+          "metric": "殺人",
+          "severity_score": 100,
+          "count": 44,
+          "weighted_score": 4400
+        }
+      ]
+    },
+    {
+      "code": "02",
+      "name": "Acts causing harm or intending to cause harm to the person",
+      "count": 2210,
+      "weighted_score": 27300,
+      "children": [
+        {
+          "metric": "駕駛過失",
+          "severity_score": 10,
+          "count": 1170,
+          "weighted_score": 11700
+        },
+        {
+          "metric": "傷害",
+          "severity_score": 15,
+          "count": 1040,
+          "weighted_score": 15600
+        }
+      ]
+    },
+    {
+      "code": "03",
+      "name": "Injurious acts of a sexual nature",
+      "count": 489,
+      "weighted_score": 22710,
+      "children": [
+        {
+          "metric": "妨害性自主罪",
+          "severity_score": 70,
+          "count": 297,
+          "weighted_score": 20790
+        },
+        {
+          "metric": "妨害風化",
+          "severity_score": 10,
+          "count": 192,
+          "weighted_score": 1920
+        }
+      ]
+    },
+    {
+      "code": "04",
+      "name": "Acts of violence or threatened violence against a person that involve property",
+      "count": 185,
+      "weighted_score": 9665,
+      "children": [
+        {
+          "metric": "恐嚇取財",
+          "severity_score": 30,
+          "count": 103,
+          "weighted_score": 3090
+        },
+        {
+          "metric": "強盜搶奪",
+          "severity_score": 80,
+          "count": 81,
+          "weighted_score": 6480
+        },
+        {
+          "metric": "擄人勒贖",
+          "severity_score": 95,
+          "count": 1,
+          "weighted_score": 95
+        }
+      ]
+    },
+    {
+      "code": "05",
+      "name": "Acts against property only",
+      "count": 8327,
+      "weighted_score": 41553,
+      "children": [
+        {
+          "metric": "竊盜",
+          "severity_score": 5,
+          "count": 6883,
+          "weighted_score": 34415
+        },
+        {
+          "metric": "侵占",
+          "severity_score": 6,
+          "count": 551,
+          "weighted_score": 3306
+        },
+        {
+          "metric": "毀棄損壞",
+          "severity_score": 4,
+          "count": 523,
+          "weighted_score": 2092
+        },
+        {
+          "metric": "重利",
+          "severity_score": 5,
+          "count": 254,
+          "weighted_score": 1270
+        },
+        {
+          "metric": "竊佔",
+          "severity_score": 5,
+          "count": 61,
+          "weighted_score": 305
+        },
+        {
+          "metric": "贓物",
+          "severity_score": 3,
+          "count": 55,
+          "weighted_score": 165
+        }
+      ]
+    },
+    {
+      "code": "06",
+      "name": "Acts involving controlled substances or other psychoactive substances",
+      "count": 3224,
+      "weighted_score": 38588,
+      "children": [
+        {
+          "metric": "違反毒品危害防制條例",
+          "severity_score": 12,
+          "count": 3199,
+          "weighted_score": 38388
+        },
+        {
+          "metric": "違反藥事法",
+          "severity_score": 8,
+          "count": 25,
+          "weighted_score": 200
+        }
+      ]
+    },
+    {
+      "code": "07",
+      "name": "Acts involving fraud, deception or corruption",
+      "count": 1725,
+      "weighted_score": 13808,
+      "children": [
+        {
+          "metric": "詐欺背信",
+          "severity_score": 8,
+          "count": 1446,
+          "weighted_score": 11568
+        },
+        {
+          "metric": "偽造文書印文",
+          "severity_score": 8,
+          "count": 275,
+          "weighted_score": 2200
+        },
+        {
+          "metric": "偽造有價證券",
+          "severity_score": 10,
+          "count": 4,
+          "weighted_score": 40
+        },
+        {
+          "metric": "違反貪污治罪條例",
+          "severity_score": 35,
+          "count": 0,
+          "weighted_score": 0
+        },
+        {
+          "metric": "瀆職",
+          "severity_score": 25,
+          "count": 0,
+          "weighted_score": 0
+        }
+      ]
+    },
+    {
+      "code": "08",
+      "name": "Acts against public order and authority",
+      "count": 145,
+      "weighted_score": 1440,
+      "children": [
+        {
+          "metric": "妨害公務",
+          "severity_score": 10,
+          "count": 140,
+          "weighted_score": 1400
+        },
+        {
+          "metric": "妨害秩序",
+          "severity_score": 8,
+          "count": 5,
+          "weighted_score": 40
+        },
+        {
+          "metric": "違反選罷法",
+          "severity_score": 15,
+          "count": 0,
+          "weighted_score": 0
+        }
+      ]
+    },
+    {
+      "code": "09",
+      "name": "Acts against public safety and national security",
+      "count": 4474,
+      "weighted_score": 53688,
+      "children": [
+        {
+          "metric": "公共危險",
+          "severity_score": 12,
+          "count": 4474,
+          "weighted_score": 53688
+        },
+        {
+          "metric": "內亂",
+          "severity_score": 90,
+          "count": 0,
+          "weighted_score": 0
+        }
+      ]
+    },
+    {
+      "code": "10",
+      "name": "Acts against the natural environment",
+      "count": 5,
+      "weighted_score": 25,
+      "children": [
+        {
+          "metric": "違反森林法",
+          "severity_score": 5,
+          "count": 5,
+          "weighted_score": 25
+        }
+      ]
+    },
+    {
+      "code": "11",
+      "name": "Other criminal acts not elsewhere classified",
+      "count": 743,
+      "weighted_score": 3582,
+      "children": [
+        {
+          "metric": "違反商標法",
+          "severity_score": 3,
+          "count": 289,
+          "weighted_score": 867
+        },
+        {
+          "metric": "妨害電腦使用",
+          "severity_score": 8,
+          "count": 210,
+          "weighted_score": 1680
+        },
+        {
+          "metric": "違反著作權法",
+          "severity_score": 4,
+          "count": 185,
+          "weighted_score": 740
+        },
+        {
+          "metric": "妨害家庭及婚姻",
+          "severity_score": 5,
+          "count": 59,
+          "weighted_score": 295
+        },
+        {
+          "metric": "違反專利法",
+          "severity_score": 3,
+          "count": 0,
+          "weighted_score": 0
+        }
+      ]
+    }
+  ],
+  "flags_summary": {
+    "cyber": 210,
+    "weapon": 126,
+    "domestic": 59,
+    "organized_fraud": 1446
+  },
+  "region_weighted_counts": [
+    {
+      "geography": "新北市",
+      "count": 4220,
+      "weighted_score": 42538
+    },
+    {
+      "geography": "臺北市",
+      "count": 2916,
+      "weighted_score": 27663
+    },
+    {
+      "geography": "高雄市",
+      "count": 2787,
+      "weighted_score": 26110
+    },
+    {
+      "geography": "臺中市",
+      "count": 2127,
+      "weighted_score": 21879
+    },
+    {
+      "geography": "臺南市",
+      "count": 1864,
+      "weighted_score": 17719
+    },
+    {
+      "geography": "桃園市",
+      "count": 1515,
+      "weighted_score": 14348
+    },
+    {
+      "geography": "彰化縣",
+      "count": 815,
+      "weighted_score": 9399
+    },
+    {
+      "geography": "屏東縣",
+      "count": 637,
+      "weighted_score": 6815
+    },
+    {
+      "geography": "苗栗縣",
+      "count": 587,
+      "weighted_score": 6281
+    },
+    {
+      "geography": "宜蘭縣",
+      "count": 407,
+      "weighted_score": 4753
+    },
+    {
+      "geography": "雲林縣",
+      "count": 432,
+      "weighted_score": 4715
+    },
+    {
+      "geography": "花蓮縣",
+      "count": 417,
+      "weighted_score": 4621
+    },
+    {
+      "geography": "南投縣",
+      "count": 456,
+      "weighted_score": 4492
+    },
+    {
+      "geography": "基隆市",
+      "count": 318,
+      "weighted_score": 4003
+    },
+    {
+      "geography": "新竹縣",
+      "count": 380,
+      "weighted_score": 3876
+    },
+    {
+      "geography": "新竹市",
+      "count": 424,
+      "weighted_score": 3806
+    },
+    {
+      "geography": "嘉義縣",
+      "count": 327,
+      "weighted_score": 3400
+    },
+    {
+      "geography": "臺東縣",
+      "count": 204,
+      "weighted_score": 2846
+    },
+    {
+      "geography": "嘉義市",
+      "count": 272,
+      "weighted_score": 2576
+    },
+    {
+      "geography": "澎湖縣",
+      "count": 58,
+      "weighted_score": 525
+    },
+    {
+      "geography": "金門縣",
+      "count": 41,
+      "weighted_score": 358
+    },
+    {
+      "geography": "連江縣",
+      "count": 2,
+      "weighted_score": 23
+    }
+  ],
+  "region_metric": "詐欺背信",
+  "region_counts": [
+    {
+      "geography": "臺北市",
+      "count": 340
+    },
+    {
+      "geography": "新北市",
+      "count": 328
+    },
+    {
+      "geography": "高雄市",
+      "count": 164
+    },
+    {
+      "geography": "臺中市",
+      "count": 122
+    },
+    {
+      "geography": "臺南市",
+      "count": 121
+    },
+    {
+      "geography": "桃園市",
+      "count": 68
+    },
+    {
+      "geography": "彰化縣",
+      "count": 45
+    },
+    {
+      "geography": "屏東縣",
+      "count": 34
+    },
+    {
+      "geography": "雲林縣",
+      "count": 27
+    },
+    {
+      "geography": "宜蘭縣",
+      "count": 25
+    },
+    {
+      "geography": "苗栗縣",
+      "count": 25
+    },
+    {
+      "geography": "新竹市",
+      "count": 22
+    },
+    {
+      "geography": "花蓮縣",
+      "count": 22
+    },
+    {
+      "geography": "嘉義縣",
+      "count": 20
+    },
+    {
+      "geography": "南投縣",
+      "count": 19
+    },
+    {
+      "geography": "基隆市",
+      "count": 18
+    },
+    {
+      "geography": "嘉義市",
+      "count": 17
+    },
+    {
+      "geography": "新竹縣",
+      "count": 12
+    },
+    {
+      "geography": "臺東縣",
+      "count": 3
+    },
+    {
+      "geography": "金門縣",
+      "count": 3
+    },
+    {
+      "geography": "連江縣",
+      "count": 1
+    },
+    {
+      "geography": "澎湖縣",
+      "count": 0
+    }
+  ],
+  "demographics": {
+    "gender": {
+      "男": 10
+    },
+    "age": {
+      "20-29": 5,
+      "30-39": 5
+    },
+    "occupation": {
+      "餐飲業": 5,
+      "臨時工": 5
+    },
+    "education": {
+      "大學畢業之智識程度": 5,
+      "國中畢業之智識程度": 5
+    },
+    "income_level": {
+      "貧寒": 5,
+      "勉可維持": 5
+    },
+    "birth_city": {
+      "新北市": 5,
+      "台北市": 5
+    }
+  },
+  "quality": {
+    "raw_rows": 1248,
+    "selected_rows": 52,
+    "duplicate_rows_dropped": 0,
+    "metric_count": 52,
+    "matched_metric_totals": 52,
+    "invalid_cells": 0,
+    "dash_zero_cells": 0
+  },
+  "summary": {
+    "text": "2013 年 1 月受（處）理刑事案件共 23,909 件，加權治安指數為 216,759；詐欺背信 1,446 件、傷害 1,040 件、妨害性自主罪 297 件。",
+    "method": "MOI dataset 9603 SQL descriptive statistics with severity weighting"
+  }
+}

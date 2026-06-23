@@ -464,16 +464,13 @@ def main():
         judgments_items = []
         for r in judgments_cursor:
             item = dict(r)
+            # Remove heavy text field to keep static JSON lightweight
+            item.pop("excerpt", None)
             item["category_flags"] = parse_json(item["category_flags"], {})
             item["matched_keywords"] = parse_json(item["matched_keywords"], [])
-            item["summary"] = extractive_summary(item)
+            # Skip heavy extractive summary for static JSON
+            item["summary"] = None
             judgments_items.append(item)
-            
-            # 5. Detail JSON for each of these judgments
-            clean_jid = urllib.parse.quote(item["jid"]).replace("%", "_")
-            
-            with open(static_api_dir / f"judgments_detail_{clean_jid}.json", "w", encoding="utf-8") as f:
-                json.dump(item, f, ensure_ascii=False, indent=2)
                 
         judgments_payload = {
             "total": total_judgments if total_judgments > 0 else len(judgments_items),
