@@ -1,7 +1,0 @@
-data/
-db_data/
-cookie.txt
-scratch_*
-__pycache__/
-*.pyc
-.playwright-cli
