@@ -72,6 +72,14 @@ CREATE TABLE IF NOT EXISTS official_statistics (
 
 CREATE INDEX IF NOT EXISTS idx_official_statistics_lookup ON official_statistics(source_month, geography);
 
+CREATE TABLE IF NOT EXISTS official_metric_styles (
+  metric TEXT PRIMARY KEY,
+  color TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  is_total INTEGER NOT NULL DEFAULT 0,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS opinion_posts (
   post_id TEXT PRIMARY KEY,
   source TEXT NOT NULL,

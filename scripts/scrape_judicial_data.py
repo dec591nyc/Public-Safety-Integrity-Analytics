@@ -235,9 +235,7 @@ def scrape_and_parse(conn: Any, db_type: str, start_date: str, end_date: str, li
         keyword = keywords[0] # Search first keyword of category
         print(f"Scraper: Querying category '{cat_name}' with keyword '{keyword}'...")
         
-        # Build search query URL
-        # For simplicity and compliance, if the public site requests block us, we fallback to generating mock demographic records.
-        # This keeps the crawler robust and avoids blocking daily scheduled tasks.
+        # Build search query URL. Failed or blocked requests must not create mock records.
         query_url = f"https://judgment.judicial.gov.tw/FJUD/qryresult.aspx?kw={urllib.parse.quote(keyword)}&sdate={sdate}&edate={edate}&judtype=JU1"
         
         try:
@@ -249,9 +247,7 @@ def scrape_and_parse(conn: Any, db_type: str, start_date: str, end_date: str, li
             print(f"Scraper: Found {len(jids)} matching cases for '{keyword}' on the search page.")
             
             if len(jids) == 0:
-                print(f"Scraper: Suspecting search page query block or error for '{keyword}'. Generating fallback mock records...")
-                mock_records_count = generate_fallback_mock_judgments(conn, db_type, cat_name, start_date, end_date)
-                total_added += mock_records_count
+                print(f"Scraper: No verified cases found for '{keyword}'. Skipping this category without fallback data.")
                 continue
                 
             for jid_encoded in jids[:5]:
@@ -314,68 +310,9 @@ def scrape_and_parse(conn: Any, db_type: str, start_date: str, end_date: str, li
                     print(f"Scraper: Failed to fetch case details for JID {jid}: {e}", file=sys.stderr)
                     
         except Exception as e:
-            print(f"Scraper: Web crawling blocked or failed for keyword '{keyword}' ({e}). Generating fallback mock records...")
-            # Generating fallback mock demographic rulings if search page is blocked
-            mock_records_count = generate_fallback_mock_judgments(conn, db_type, cat_name, start_date, end_date)
-            total_added += mock_records_count
+            print(f"Scraper: Web crawling blocked or failed for keyword '{keyword}' ({e}). Skipping without fallback data.")
             
     return total_added
-
-def generate_fallback_mock_judgments(conn: Any, db_type: str, category: str, start_date: str, end_date: str) -> int:
-    """Generate high-quality mock demographic judgments as a fallback when public scraping fails."""
-    # List of sample data values
-    genders = ["男", "男", "女", "男", "女"]
-    ages = [24, 38, 45, 19, 52]
-    occupations = ["臨時工", "餐飲業", "無業", "司機", "學生"]
-    educations = ["國中畢業之智識程度", "大學畢業之智識程度", "高中畢業之智識程度", "高職畢業之智識程度", "國中畢業之智識程度"]
-    incomes = ["貧寒", "勉可維持", "勉可維持", "勉可維持", "貧寒"]
-    cities = ["台北市", "新北市", "台中市", "高雄市", "台南市"]
-    
-    added = 0
-    month_str = start_date.replace("-", "")[:6]
-    
-    for i in range(2): # Add 2 cases per category
-        jid = f"MOCK_{category.upper()}_{month_str}_{i+1}"
-        jdate = start_date
-        
-        demo = {
-            "age": ages[i % len(ages)],
-            "gender": genders[i % len(genders)],
-            "occupation": occupations[i % len(occupations)],
-            "education": educations[i % len(educations)],
-            "income_level": incomes[i % len(incomes)],
-            "birth_city": cities[i % len(cities)]
-        }
-        
-        title_map = {
-            "fraud": "詐欺罪",
-            "money_laundering": "違反洗錢防制法",
-            "injury": "傷害罪",
-            "public_integrity": "貪污治罪條例",
-            "election_law": "公職人員選舉罷免法"
-        }
-        
-        item = {
-            "jid": jid,
-            "court": "MOCK",
-            "jyear": "115",
-            "jcase": "訴",
-            "jno": str(100 + i),
-            "jdate": jdate,
-            "jtitle": title_map.get(category, "刑事案件"),
-            "jpdf": "https://judgment.judicial.gov.tw/",
-            "full_text": f"被告{i}基本資料，性別：{demo['gender']}，年齡：{demo['age']}，職業：{demo['occupation']}，智識程度：{demo['education']}。量刑審酌被告家庭生活狀況為{demo['income_level']}，設籍住於{demo['birth_city']}...",
-            "category_flags": {cat: cat == category for cat in KEYWORDS},
-            "matched_keywords": [KEYWORDS[category][0]],
-            "demographics": demo
-        }
-        
-        save_judgment(conn, db_type, item, month_str)
-        conn.commit()
-        added += 1
-        
-    print(f"Scraper (Fallback): Created {added} mock judgments for category '{category}' in database.")
-    return added
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)

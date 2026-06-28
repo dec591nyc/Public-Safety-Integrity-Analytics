@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+  <defs>
+    <style>
+      .bg { fill: #f6f8fb; }
+      .panel { fill: #ffffff; stroke: #d9e2ec; stroke-width: 1.5; }
+      .panel-soft { fill: #f9fbff; stroke: #d9e2ec; stroke-width: 1.2; }
+      .title { font: 800 46px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 500 23px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #4b5870; }
+      .section { font: 800 27px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #172033; }
+      .label { font: 700 22px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #233047; }
+      .text { font: 500 19px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #4b5870; }
+      .small { font: 500 16px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #667085; }
+      .num { font: 800 38px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #0f766e; }
+      .num-blue { font: 800 38px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #2563eb; }
+      .num-orange { font: 800 38px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #ea580c; }
+      .bar-label { font: 700 18px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #233047; }
+      .bar-value { font: 800 18px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #172033; }
+      .foot { font: 500 14px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #667085; }
+      .chip { fill: #e8f2ff; stroke: #bfdbfe; stroke-width: 1; }
+      .chip-green { fill: #e8f8f2; stroke: #a7f3d0; stroke-width: 1; }
+      .chip-yellow { fill: #fff7df; stroke: #fde68a; stroke-width: 1; }
+      .chip-red { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="1100"/>
+
+  <text class="title" x="70" y="86">台灣地方治安數據儀表板：資料完整度審計</text>
+  <text class="subtitle" x="72" y="126">以官方月統計為核心，先建立可信資料層，再擴充 PWA、LineBot、Power BI、月報與簡報輸出</text>
+
+  <rect class="panel" x="70" y="165" width="1460" height="190" rx="16"/>
+  <text class="section" x="105" y="213">目前已找到且最能支撐產品核心的資料</text>
+
+  <g transform="translate(105 245)">
+    <rect class="panel-soft" x="0" y="0" width="330" height="82" rx="14"/>
+    <text class="num" x="24" y="44">395,616</text>
+    <text class="small" x="24" y="68">本機 SQLite 官方統計資料點</text>
+  </g>
+  <g transform="translate(465 245)">
+    <rect class="panel-soft" x="0" y="0" width="300" height="82" rx="14"/>
+    <text class="num-blue" x="24" y="44">317</text>
+    <text class="small" x="24" y="68">月份，範圍 2000-01 到 2026-06</text>
+  </g>
+  <g transform="translate(795 245)">
+    <rect class="panel-soft" x="0" y="0" width="300" height="82" rx="14"/>
+    <text class="num-orange" x="24" y="44">24</text>
+    <text class="small" x="24" y="68">地理列：22 縣市 + 2 彙總列</text>
+  </g>
+  <g transform="translate(1125 245)">
+    <rect class="panel-soft" x="0" y="0" width="355" height="82" rx="14"/>
+    <text class="num-blue" x="24" y="44">52</text>
+    <text class="small" x="24" y="68">案類指標，每月 1,248 個統計點</text>
+  </g>
+
+  <rect class="panel" x="70" y="385" width="700" height="465" rx="16"/>
+  <text class="section" x="105" y="435">最新已驗證官方月份：2026-05</text>
+  <text class="text" x="105" y="468">內政部統計查詢網 c0620101，CSV 標籤：115年 5月 / 機關別總計</text>
+  <text class="num-blue" x="105" y="525">52,759</text>
+  <text class="label" x="245" y="519">刑事案件發生件數（全國總計）</text>
+
+  <text class="label" x="105" y="575">2026-05 前五大案類</text>
+  <g transform="translate(105 602)">
+    <text class="bar-label" x="0" y="20">詐欺背信</text>
+    <rect x="132" y="4" width="420" height="22" rx="6" fill="#2563eb"/>
+    <text class="bar-value" x="570" y="22">14,088</text>
+
+    <text class="bar-label" x="0" y="62">竊盜</text>
+    <rect x="132" y="46" width="183" height="22" rx="6" fill="#0f766e"/>
+    <text class="bar-value" x="570" y="64">6,136</text>
+
+    <text class="bar-label" x="0" y="104">公共危險</text>
+    <rect x="132" y="88" width="163" height="22" rx="6" fill="#ea580c"/>
+    <text class="bar-value" x="570" y="106">5,476</text>
+
+    <text class="bar-label" x="0" y="146">毒品危害防制</text>
+    <rect x="132" y="130" width="148" height="22" rx="6" fill="#7c3aed"/>
+    <text class="bar-value" x="570" y="148">4,960</text>
+
+    <text class="bar-label" x="0" y="188">駕駛過失</text>
+    <rect x="132" y="172" width="102" height="22" rx="6" fill="#64748b"/>
+    <text class="bar-value" x="570" y="190">3,417</text>
+  </g>
+
+  <rect class="chip-yellow" x="105" y="804" width="610" height="34" rx="17"/>
+  <text class="small" x="126" y="827">注意：請求 2026-06 時官方仍回傳 115年 5月，6 月應標示為 pending</text>
+
+  <rect class="panel" x="830" y="385" width="700" height="465" rx="16"/>
+  <text class="section" x="865" y="435">可呈現的實際結果</text>
+  <text class="text" x="865" y="468">先以可信資料交付大眾可理解的縣市與案類趨勢</text>
+
+  <text class="label" x="865" y="520">2026-05 前五大縣市（原始件數）</text>
+  <g transform="translate(865 548)">
+    <text class="bar-label" x="0" y="20">新北市</text>
+    <rect x="126" y="4" width="420" height="22" rx="6" fill="#2563eb"/>
+    <text class="bar-value" x="565" y="22">9,732</text>
+
+    <text class="bar-label" x="0" y="62">臺中市</text>
+    <rect x="126" y="46" width="272" height="22" rx="6" fill="#0f766e"/>
+    <text class="bar-value" x="565" y="64">6,306</text>
+
+    <text class="bar-label" x="0" y="104">桃園市</text>
+    <rect x="126" y="88" width="261" height="22" rx="6" fill="#ea580c"/>
+    <text class="bar-value" x="565" y="106">6,041</text>
+
+    <text class="bar-label" x="0" y="146">臺北市</text>
+    <rect x="126" y="130" width="244" height="22" rx="6" fill="#7c3aed"/>
+    <text class="bar-value" x="565" y="148">5,655</text>
+
+    <text class="bar-label" x="0" y="188">高雄市</text>
+    <rect x="126" y="172" width="244" height="22" rx="6" fill="#64748b"/>
+    <text class="bar-value" x="565" y="190">5,653</text>
+  </g>
+  <text class="small" x="865" y="766">原始件數不等於風險排行；接上人口資料後，才能做每十萬人口率。</text>
+
+  <g transform="translate(865 802)">
+    <rect class="chip-green" x="0" y="0" width="150" height="38" rx="19"/>
+    <text class="small" x="20" y="25">縣市趨勢</text>
+    <rect class="chip" x="165" y="0" width="150" height="38" rx="19"/>
+    <text class="small" x="188" y="25">案類比較</text>
+    <rect class="chip" x="330" y="0" width="145" height="38" rx="19"/>
+    <text class="small" x="350" y="25">MoM / YoY</text>
+    <rect class="chip-yellow" x="490" y="0" width="155" height="38" rx="19"/>
+    <text class="small" x="512" y="25">月報輸出</text>
+  </g>
+
+  <rect class="panel" x="70" y="880" width="1460" height="150" rx="16"/>
+  <text class="section" x="105" y="930">資料分級與下一步</text>
+  <g transform="translate(105 957)">
+    <rect class="chip-green" x="0" y="0" width="260" height="48" rx="24"/>
+    <text class="label" x="22" y="31">A：官方月統計 c0620101</text>
+
+    <rect class="chip-green" x="285" y="0" width="330" height="48" rx="24"/>
+    <text class="label" x="307" y="31">A-：破獲件數 c0620102、嫌疑犯數 c0620103</text>
+
+    <rect class="chip-yellow" x="640" y="0" width="330" height="48" rx="24"/>
+    <text class="label" x="662" y="31">B：人口分母、165 打詐資料待驗證</text>
+
+    <rect class="chip-red" x="995" y="0" width="330" height="48" rx="24"/>
+    <text class="label" x="1017" y="31">D：目前裁判與輿情為 mock/demo</text>
+  </g>
+
+  <text class="foot" x="70" y="1062">資料依據：本機 SQLite 審計（2026-06-27）；內政部統計查詢網 c0620101 即時 CSV（ym=11505）；165 打詐儀表板頁面與前端端點檢視。</text>
+</svg>

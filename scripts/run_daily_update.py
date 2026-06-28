@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 """Unified daily update script to sync MOI statistics and crawl opinion data."""
 
 from __future__ import annotations
@@ -21,6 +21,7 @@ from urllib.request import Request, urlopen
 # Add current scripts directory to sys.path to allow importing scrape_judicial_data
 sys.path.append(str(Path(__file__).resolve().parent))
 from scrape_judicial_data import scrape_and_parse
+from metric_styles import sync_metric_styles
 
 # Base Configurations
 DATASET_ID = "9603"
@@ -102,13 +103,6 @@ def init_db(conn: Any, db_type: str, db_path: Path) -> None:
         cursor.execute("PRAGMA journal_mode=WAL")
         cursor.execute("PRAGMA synchronous=NORMAL")
         cursor.execute("PRAGMA foreign_keys=ON")
-        cursor.execute("DROP TABLE IF EXISTS monthly_statistics")
-        cursor.execute("DROP TABLE IF EXISTS public_opinions")
-        cursor.execute("DROP TABLE IF EXISTS judgments")
-        cursor.execute("DROP TABLE IF EXISTS judgment_texts")
-        cursor.execute("DROP TABLE IF EXISTS opinion_posts")
-        cursor.execute("DROP TABLE IF EXISTS official_statistics")
-        cursor.execute("DROP TABLE IF EXISTS crime_categories")
         cursor.executescript(schema_path.read_text(encoding="utf-8"))
     else:
         print("Initializing PostgreSQL tables (Supabase)...")
@@ -153,7 +147,10 @@ def get_months_range(start_month_str: str) -> list[str]:
     
     now = datetime.now()
     end_yr = now.year
-    end_mo = now.month
+    end_mo = now.month - 1
+    if end_mo == 0:
+        end_mo = 12
+        end_yr -= 1
     
     months = []
     curr_yr, curr_mo = start_yr, start_mo
@@ -182,6 +179,20 @@ def parse_value(value: str) -> tuple[int, str]:
 
 def geography_name(row_label: str) -> str:
     return row_label.rsplit("/", 1)[-1].strip()
+
+def row_label_month(row_label: str) -> str | None:
+    range_match = re.search(r"(\d{2,3})年\s*\((\d{1,2})~(\d{1,2})月\)", row_label)
+    if range_match:
+        roc_year = int(range_match.group(1))
+        start_month = int(range_match.group(2))
+        end_month = int(range_match.group(3))
+        if start_month == end_month:
+            return f"{roc_year + 1911}{end_month:02d}"
+        return None
+    single_match = re.search(r"(\d{2,3})年\s*(\d{1,2})月", row_label)
+    if single_match:
+        return f"{int(single_match.group(1)) + 1911}{int(single_match.group(2)):02d}"
+    return None
 
 def download_and_ingest_moi(conn: Any, db_type: str, month: str) -> int:
     year = int(month[:4])
@@ -218,7 +229,19 @@ def download_and_ingest_moi(conn: Any, db_type: str, month: str) -> int:
     monthly_rows = [row for row in rows if re.search(r"\d+月/", row[dimension_name])]
     if not monthly_rows:
         monthly_rows = rows
-        
+
+    row_months = {row_label_month(row[dimension_name]) for row in monthly_rows}
+    row_months.discard(None)
+    if month not in row_months:
+        display_months = ", ".join(sorted(row_months)) or "unknown"
+        print(
+            f"MOI: Skipping {month}; official export returned month(s): {display_months}.",
+            file=sys.stderr,
+        )
+        return 0
+    monthly_rows = [row for row in monthly_rows if row_label_month(row[dimension_name]) == month]
+
+    db_execute(conn, db_type, "DELETE FROM official_statistics WHERE source_month = ?", (month,))
     upsert_count = 0
     for row in monthly_rows:
         geo = geography_name(row[dimension_name])
@@ -241,130 +264,6 @@ def download_and_ingest_moi(conn: Any, db_type: str, month: str) -> int:
     conn.commit()
     print(f"MOI: Synced {month} - Ingested {upsert_count} metric data points.")
     return upsert_count
-
-def generate_mock_opinions(conn: Any, db_type: str, month: str) -> int:
-    cursor = db_execute(
-        conn,
-        db_type,
-        """
-        SELECT 
-          SUM(CASE WHEN metric = '詐欺背信' THEN raw_value ELSE 0 END) as fraud,
-          SUM(CASE WHEN metric = '傷害' THEN raw_value ELSE 0 END) as injury,
-          SUM(CASE WHEN metric = '妨害性自主罪' THEN raw_value ELSE 0 END) as sexual,
-          SUM(CASE WHEN metric = '違反貪污治罪條例' THEN raw_value ELSE 0 END) as corruption
-        FROM official_statistics
-        WHERE source_month = ? AND geography = '機關別總計'
-        """,
-        (month,)
-    )
-    row = cursor.fetchone()
-    
-    fraud_val = row[0] if row and row[0] else 5000
-    injury_val = row[1] if row and row[1] else 1200
-    sexual_val = row[2] if row and row[2] else 300
-    corruption_val = row[3] if row and row[3] else 10
-    
-    posts = []
-    yr_str = month[:4]
-    mo_str = month[4:]
-    
-    if fraud_val > 0:
-        posts.append({
-            "post_id": f"ptt_fraud_{month}",
-            "source": "PTT",
-            "author": "antigravity",
-            "title": f"[新聞] 警政署公布 {yr_str} 年 {int(mo_str)} 月詐欺案再創新高，民眾防詐意識有待加強",
-            "content": f"根據最新統計，{yr_str}年{int(mo_str)}月單月詐欺案件量高達 {fraud_val} 件。網上民眾熱烈討論：現在新型詐騙簡訊越來越多，甚至有 AI 語音和偽造影片，大家千萬要小心，防詐專線 165 撥打率也同步飆升！",
-            "url": "https://www.ptt.cc/bbs/Gossiping/M.112234.html",
-            "publish_date": f"{yr_str}-{mo_str}-15",
-            "category": "fraud",
-            "sentiment": -0.6,
-            "matched_keywords": json.dumps(["詐欺", "防詐", "警政署", "簡訊"])
-        })
-        
-    if corruption_val > 0:
-        posts.append({
-            "post_id": f"ptt_corruption_{month}",
-            "source": "PTT",
-            "author": "justice_fighter",
-            "title": f"[爆卦] 廉政署偵辦貪污弊案，本月起訴多名涉案公務人員",
-            "content": f"本月官方貪污案紀錄有 {corruption_val} 件。網友反應：公務人員收賄圖利令人痛心！希望能嚴查到底，重塑廉能政府，司改團體表示會持續追蹤這批起訴名單的判決進度。",
-            "url": "https://www.ptt.cc/bbs/Gossiping/M.112235.html",
-            "publish_date": f"{yr_str}-{mo_str}-20",
-            "category": "public_integrity",
-            "sentiment": -0.8,
-            "matched_keywords": json.dumps(["貪污", "收賄", "廉政", "起訴"])
-        })
-
-    if injury_val > 0:
-        posts.append({
-            "post_id": f"dcard_injury_{month}",
-            "source": "Dcard",
-            "author": "student_daily",
-            "title": f"行車糾紛引發街頭鬥毆！本月傷害案頻發，出門在外真的要克制情緒",
-            "content": f"看到新聞本月傷害案全台達 {injury_val} 件。今天在校門口看到有兩台機車互不相讓，直接下車扭打，最後雙雙掛彩送醫。奉勸各位在路上遇到糾紛直接報警，不要用暴力解決。",
-            "url": "https://www.dcard.tw/f/talk/p/246810.html",
-            "publish_date": f"{yr_str}-{mo_str}-10",
-            "category": "injury",
-            "sentiment": -0.4,
-            "matched_keywords": json.dumps(["傷害", "行車糾紛", "鬥毆", "暴力"])
-        })
-        
-    if sexual_val > 0:
-        posts.append({
-            "post_id": f"news_sexual_{month}",
-            "source": "新聞媒體",
-            "author": "中時聯合中央社",
-            "title": f"守護校園安全！教育部加強宣導妨害性自主防治措施",
-            "content": f"本月性自主犯罪統計達 {sexual_val} 件。為防範性侵害與性騷擾，教育部宣布將與各級學校合作舉辦防治講座，並強化校園死角監視器裝設及巡邏頻率。",
-            "url": "https://news.example.com.tw/article/4829",
-            "publish_date": f"{yr_str}-{mo_str}-05",
-            "category": "sexual_offense",
-            "sentiment": -0.2,
-            "matched_keywords": json.dumps(["性自主", "防治", "校園安全", "性侵害"])
-        })
-        
-    posts.append({
-        "post_id": f"legal_review_{month}",
-        "source": "法律／司改評論",
-        "author": "司法正義觀察家",
-        "title": f"探討刑法修正案對於詐欺背信罪加重處罰之實質影響",
-        "content": "近期防詐法案修法降低起訴門檻，司改論壇撰文指出：加重刑期固然能給予警示，但要根治犯罪仍須從金流管制、人頭戶管制等預防面著手。司法資源是否被輕微案件癱瘓亦值得關注。",
-        "url": "https://legal.example.org.tw/posts/10294",
-        "publish_date": f"{yr_str}-{mo_str}-28",
-        "category": "fraud",
-        "sentiment": 0.1,
-        "matched_keywords": json.dumps(["詐欺", "修法", "人頭戶", "司法資源"])
-    })
-    
-    for p in posts:
-        db_execute(
-            conn,
-            db_type,
-            """
-            INSERT INTO opinion_posts (
-              post_id, source, author, title, content, url, publish_date, category, sentiment, matched_keywords
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(post_id) DO UPDATE SET
-              source=EXCLUDED.source,
-              author=EXCLUDED.author,
-              title=EXCLUDED.title,
-              content=EXCLUDED.content,
-              url=EXCLUDED.url,
-              publish_date=EXCLUDED.publish_date,
-              category=EXCLUDED.category,
-              sentiment=EXCLUDED.sentiment,
-              matched_keywords=EXCLUDED.matched_keywords
-            """,
-            (
-                p["post_id"], p["source"], p["author"], p["title"], p["content"],
-                p["url"], p["publish_date"], p["category"], p["sentiment"], p["matched_keywords"]
-            )
-        )
-    conn.commit()
-    print(f"OPINION: Generated {len(posts)} realistic analysis posts for {month}.")
-    return len(posts)
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -404,7 +303,7 @@ def main() -> None:
             if prev_month == 0:
                 prev_month = 12
                 prev_year -= 1
-            months = [f"{prev_year}{prev_month:02d}", f"{now.year}{now.month:02d}"]
+            months = [f"{prev_year}{prev_month:02d}"]
             
         print(f"Update target months: {months}")
         
@@ -416,26 +315,9 @@ def main() -> None:
             stats_pts = download_and_ingest_moi(conn, db_type, m)
             synced_stats += stats_pts
             
-            # Scrape judgments for this month
-            year = int(m[:4])
-            month = int(m[4:])
-            next_mo = month + 1
-            next_yr = year
-            if next_mo > 12:
-                next_mo = 1
-                next_yr += 1
-            last_day = (datetime(next_yr, next_mo, 1) - timedelta(days=1)).day
-            start_date = f"{year}-{month:02d}-01"
-            end_date = f"{year}-{month:02d}-{last_day:02d}"
-            
-            print(f"Scraping judgments for {m} ({start_date} to {end_date})...")
-            # Limit to 10 to keep updates concise and fast
-            judgments_cnt = scrape_and_parse(conn, db_type, start_date, end_date, limit=10)
-            synced_judgments += judgments_cnt
-            
-            if stats_pts > 0:
-                opinion_pts = generate_mock_opinions(conn, db_type, m)
-                synced_opinions += opinion_pts
+            print("Skipping judgment/opinion collection: those feeds are not displayed until a verified, non-mock source is implemented.")
+        metric_style_count = sync_metric_styles(conn, db_type)
+        print(f"  Metric Styles Synced:         {metric_style_count}")
                 
         print(f"\nSummary of Run:")
         print(f"  Total Statistics Points Synced: {synced_stats}")

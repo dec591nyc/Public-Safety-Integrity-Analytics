@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="台灣公共安全官方統計與輿論數據對照平台" />
-  <title>JusticeWatch: Public Safety & Integrity Tracker</title>
+  <meta name="description" content="台灣地方治安數據儀表板，以官方刑事案件統計呈現案類主題、趨勢與縣市分布。" />
+  <title>台灣地方治安數據儀表板</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -13,345 +13,201 @@
 
   <header class="app-header">
     <div class="brand-block">
-      <div class="brand-line">
-        <span class="brand-mark" aria-hidden="true">法</span>
-        <div>
-          <p class="eyebrow">JUSTICEWATCH: PUBLIC SAFETY & INTEGRITY TRACKER</p>
-          <h1>JusticeWatch: 公共安全與輿情分析平台</h1>
-        </div>
-      </div>
-      <p class="subtitle">以官方統計觀察犯罪類別與地區分布，並逐步加入輿論聲量的數據對照。</p>
+      <p class="eyebrow">TAIWAN LOCAL PUBLIC SAFETY DASHBOARD</p>
+      <h1>台灣地方治安數據儀表板</h1>
+      <p class="subtitle">以內政部官方刑事案件統計，觀察民眾與民代常關注的案類、趨勢與縣市分布。</p>
     </div>
-    <div class="status-group" aria-label="系統狀態">
+    <div class="status-group" aria-label="資料狀態">
       <span class="status-dot" aria-hidden="true"></span>
-      <span>官方資料檢視</span>
+      <span>官方統計</span>
       <span class="status-divider" aria-hidden="true"></span>
       <span id="header-record-count">資料載入中</span>
     </div>
   </header>
 
-  <section class="query-shell" aria-labelledby="query-title">
-    <div class="query-heading">
-      <span id="query-title">資料控制列</span>
-      <small>月份套用至官方統計與輿情；關鍵字查詢會前往裁判來源索引</small>
-    </div>
-    <form id="global-query" class="query-grid">
-      <label>資料月份
-        <select id="month" name="month" aria-label="資料月份"></select>
-      </label>
-      <label>全文索引
-        <input id="query-search" name="q" placeholder="搜尋案由、法院、原告、被告、JID 或關鍵字" autocomplete="off" />
-      </label>
-      <button class="primary-action" type="submit">查詢來源</button>
-    </form>
-  </section>
-
-  <nav class="tabs" aria-label="主要頁面">
-    <button class="tab is-active" type="button" data-route="overview" aria-current="page">官方統計</button>
-    <button class="tab" type="button" data-route="opinion">輿論情報</button>
-    <button class="tab" type="button" data-route="truth">數據對照</button>
-    <button class="tab" type="button" data-route="database">裁判來源</button>
-  </nav>
-
   <main id="main-content">
-    <section id="page-overview" class="page is-active" data-page="overview">
-      <div class="page-heading">
-        <div>
-          <p class="section-kicker">OFFICIAL PUBLIC SAFETY STATISTICS</p>
-          <h2>受（處）理刑事案件統計</h2>
-          <p>呈現內政部資料集 9603 的單月案件量、類別與地區分布；數字不代表起訴或裁判件數。</p>
-        </div>
-        <a id="official-source-link" class="method-badge" href="#" target="_blank" rel="noreferrer">查看官方 CSV</a>
+    <section class="page-heading">
+      <div>
+        <p class="section-kicker">PUBLIC SAFETY BRIEF</p>
+        <h2>本月優先觀察什麼治安問題？</h2>
+        <p id="overview-summary">正在整理本月官方統計。</p>
       </div>
-
-      <section class="summary-strip" aria-labelledby="overview-summary-title">
-        <div class="summary-ticker-wrapper">
-          <span class="summary-label" id="overview-summary-title">系統摘要</span>
-          <div class="summary-ticker-container">
-            <p id="overview-summary" class="summary-ticker-text">正在整理本月資料。</p>
-          </div>
-        </div>
-        <span class="confidence-badge">官方資料 · 描述性統計</span>
-      </section>
-
-      <section class="metrics" id="metrics" aria-label="核心指標"></section>
-
-      <section class="dashboard-grid overview-primary">
-        <article class="panel panel-wide">
-          <div class="panel-head">
-            <div>
-              <h3>每月刑事案件量</h3>
-              <p>目前僅比較已自主下載並通過加總驗證的月份。</p>
-            </div>
-            <span class="chart-type">曲線圖</span>
-          </div>
-          <div id="monthly-trend" class="line-chart" role="img" aria-label="每月刑事案件量曲線圖"></div>
-          <details class="data-fallback">
-            <summary>查看數值表</summary>
-            <div id="monthly-table"></div>
-          </details>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>聯合國 ICCS 犯罪分類 (Level 1 / Level 2)</h3>
-              <p>以聯合國 ICCS 分類為主分類，點擊可展開檢視台灣本地法規案類與嚴重度得分。</p>
-            </div>
-            <span class="chart-type">互動分類</span>
-          </div>
-          <div id="iccs-container" class="iccs-list"></div>
-        </article>
-      </section>
-
-      <!-- Defendant Demographics Profile Section -->
-      <section class="dashboard-grid overview-demographics" style="margin-top: 14px;">
-        <article class="panel panel-wide">
-          <div class="panel-head">
-            <div>
-              <p class="section-kicker">DEFENDANT DEMOGRAPHIC PROFILE</p>
-              <h3>司法裁判被告人口特徵分析</h3>
-              <p>分析起訴與判決書中特徵化提取的性別、年齡、職業、教育程度、收入水準及出生地分佈。</p>
-            </div>
-            <span class="chart-type">特徵統計</span>
-          </div>
-          <div class="demographics-grid">
-            <div class="demo-card">
-              <h4>被告性別比例</h4>
-              <div id="demographics-gender" class="demo-chart-container"></div>
-            </div>
-            <div class="demo-card">
-              <h4>被告年齡分布</h4>
-              <div id="demographics-age" class="demo-chart-container"></div>
-            </div>
-            <div class="demo-card">
-              <h4>被告前八大職業</h4>
-              <div id="demographics-occupation" class="demo-chart-container"></div>
-            </div>
-            <div class="demo-card">
-              <h4>被告教育程度</h4>
-              <div id="demographics-education" class="demo-chart-container"></div>
-            </div>
-            <div class="demo-card">
-              <h4>被告收入水準</h4>
-              <div id="demographics-income" class="demo-chart-container"></div>
-            </div>
-            <div class="demo-card">
-              <h4>被告出生地/居住地縣市</h4>
-              <div id="demographics-city" class="demo-chart-container"></div>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="dashboard-grid overview-secondary">
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>各縣市加權治安風險排行</h3>
-              <p>以刑事案件數量乘以案件嚴重度權重累加計算，排除全國總計與署所屬機關。</p>
-            </div>
-            <span class="chart-type">風險排名</span>
-          </div>
-          <div id="region-list" class="bars"></div>
-        </article>
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>資料品質</h3>
-              <p>顯示去重、欄位加總與格式檢查結果。</p>
-            </div>
-            <span class="chart-type">表格</span>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>檢查項目</th><th class="numeric">結果</th><th>狀態</th></tr></thead>
-              <tbody id="quality-table"></tbody>
-            </table>
-          </div>
-        </article>
-      </section>
+      <div id="total-context" class="context-pill">總案量作為範圍背景</div>
     </section>
 
-    <section id="page-opinion" class="page" data-page="opinion">
-      <div class="page-heading">
-        <div>
-          <p class="section-kicker">PUBLIC DISCUSSION INTELLIGENCE</p>
-          <h2>輿論情報</h2>
-          <p>按月份、來源與議題整理討論量與摘要；此頁不以輿論取代裁判事實。</p>
-        </div>
-        <span id="opinion-status-badge" class="method-badge is-pending">爬蟲尚未啟動</span>
+    <nav id="view-tabs" class="view-tabs" aria-label="資料視覺分頁"></nav>
+
+    <section class="query-shell" aria-labelledby="query-title">
+      <div>
+        <span id="query-title">資料月份</span>
+        <small>切換月份後，目前分頁會同步更新。</small>
       </div>
-
-      <form id="opinion-filters" class="filter-band" aria-label="輿論情報篩選器">
-        <label>月份
-          <select id="opinion-month"></select>
+      <form id="global-query" class="query-grid">
+        <label>選擇月份
+          <select id="month" name="month" aria-label="資料月份"></select>
         </label>
-        <label>時間範圍
-          <select id="opinion-range">
-            <option value="month">整月</option>
-            <option value="first-half">上半月</option>
-            <option value="second-half">下半月</option>
-          </select>
-        </label>
-        <label>議題
-          <select id="opinion-topic">
-            <option value="">全部議題</option>
-            <option value="fraud">詐欺／詐騙</option>
-            <option value="money_laundering">洗錢</option>
-            <option value="sexual_offense">妨害性自主／性侵</option>
-            <option value="injury">傷害／重傷</option>
-            <option value="public_integrity">廉政／貪污</option>
-          </select>
-        </label>
-        <label>來源
-          <select id="opinion-source">
-            <option value="">全部來源</option>
-            <option value="ptt">PTT</option>
-            <option value="dcard">Dcard</option>
-            <option value="news">新聞媒體</option>
-            <option value="legal">法律／司改評論</option>
-          </select>
-        </label>
-        <button type="submit">套用條件</button>
       </form>
+    </section>
 
-      <section class="metrics compact" id="opinion-metrics" aria-label="輿論資料狀態"></section>
-
-      <section class="dashboard-grid opinion-grid">
-        <article class="panel panel-wide">
-          <div class="panel-head">
-            <div>
-              <h3>每月討論趨勢</h3>
-              <p>爬蟲接入後顯示各論壇每日討論量，並可切換月份。</p>
-            </div>
-            <span class="chart-type">曲線圖</span>
-          </div>
-          <div id="opinion-trend" class="chart-empty"></div>
-        </article>
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>來源涵蓋狀態</h3>
-              <p>只列入已完成使用條款與 robots 檢查的來源。</p>
-            </div>
-          </div>
-          <div id="opinion-sources" class="source-list"></div>
-        </article>
-      </section>
-
-      <section class="panel">
+    <section class="dashboard-grid intelligence-grid" data-view-panel="year" aria-label="年度比較與 AI 研判">
+      <article class="panel annual-panel">
         <div class="panel-head">
           <div>
-            <h3>月份議題摘要</h3>
-            <p>預計輸出討論焦點、主要立場、代表來源與關聯裁判編號。</p>
+            <p class="section-kicker">YEARLY COMPARISON</p>
+            <h3>年度 KPI 與 YoY</h3>
+            <p>用同期間累計比較每年變化，並呈現每年高峰月的主要官方案類。</p>
           </div>
-          <span class="summary-provider">摘要來源：尚未設定</span>
+          <span class="chart-type">YoY + 高峰月</span>
         </div>
-        <div id="opinion-summaries" class="summary-list"></div>
-      </section>
+        <div id="annual-tabs" class="sub-tabs" role="list" aria-label="年度資料子分頁"></div>
+        <div id="annual-comparison" class="annual-comparison"></div>
+      </article>
+
+      <article class="panel ai-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">AI-ASSISTED REVIEW</p>
+            <h3>趨勢異常研判</h3>
+            <p>依官方統計與最近 12 個月趨勢產生可追溯的提示，不作為犯罪原因定論。</p>
+          </div>
+          <span class="chart-type">證據 + 限制</span>
+        </div>
+        <div id="ai-insight" class="ai-insight"></div>
+      </article>
     </section>
 
-    <section id="page-truth" class="page" data-page="truth">
-      <div class="page-heading">
-        <div>
-          <p class="section-kicker">OFFICIAL AND PUBLIC OPINION COMPARISON</p>
-          <h2>數據對照</h2>
-          <p>比較同月份、同類別的官方案件量與輿論聲量；資料不足時不產生推估值。</p>
+    <section class="dashboard-grid topic-workspace" data-view-panel="topics">
+      <article class="panel topic-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">TOPIC DETAIL</p>
+            <h3>案類主題趨勢與構成</h3>
+            <p>選擇一個治安主題，查看近月走勢、全國案類構成與主要案類來源。</p>
+          </div>
+          <span class="chart-type">趨勢 + 堆疊橫條</span>
         </div>
-        <span class="method-badge">中性研判模式</span>
-      </div>
+        <div id="topic-tabs" class="topic-tabs" role="list"></div>
+        <div class="topic-detail-layout">
+          <div class="topic-narrative">
+            <h4 id="topic-title">主題載入中</h4>
+            <p id="topic-description"></p>
+            <div id="selected-topic-stats" class="mini-stat-grid"></div>
+          </div>
+          <div id="topic-trend" class="line-chart compact" role="img" aria-label="主題近月趨勢"></div>
+        </div>
+        <div class="stack-section">
+          <div class="stack-heading">
+            <span>全國案類構成</span>
+            <small>堆疊比例為本主題內部構成</small>
+          </div>
+          <div id="topic-national-bar" class="stacked-track national" aria-label="全國案類構成"></div>
+          <div id="topic-legend" class="segment-legend"></div>
+          <p id="topic-scope-note" class="method-note inline">主題包與全國總案量資料範圍載入中。</p>
+        </div>
+        <div id="topic-ai-analysis" class="topic-ai-analysis"></div>
+      </article>
 
-      <section class="metrics compact" id="cross-metrics" aria-label="官方與輿論對照指標"></section>
-
-      <section class="dashboard-grid cross-grid">
-        <article class="panel panel-wide">
-          <div class="panel-head">
-            <div>
-              <h3>類別對照矩陣</h3>
-              <p>官方案件量已接入；輿論聲量尚未接入時明確顯示不可比較。</p>
-            </div>
-            <span class="chart-type">對照表</span>
+      <aside class="panel region-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">LOCAL FOCUS</p>
+            <h3>全部縣市與前五縣市</h3>
+            <p>第一列為全國合計，其後顯示所選主題下案件數最高的五個縣市。</p>
           </div>
-          <div class="table-wrap">
-            <table class="comparison-table">
-              <thead><tr><th>類別</th><th class="numeric">官方案件</th><th class="numeric">輿論聲量</th><th>可比狀態</th><th>說明</th></tr></thead>
-              <tbody id="cross-table"></tbody>
-            </table>
-          </div>
-        </article>
-        <article class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>目前資料狀態</h3>
-              <p>只描述已接入的數字，不把缺少的輿論資料補成估計值。</p>
-            </div>
-          </div>
-          <div id="cross-summary" class="analysis-note"></div>
-          <div class="method-note"><strong>比較條件</strong><p>月份、類別與統計口徑一致後才計算差距。</p></div>
-        </article>
-      </section>
+        </div>
+        <div id="topic-regions" class="topic-region-list"></div>
+      </aside>
     </section>
 
-    <section id="page-database" class="page" data-page="database">
-      <div class="page-heading">
-        <div>
-          <p class="section-kicker">JUDGMENT REVIEW DATABASE</p>
-          <h2>裁判資料庫</h2>
-          <p>以條件查詢、摘要與來源證據逐案審閱。資料庫頁固定放在最後，承接其他儀表板的 drill-down。</p>
-        </div>
-        <span class="method-badge">100,000+ 筆本機索引</span>
-      </div>
-
-      <section class="panel database-shell">
-        <div class="database-toolbar">
-          <div class="filters" aria-label="裁判資料篩選器">
-            <label>議題分類
-              <select id="category-filter">
-                <option value="">全部議題</option>
-                <option value="fraud">詐欺／詐騙</option>
-                <option value="money_laundering">洗錢</option>
-                <option value="injury">傷害／重傷</option>
-                <option value="traffic_injury">交通傷害</option>
-                <option value="sexual_offense">妨害性自主／性侵</option>
-                <option value="public_integrity">貪污／瀆職／圖利／賄賂</option>
-                <option value="election_law">選罷法／賄選</option>
-              </select>
-            </label>
-            <label>案件領域
-              <select id="domain-filter">
-                <option value="">全部領域</option>
-                <option value="criminal">刑事</option>
-                <option value="civil">民事</option>
-                <option value="administrative">行政</option>
-                <option value="constitutional">憲法</option>
-                <option value="disciplinary">懲戒</option>
-                <option value="other">其他</option>
-              </select>
-            </label>
-            <label>全文索引
-              <input id="search" placeholder="JID、關鍵字或片段" autocomplete="off" />
-            </label>
+    <section class="dashboard-grid local-workspace" data-view-panel="local">
+      <article class="panel drill-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">LOCAL DETAIL</p>
+            <h3>縣市與案類細究</h3>
+            <p>選擇主題、縣市與案類後，查看該縣市案件類型的比例與排名。</p>
           </div>
-          <button id="clear-filters" class="secondary-action" type="button">清除條件</button>
+          <span class="chart-type">主題 / 縣市 / 案類</span>
         </div>
+        <div id="local-topic-tabs" class="topic-tabs compact" role="list" aria-label="縣市細究主題選擇"></div>
+        <div id="drilldown-detail" class="drilldown-detail"></div>
+      </article>
 
-        <div id="search-warnings" class="warning-region" aria-live="polite"></div>
-        <div class="results-head">
-          <div id="case-count" class="count-line">正在載入裁判資料。</div>
-          <span class="summary-provider">摘要：extractive_rule_v1</span>
+      <aside class="panel region-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">COUNTY SELECTOR</p>
+            <h3>縣市選擇</h3>
+            <p>點選縣市後，左側比例與排名會同步更新。</p>
+          </div>
         </div>
-        <div id="cases" class="case-list" aria-live="polite"></div>
-        <nav class="pagination" aria-label="裁判資料分頁">
-          <button id="previous-page" class="secondary-action" type="button">上一頁</button>
-          <span id="page-status">第 1 頁</span>
-          <button id="next-page" class="secondary-action" type="button">下一頁</button>
-        </nav>
-      </section>
+        <div id="local-regions" class="topic-region-list"></div>
+      </aside>
+    </section>
+
+    <section class="dashboard-grid context-grid" data-view-panel="method">
+      <article class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">BACKGROUND TREND</p>
+            <h3>全國總案量背景</h3>
+            <p>總案量不作為首頁主 KPI，只用來理解各主題占比與統計範圍。</p>
+          </div>
+          <span class="chart-type">12 個月趨勢</span>
+        </div>
+        <div id="monthly-trend" class="line-chart" role="img" aria-label="全國總案量近月趨勢"></div>
+        <p class="method-note inline">此曲線每一點代表該月份全國總案量；不同月份不可相加後拿來對照目前選取月份的案類構成。</p>
+      </article>
+
+      <article class="panel source-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">DATA SCOPE</p>
+            <h3>資料範圍與限制</h3>
+            <p>本頁只呈現可追溯至官方統計的數字。</p>
+          </div>
+        </div>
+        <div id="source-context" class="source-context"></div>
+      </article>
+    </section>
+
+    <section class="dashboard-grid feedback-grid" data-view-panel="feedback">
+      <article class="panel feedback-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-kicker">FEEDBACK</p>
+            <h3>資料建議與專案回饋</h3>
+            <p>開放追蹤資料範圍、縣市比較、案類分組與視覺化調整建議。</p>
+          </div>
+          <span class="chart-type">GitHub</span>
+        </div>
+        <div class="feedback-layout">
+          <div class="feedback-block">
+            <span class="subhead">建議回報內容</span>
+            <ul class="limit-list">
+              <li>資料疑問：月份、縣市、案類、看到的數字與預期對照。</li>
+              <li>視覺化建議：希望比較的期間、排序方式或需要新增的圖表。</li>
+              <li>資料來源建議：官方連結、資料表名稱、欄位說明與更新頻率。</li>
+            </ul>
+          </div>
+          <div class="feedback-block">
+            <span class="subhead">可查核資料位置</span>
+            <dl class="feedback-paths">
+              <div><dt>SQLite</dt><dd>data/local/public_safety.sqlite</dd></div>
+              <div><dt>靜態 JSON</dt><dd>web/static_api/official-summary_YYYYMM.json</dd></div>
+              <div><dt>資料來源</dt><dd>內政部統計查詢網資料集 9603</dd></div>
+            </dl>
+          </div>
+          <div class="feedback-actions">
+            <a class="source-button github-button" href="https://github.com/dec591nyc/Public-Safety-Integrity-Analytics/issues" target="_blank" rel="noreferrer">提出 Issue</a>
+            <a class="source-button" href="https://github.com/dec591nyc/Public-Safety-Integrity-Analytics" target="_blank" rel="noreferrer">查看 GitHub</a>
+          </div>
+        </div>
+      </article>
     </section>
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
+  <script src="app.js?v=20260629-scope-other-types"></script>
 </body>
 </html>

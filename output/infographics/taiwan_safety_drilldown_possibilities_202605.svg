@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1180" viewBox="0 0 1700 1180">
+  <defs>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .panel { fill: #ffffff; stroke: #d7dee9; stroke-width: 1.5; }
+      .soft { fill: #f9fbff; stroke: #d7dee9; stroke-width: 1.2; }
+      .title { font: 800 45px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 500 23px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #4b5870; }
+      .section { font: 800 28px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #172033; }
+      .label { font: 800 21px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #243047; }
+      .text { font: 500 18px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #4b5870; }
+      .small { font: 500 15px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #647084; }
+      .num { font: 800 31px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #0f766e; }
+      .num-blue { font: 800 31px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #2563eb; }
+      .num-red { font: 800 31px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #dc2626; }
+      .num-orange { font: 800 31px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #ea580c; }
+      .bar-label { font: 700 17px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #243047; }
+      .bar-value { font: 800 17px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #172033; }
+      .foot { font: 500 14px "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; fill: #667085; }
+      .chip { fill: #e8f2ff; stroke: #bfdbfe; stroke-width: 1; }
+      .chip-green { fill: #e7f8f1; stroke: #a7f3d0; stroke-width: 1; }
+      .chip-red { fill: #fff1f2; stroke: #fecdd3; stroke-width: 1; }
+      .chip-orange { fill: #fff7ed; stroke: #fed7aa; stroke-width: 1; }
+      .arrow { stroke: #94a3b8; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+      <path d="M0,0 L12,4 L0,8 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1700" height="1180"/>
+
+  <text class="title" x="70" y="82">現有資料可實現的「可點擊治安指標」</text>
+  <text class="subtitle" x="72" y="122">範例依據：內政部統計查詢網 c0620101，115年 5月 / 機關別總計，刑事案件發生件數</text>
+
+  <rect class="panel" x="70" y="155" width="1560" height="180" rx="16"/>
+  <text class="section" x="105" y="204">資料基礎足夠做什麼？</text>
+  <g transform="translate(105 228)">
+    <rect class="soft" x="0" y="0" width="300" height="78" rx="14"/>
+    <text class="num-blue" x="22" y="43">52,759</text>
+    <text class="small" x="22" y="66">2026-05 全國總件數</text>
+
+    <rect class="soft" x="330" y="0" width="300" height="78" rx="14"/>
+    <text class="num" x="352" y="43">52</text>
+    <text class="small" x="352" y="66">官方案類細項</text>
+
+    <rect class="soft" x="660" y="0" width="300" height="78" rx="14"/>
+    <text class="num-orange" x="682" y="43">22</text>
+    <text class="small" x="682" y="66">縣市可比較</text>
+
+    <rect class="soft" x="990" y="0" width="420" height="78" rx="14"/>
+    <text class="num-red" x="1012" y="43">可 drill-down</text>
+    <text class="small" x="1012" y="66">案類總覽 → 官方細項 → 縣市排行/趨勢</text>
+  </g>
+
+  <rect class="panel" x="70" y="365" width="760" height="600" rx="16"/>
+  <text class="section" x="105" y="414">案類總覽：你提到的指標都能做</text>
+  <text class="text" x="105" y="446">以下為 2026-05 全國件數，全部來自官方 CSV 欄位。</text>
+
+  <g transform="translate(105 480)">
+    <rect class="chip" x="0" y="0" width="210" height="84" rx="14"/>
+    <text class="label" x="18" y="31">詐欺背信</text>
+    <text class="num-blue" x="18" y="67">14,088</text>
+
+    <rect class="chip-green" x="235" y="0" width="210" height="84" rx="14"/>
+    <text class="label" x="253" y="31">竊盜</text>
+    <text class="num" x="253" y="67">6,136</text>
+
+    <rect class="chip-orange" x="470" y="0" width="210" height="84" rx="14"/>
+    <text class="label" x="488" y="31">毒品犯罪</text>
+    <text class="num-orange" x="488" y="67">4,960</text>
+
+    <rect class="chip" x="0" y="110" width="210" height="84" rx="14"/>
+    <text class="label" x="18" y="141">傷害</text>
+    <text class="num-blue" x="18" y="177">2,429</text>
+
+    <rect class="chip-red" x="235" y="110" width="210" height="84" rx="14"/>
+    <text class="label" x="253" y="141">性犯罪</text>
+    <text class="num-red" x="253" y="177">487</text>
+    <text class="small" x="253" y="200">官方欄位：妨害性自主罪</text>
+
+    <rect class="chip-red" x="470" y="110" width="210" height="84" rx="14"/>
+    <text class="label" x="488" y="141">殺人</text>
+    <text class="num-red" x="488" y="177">26</text>
+
+    <rect class="chip-orange" x="0" y="220" width="210" height="84" rx="14"/>
+    <text class="label" x="18" y="251">強盜搶奪</text>
+    <text class="num-orange" x="18" y="287">23</text>
+
+    <rect class="chip" x="235" y="220" width="210" height="84" rx="14"/>
+    <text class="label" x="253" y="251">瀆職</text>
+    <text class="num-blue" x="253" y="287">23</text>
+
+    <rect class="chip" x="470" y="220" width="210" height="84" rx="14"/>
+    <text class="label" x="488" y="251">貪污治罪</text>
+    <text class="num-blue" x="488" y="287">4</text>
+  </g>
+
+  <rect class="soft" x="105" y="825" width="690" height="108" rx="14"/>
+  <text class="label" x="130" y="861">可點進去看的細分類範例</text>
+  <text class="text" x="130" y="892">廉政犯罪 = 違反貪污治罪條例 4 + 瀆職 23</text>
+  <text class="text" x="130" y="920">暴力/人身可拆：殺人、傷害、強盜搶奪、恐嚇取財、擄人勒贖</text>
+
+  <rect class="panel" x="870" y="365" width="760" height="600" rx="16"/>
+  <text class="section" x="905" y="414">地域 drill-down：點案類後看縣市排行</text>
+  <text class="text" x="905" y="446">以下為 2026-05 各案類前三名縣市；這是原始件數，不是人口標準化風險。</text>
+
+  <g transform="translate(905 480)">
+    <text class="label" x="0" y="22">詐欺背信</text>
+    <rect x="122" y="6" width="420" height="22" rx="6" fill="#2563eb"/>
+    <text class="bar-label" x="122" y="55">新北 2,684　臺中 1,898　高雄 1,603</text>
+
+    <text class="label" x="0" y="108">竊盜</text>
+    <rect x="122" y="92" width="260" height="22" rx="6" fill="#0f766e"/>
+    <text class="bar-label" x="122" y="141">新北 1,032　臺中 753　桃園 653</text>
+
+    <text class="label" x="0" y="194">毒品</text>
+    <rect x="122" y="178" width="245" height="22" rx="6" fill="#ea580c"/>
+    <text class="bar-label" x="122" y="227">新北 974　桃園 643　高雄 574</text>
+
+    <text class="label" x="0" y="280">性犯罪</text>
+    <rect x="122" y="264" width="160" height="22" rx="6" fill="#dc2626"/>
+    <text class="bar-label" x="122" y="313">新北 87　臺中 74　桃園 65</text>
+
+    <text class="label" x="0" y="366">殺人</text>
+    <rect x="122" y="350" width="75" height="22" rx="6" fill="#7f1d1d"/>
+    <text class="bar-label" x="122" y="399">臺北 5　高雄 5　屏東 4</text>
+
+    <text class="label" x="0" y="452">強盜搶奪</text>
+    <rect x="122" y="436" width="90" height="22" rx="6" fill="#9a3412"/>
+    <text class="bar-label" x="122" y="485">新北 6　臺南 4　桃園 3</text>
+  </g>
+
+  <rect class="panel" x="70" y="995" width="1560" height="110" rx="16"/>
+  <text class="section" x="105" y="1040">建議實作成互動路徑</text>
+  <g transform="translate(105 1062)">
+    <text class="label" x="0" y="28">1. 主題卡</text>
+    <path class="arrow" d="M105 20 H185"/>
+    <text class="label" x="210" y="28">2. 官方細項</text>
+    <path class="arrow" d="M330 20 H410"/>
+    <text class="label" x="435" y="28">3. 縣市排行</text>
+    <path class="arrow" d="M560 20 H640"/>
+    <text class="label" x="665" y="28">4. 月趨勢</text>
+    <path class="arrow" d="M770 20 H850"/>
+    <text class="label" x="875" y="28">5. 報告/LineBot/Power BI 輸出</text>
+  </g>
+
+  <text class="foot" x="70" y="1145">資料依據：內政部統計查詢網 c0620101 即時 CSV，請求 ym=11505 / ymt=11505，資料列標籤為「115年 5月/ 機關別總計」。本圖顯示原始案件數；跨縣市風險比較需另接人口分母。</text>
+</svg>

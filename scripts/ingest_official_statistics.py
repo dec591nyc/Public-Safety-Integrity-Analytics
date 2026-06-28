@@ -8,6 +8,7 @@ import csv
 import hashlib
 import html
 import json
+import re
 import shutil
 import tempfile
 from pathlib import Path
@@ -96,11 +97,25 @@ def geography_name(row_label: str) -> str:
     return row_label.rsplit("/", 1)[-1].strip()
 
 
+def row_label_month(row_label: str) -> str | None:
+    range_match = re.search(r"(\d{2,3})年\s*\((\d{1,2})~(\d{1,2})月\)", row_label)
+    if range_match:
+        roc_year = int(range_match.group(1))
+        start_month = int(range_match.group(2))
+        end_month = int(range_match.group(3))
+        if start_month == end_month:
+            return f"{roc_year + 1911}{end_month:02d}"
+        return None
+    single_match = re.search(r"(\d{2,3})年\s*(\d{1,2})月", row_label)
+    if single_match:
+        return f"{int(single_match.group(1)) + 1911}{int(single_match.group(2)):02d}"
+    return None
+
+
 def select_month_rows(
     dimension_name: str, rows: list[dict[str, str]]
 ) -> tuple[list[dict[str, str]], int]:
     """Prefer explicit monthly rows over duplicate single-month range rows."""
-    import re
     # Monthly rows always contain something like "12月/" or "4月/"
     # Range rows either contain "年/" (for December accumulated year) or "(1~6月)/"
     monthly_rows = [row for row in rows if re.search(r"\d+月/", row[dimension_name])]
@@ -248,6 +263,8 @@ def build_profile(
 
 def render_report(profile: dict) -> str:
     focus = profile["focus_national_totals"]
+    month = profile["source_month"]
+    display_month = f"{month[:4]} 年 {int(month[4:])} 月" if len(month) == 6 and month.isdigit() else month
     max_focus = max((value or 0) for key, value in focus.items() if key != "總計") or 1
     bars = []
     for label, value in focus.items():
@@ -294,7 +311,7 @@ def render_report(profile: dict) -> str:
   </style>
 </head>
 <body><main>
-  <h1>2026 年 4 月官方刑事案件統計</h1>
+  <h1>{html.escape(display_month)}官方刑事案件統計</h1>
   <p class="muted">資料集 9603，這是資料檢查報告，不是最終 Dashboard。</p>
   <section class="kpis">
     <div class="kpi">全國總計<strong>{focus.get('總計', 0):,}</strong></div>
@@ -344,6 +361,15 @@ def main() -> None:
 
     headers, raw_rows = read_source(raw_path)
     rows, duplicate_rows_dropped = select_month_rows(headers[0], raw_rows)
+    returned_months = {row_label_month(row[headers[0]]) for row in rows}
+    returned_months.discard(None)
+    if month not in returned_months:
+        display_months = ", ".join(sorted(returned_months)) or "unknown"
+        raise SystemExit(
+            f"official export for requested {month} returned month(s): {display_months}; "
+            "refusing to write mislabeled profile"
+        )
+    rows = [row for row in rows if row_label_month(row[headers[0]]) == month]
     long_rows = write_long_csv(long_path, month, headers[0], headers[1:], rows)
     profile = build_profile(
         month,
