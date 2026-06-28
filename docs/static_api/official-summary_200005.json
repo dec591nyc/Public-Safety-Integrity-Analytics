@@ -13510,8 +13510,8 @@
         "year": 2000,
         "peak_month": "200005",
         "total": 36278,
-        "top_metric_sum": 33900,
-        "other_count": 2378,
+        "top_metric_sum": 33767,
+        "other_count": 2511,
         "scope": "2000/01-2000/05",
         "segments": [
           {
@@ -13564,13 +13564,6 @@
             "color": "#9333ea"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 390,
-            "share_pct": 1.08,
-            "color": "#db2777"
-          },
-          {
             "metric": "偽造文書印文",
             "label": "偽造文書印文",
             "count": 332,
@@ -13585,10 +13578,17 @@
             "color": "#7c3aed"
           },
           {
+            "metric": "違反著作權法",
+            "label": "違反著作權法",
+            "count": 257,
+            "share_pct": 0.71,
+            "color": "#047857"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2378,
-            "share_pct": 6.55,
+            "count": 2511,
+            "share_pct": 6.92,
             "color": "#94a3b8"
           }
         ]

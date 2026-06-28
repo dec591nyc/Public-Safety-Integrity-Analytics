@@ -24945,8 +24945,8 @@
         "year": 2025,
         "peak_month": "202505",
         "total": 54795,
-        "top_metric_sum": 48478,
-        "other_count": 6317,
+        "top_metric_sum": 48347,
+        "other_count": 6448,
         "scope": "2025/01-2025/10",
         "segments": [
           {
@@ -25013,17 +25013,17 @@
             "color": "#4f46e5"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 2145,
-            "share_pct": 3.91,
-            "color": "#db2777"
+            "metric": "妨害電腦使用",
+            "label": "妨害電腦使用",
+            "count": 2014,
+            "share_pct": 3.68,
+            "color": "#be123c"
           },
           {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 6317,
-            "share_pct": 11.53,
+            "count": 6448,
+            "share_pct": 11.77,
             "color": "#94a3b8"
           }
         ]
@@ -25032,8 +25032,8 @@
         "year": 2024,
         "peak_month": "202410",
         "total": 61449,
-        "top_metric_sum": 55098,
-        "other_count": 6351,
+        "top_metric_sum": 54573,
+        "other_count": 6876,
         "scope": "2024/01-2024/12",
         "segments": [
           {
@@ -25100,17 +25100,17 @@
             "color": "#0d9488"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 2132,
-            "share_pct": 3.47,
-            "color": "#db2777"
+            "metric": "妨害電腦使用",
+            "label": "妨害電腦使用",
+            "count": 1607,
+            "share_pct": 2.62,
+            "color": "#be123c"
           },
           {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 6351,
-            "share_pct": 10.34,
+            "count": 6876,
+            "share_pct": 11.19,
             "color": "#94a3b8"
           }
         ]
@@ -25119,8 +25119,8 @@
         "year": 2023,
         "peak_month": "202305",
         "total": 25299,
-        "top_metric_sum": 22413,
-        "other_count": 2886,
+        "top_metric_sum": 21760,
+        "other_count": 3539,
         "scope": "2023/01-2023/12",
         "segments": [
           {
@@ -25173,13 +25173,6 @@
             "color": "#65a30d"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 1295,
-            "share_pct": 5.12,
-            "color": "#db2777"
-          },
-          {
             "metric": "妨害名譽",
             "label": "妨害名譽",
             "count": 946,
@@ -25194,10 +25187,17 @@
             "color": "#4f46e5"
           },
           {
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 642,
+            "share_pct": 2.54,
+            "color": "#ea580c"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2886,
-            "share_pct": 11.41,
+            "count": 3539,
+            "share_pct": 13.99,
             "color": "#94a3b8"
           }
         ]
@@ -25206,8 +25206,8 @@
         "year": 2022,
         "peak_month": "202205",
         "total": 26375,
-        "top_metric_sum": 22840,
-        "other_count": 3535,
+        "top_metric_sum": 22671,
+        "other_count": 3704,
         "scope": "2022/01-2022/12",
         "segments": [
           {
@@ -25274,17 +25274,17 @@
             "color": "#4f46e5"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 1067,
-            "share_pct": 4.05,
-            "color": "#db2777"
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 898,
+            "share_pct": 3.4,
+            "color": "#ea580c"
           },
           {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 3535,
-            "share_pct": 13.4,
+            "count": 3704,
+            "share_pct": 14.04,
             "color": "#94a3b8"
           }
         ]
@@ -25293,8 +25293,8 @@
         "year": 2021,
         "peak_month": "202103",
         "total": 22655,
-        "top_metric_sum": 19561,
-        "other_count": 3094,
+        "top_metric_sum": 19336,
+        "other_count": 3319,
         "scope": "2021/01-2021/12",
         "segments": [
           {
@@ -25347,13 +25347,6 @@
             "color": "#65a30d"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 809,
-            "share_pct": 3.57,
-            "color": "#db2777"
-          },
-          {
             "metric": "妨害名譽",
             "label": "妨害名譽",
             "count": 798,
@@ -25368,10 +25361,17 @@
             "color": "#4f46e5"
           },
           {
+            "metric": "賭博",
+            "label": "賭博",
+            "count": 584,
+            "share_pct": 2.58,
+            "color": "#9333ea"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 3094,
-            "share_pct": 13.66,
+            "count": 3319,
+            "share_pct": 14.65,
             "color": "#94a3b8"
           }
         ]
@@ -25380,8 +25380,8 @@
         "year": 2020,
         "peak_month": "202003",
         "total": 23672,
-        "top_metric_sum": 20926,
-        "other_count": 2746,
+        "top_metric_sum": 20632,
+        "other_count": 3040,
         "scope": "2020/01-2020/12",
         "segments": [
           {
@@ -25441,13 +25441,6 @@
             "color": "#0d9488"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 762,
-            "share_pct": 3.22,
-            "color": "#db2777"
-          },
-          {
             "metric": "侵占",
             "label": "侵占",
             "count": 741,
@@ -25455,10 +25448,17 @@
             "color": "#4f46e5"
           },
           {
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 468,
+            "share_pct": 1.98,
+            "color": "#ea580c"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2746,
-            "share_pct": 11.6,
+            "count": 3040,
+            "share_pct": 12.84,
             "color": "#94a3b8"
           }
         ]
@@ -25467,8 +25467,8 @@
         "year": 2019,
         "peak_month": "201907",
         "total": 24211,
-        "top_metric_sum": 21538,
-        "other_count": 2673,
+        "top_metric_sum": 21391,
+        "other_count": 2820,
         "scope": "2019/01-2019/12",
         "segments": [
           {
@@ -25535,17 +25535,17 @@
             "color": "#4f46e5"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 647,
-            "share_pct": 2.67,
-            "color": "#db2777"
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 500,
+            "share_pct": 2.07,
+            "color": "#ea580c"
           },
           {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2673,
-            "share_pct": 11.04,
+            "count": 2820,
+            "share_pct": 11.65,
             "color": "#94a3b8"
           }
         ]
@@ -25554,8 +25554,8 @@
         "year": 2018,
         "peak_month": "201805",
         "total": 25509,
-        "top_metric_sum": 22564,
-        "other_count": 2945,
+        "top_metric_sum": 22466,
+        "other_count": 3043,
         "scope": "2018/01-2018/12",
         "segments": [
           {
@@ -25622,17 +25622,17 @@
             "color": "#4f46e5"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 547,
-            "share_pct": 2.14,
-            "color": "#db2777"
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 449,
+            "share_pct": 1.76,
+            "color": "#ea580c"
           },
           {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2945,
-            "share_pct": 11.54,
+            "count": 3043,
+            "share_pct": 11.93,
             "color": "#94a3b8"
           }
         ]
@@ -25783,7 +25783,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 13520,
             "previous": 11571,
             "delta": 1949,
@@ -25852,7 +25852,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 11571,
             "previous": 9863,
             "delta": 1708,
@@ -25939,7 +25939,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 9863,
             "previous": 7907,
             "delta": 1956,
@@ -26113,7 +26113,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 7266,
             "previous": 5996,
             "delta": 1270,
@@ -26325,7 +26325,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 17502,
             "previous": 14065,
             "delta": 3437,
@@ -26367,7 +26367,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 14065,
             "previous": 12089,
             "delta": 1976,
@@ -26454,7 +26454,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 12089,
             "previous": 9497,
             "delta": 2592,
@@ -26577,7 +26577,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 9497,
             "previous": 8822,
             "delta": 675,
@@ -26637,7 +26637,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 8822,
             "previous": 7168,
             "delta": 1654,

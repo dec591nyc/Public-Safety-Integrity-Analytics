@@ -14406,8 +14406,8 @@
         "year": 2001,
         "peak_month": "200105",
         "total": 42569,
-        "top_metric_sum": 39873,
-        "other_count": 2696,
+        "top_metric_sum": 39804,
+        "other_count": 2765,
         "scope": "2001/01-2001/05",
         "segments": [
           {
@@ -14474,17 +14474,17 @@
             "color": "#ea580c"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 409,
-            "share_pct": 0.96,
-            "color": "#db2777"
+            "metric": "違反著作權法",
+            "label": "違反著作權法",
+            "count": 340,
+            "share_pct": 0.8,
+            "color": "#047857"
           },
           {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2696,
-            "share_pct": 6.33,
+            "count": 2765,
+            "share_pct": 6.5,
             "color": "#94a3b8"
           }
         ]
@@ -14493,8 +14493,8 @@
         "year": 2000,
         "peak_month": "200010",
         "total": 42418,
-        "top_metric_sum": 39600,
-        "other_count": 2818,
+        "top_metric_sum": 39414,
+        "other_count": 3004,
         "scope": "2000/01-2000/12",
         "segments": [
           {
@@ -14547,13 +14547,6 @@
             "color": "#15803d"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 522,
-            "share_pct": 1.23,
-            "color": "#db2777"
-          },
-          {
             "metric": "恐嚇取財",
             "label": "恐嚇取財",
             "count": 506,
@@ -14568,10 +14561,17 @@
             "color": "#047857"
           },
           {
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 336,
+            "share_pct": 0.79,
+            "color": "#ea580c"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2818,
-            "share_pct": 6.64,
+            "count": 3004,
+            "share_pct": 7.08,
             "color": "#94a3b8"
           }
         ]

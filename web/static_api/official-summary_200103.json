@@ -13871,8 +13871,8 @@
         "year": 2001,
         "peak_month": "200103",
         "total": 40405,
-        "top_metric_sum": 37931,
-        "other_count": 2474,
+        "top_metric_sum": 37904,
+        "other_count": 2501,
         "scope": "2001/01-2001/03",
         "segments": [
           {
@@ -13939,17 +13939,17 @@
             "color": "#047857"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 345,
-            "share_pct": 0.85,
-            "color": "#db2777"
+            "metric": "駕駛過失",
+            "label": "駕駛過失",
+            "count": 318,
+            "share_pct": 0.79,
+            "color": "#7c3aed"
           },
           {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2474,
-            "share_pct": 6.12,
+            "count": 2501,
+            "share_pct": 6.19,
             "color": "#94a3b8"
           }
         ]
@@ -13958,8 +13958,8 @@
         "year": 2000,
         "peak_month": "200010",
         "total": 42418,
-        "top_metric_sum": 39600,
-        "other_count": 2818,
+        "top_metric_sum": 39414,
+        "other_count": 3004,
         "scope": "2000/01-2000/12",
         "segments": [
           {
@@ -14012,13 +14012,6 @@
             "color": "#15803d"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 522,
-            "share_pct": 1.23,
-            "color": "#db2777"
-          },
-          {
             "metric": "恐嚇取財",
             "label": "恐嚇取財",
             "count": 506,
@@ -14033,10 +14026,17 @@
             "color": "#047857"
           },
           {
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 336,
+            "share_pct": 0.79,
+            "color": "#ea580c"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2818,
-            "share_pct": 6.64,
+            "count": 3004,
+            "share_pct": 7.08,
             "color": "#94a3b8"
           }
         ]

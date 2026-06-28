@@ -12549,8 +12549,8 @@
         "year": 2000,
         "peak_month": "200001",
         "total": 33871,
-        "top_metric_sum": 31733,
-        "other_count": 2138,
+        "top_metric_sum": 31497,
+        "other_count": 2374,
         "scope": "2000/01-2000/02",
         "segments": [
           {
@@ -12580,13 +12580,6 @@
             "count": 637,
             "share_pct": 1.88,
             "color": "#0891b2"
-          },
-          {
-            "metric": "其他",
-            "label": "其他",
-            "count": 495,
-            "share_pct": 1.46,
-            "color": "#db2777"
           },
           {
             "metric": "強盜搶奪",
@@ -12624,10 +12617,17 @@
             "color": "#7c3aed"
           },
           {
+            "metric": "偽造文書印文",
+            "label": "偽造文書印文",
+            "count": 259,
+            "share_pct": 0.76,
+            "color": "#15803d"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2138,
-            "share_pct": 6.31,
+            "count": 2374,
+            "share_pct": 7.01,
             "color": "#94a3b8"
           }
         ]

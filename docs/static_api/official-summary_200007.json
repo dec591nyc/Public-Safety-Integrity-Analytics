@@ -13466,8 +13466,8 @@
         "year": 2000,
         "peak_month": "200007",
         "total": 38003,
-        "top_metric_sum": 35542,
-        "other_count": 2461,
+        "top_metric_sum": 35371,
+        "other_count": 2632,
         "scope": "2000/01-2000/07",
         "segments": [
           {
@@ -13513,13 +13513,6 @@
             "color": "#0369a1"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 454,
-            "share_pct": 1.19,
-            "color": "#db2777"
-          },
-          {
             "metric": "偽造文書印文",
             "label": "偽造文書印文",
             "count": 407,
@@ -13541,10 +13534,17 @@
             "color": "#7c3aed"
           },
           {
+            "metric": "賭博",
+            "label": "賭博",
+            "count": 283,
+            "share_pct": 0.74,
+            "color": "#9333ea"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2461,
-            "share_pct": 6.48,
+            "count": 2632,
+            "share_pct": 6.93,
             "color": "#94a3b8"
           }
         ]

@@ -13992,8 +13992,8 @@
         "year": 2001,
         "peak_month": "200101",
         "total": 37524,
-        "top_metric_sum": 34852,
-        "other_count": 2672,
+        "top_metric_sum": 34728,
+        "other_count": 2796,
         "scope": "2001/01-2001/01",
         "segments": [
           {
@@ -14053,13 +14053,6 @@
             "color": "#c026d3"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 476,
-            "share_pct": 1.27,
-            "color": "#db2777"
-          },
-          {
             "metric": "毀棄損壞",
             "label": "毀棄損壞",
             "count": 415,
@@ -14067,10 +14060,17 @@
             "color": "#ea580c"
           },
           {
+            "metric": "賭博",
+            "label": "賭博",
+            "count": 352,
+            "share_pct": 0.94,
+            "color": "#9333ea"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2672,
-            "share_pct": 7.12,
+            "count": 2796,
+            "share_pct": 7.45,
             "color": "#94a3b8"
           }
         ]
@@ -14079,8 +14079,8 @@
         "year": 2000,
         "peak_month": "200010",
         "total": 42418,
-        "top_metric_sum": 39600,
-        "other_count": 2818,
+        "top_metric_sum": 39414,
+        "other_count": 3004,
         "scope": "2000/01-2000/12",
         "segments": [
           {
@@ -14133,13 +14133,6 @@
             "color": "#15803d"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 522,
-            "share_pct": 1.23,
-            "color": "#db2777"
-          },
-          {
             "metric": "恐嚇取財",
             "label": "恐嚇取財",
             "count": 506,
@@ -14154,10 +14147,17 @@
             "color": "#047857"
           },
           {
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 336,
+            "share_pct": 0.79,
+            "color": "#ea580c"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2818,
-            "share_pct": 6.64,
+            "count": 3004,
+            "share_pct": 7.08,
             "color": "#94a3b8"
           }
         ]

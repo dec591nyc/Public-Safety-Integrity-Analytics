@@ -14611,8 +14611,8 @@
         "year": 2002,
         "peak_month": "200204",
         "total": 44458,
-        "top_metric_sum": 41860,
-        "other_count": 2598,
+        "top_metric_sum": 41505,
+        "other_count": 2953,
         "scope": "2002/01-2002/10",
         "segments": [
           {
@@ -14658,13 +14658,6 @@
             "color": "#0369a1"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 688,
-            "share_pct": 1.55,
-            "color": "#db2777"
-          },
-          {
             "metric": "恐嚇取財",
             "label": "恐嚇取財",
             "count": 551,
@@ -14686,10 +14679,17 @@
             "color": "#15803d"
           },
           {
+            "metric": "駕駛過失",
+            "label": "駕駛過失",
+            "count": 333,
+            "share_pct": 0.75,
+            "color": "#7c3aed"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2598,
-            "share_pct": 5.84,
+            "count": 2953,
+            "share_pct": 6.64,
             "color": "#94a3b8"
           }
         ]
@@ -14698,8 +14698,8 @@
         "year": 2001,
         "peak_month": "200110",
         "total": 45261,
-        "top_metric_sum": 42697,
-        "other_count": 2564,
+        "top_metric_sum": 42541,
+        "other_count": 2720,
         "scope": "2001/01-2001/12",
         "segments": [
           {
@@ -14752,13 +14752,6 @@
             "color": "#c026d3"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 535,
-            "share_pct": 1.18,
-            "color": "#db2777"
-          },
-          {
             "metric": "毀棄損壞",
             "label": "毀棄損壞",
             "count": 527,
@@ -14773,10 +14766,17 @@
             "color": "#15803d"
           },
           {
+            "metric": "違反著作權法",
+            "label": "違反著作權法",
+            "count": 379,
+            "share_pct": 0.84,
+            "color": "#047857"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2564,
-            "share_pct": 5.66,
+            "count": 2720,
+            "share_pct": 6.01,
             "color": "#94a3b8"
           }
         ]
@@ -14785,8 +14785,8 @@
         "year": 2000,
         "peak_month": "200010",
         "total": 42418,
-        "top_metric_sum": 39600,
-        "other_count": 2818,
+        "top_metric_sum": 39414,
+        "other_count": 3004,
         "scope": "2000/01-2000/12",
         "segments": [
           {
@@ -14839,13 +14839,6 @@
             "color": "#15803d"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 522,
-            "share_pct": 1.23,
-            "color": "#db2777"
-          },
-          {
             "metric": "恐嚇取財",
             "label": "恐嚇取財",
             "count": 506,
@@ -14860,10 +14853,17 @@
             "color": "#047857"
           },
           {
+            "metric": "毀棄損壞",
+            "label": "毀棄損壞",
+            "count": 336,
+            "share_pct": 0.79,
+            "color": "#ea580c"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2818,
-            "share_pct": 6.64,
+            "count": 3004,
+            "share_pct": 7.08,
             "color": "#94a3b8"
           }
         ]
@@ -14909,7 +14909,7 @@
           },
           {
             "metric": "其他",
-            "label": "其他",
+            "label": "其他案類",
             "current": 6654,
             "previous": 4367,
             "delta": 2287,

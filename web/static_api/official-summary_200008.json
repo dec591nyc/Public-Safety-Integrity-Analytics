@@ -13796,8 +13796,8 @@
         "year": 2000,
         "peak_month": "200008",
         "total": 39414,
-        "top_metric_sum": 36808,
-        "other_count": 2606,
+        "top_metric_sum": 36684,
+        "other_count": 2730,
         "scope": "2000/01-2000/08",
         "segments": [
           {
@@ -13843,13 +13843,6 @@
             "color": "#0369a1"
           },
           {
-            "metric": "其他",
-            "label": "其他",
-            "count": 446,
-            "share_pct": 1.13,
-            "color": "#db2777"
-          },
-          {
             "metric": "偽造文書印文",
             "label": "偽造文書印文",
             "count": 445,
@@ -13871,10 +13864,17 @@
             "color": "#9333ea"
           },
           {
+            "metric": "駕駛過失",
+            "label": "駕駛過失",
+            "count": 322,
+            "share_pct": 0.82,
+            "color": "#7c3aed"
+          },
+          {
             "metric": "__other__",
             "label": "其他案類",
-            "count": 2606,
-            "share_pct": 6.61,
+            "count": 2730,
+            "share_pct": 6.93,
             "color": "#94a3b8"
           }
         ]
