@@ -13,13 +13,13 @@ export default function SourceContext({ summary }) {
           <p>說明平台治安統計數據的來源範圍、更新自動化管道及完整性檢驗規則</p>
         </div>
       </div>
-      
+
       <div className="source-context">
         <dl>
           <div>
             <dt>官方資料來源</dt>
             <dd>
-              內政部警政署 - 警政統計月報之「刑事案件發生件數（ICCS 分類方案）」數據集（代號 9603）。
+              內政部警政署 - 警政統計月報之「刑事案件發生件數」數據集（代號 9603）。
             </dd>
           </div>
           <div>
