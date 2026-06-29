@@ -1,135 +1,154 @@
-# Public Safety and Judicial Justice Visualization (公眾治安與司法正義檢視網)
+# 公眾治安與司法正義檢視網 (Public Safety & Judicial Justice Analytics)
 
-💡 **以數據為基石，探索官方司法裁判人口特徵與公眾輿論聲量之間的維度偏差與聚焦關聯。**
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="MIT License" />
+</p>
 
-🔗 [**Live Demo**](https://public-safety-integrity-analytics.vercel.app/#overview)
-
----
-
-## 專案簡介 (Overview)
-
-本專案是一個**數據整合與對照儀表板平台**。其宗旨非重建或儲存海量的裁判書全文庫，而是透過自動化數據管道（Data Pipeline）進行輕量、動態的網頁爬蟲與數據解析，提取並對照兩大核心維度：
-
-1. **司法裁判與人口特徵數據 (Judicial Rulings & Demographics)**：動態爬取司法機關近期公開之裁判書內文，利用規則與特徵分析技術，解析並統計涉案人員的人口與社會學特徵，包含**年齡 (Age)**、**性別 (Gender)**、**收入/財產狀況 (Income)**、**出生地/戶籍地 (Birth-City)**、**職業 (Occupation)** 及 **教育程度 (Education-Level)**，提供大眾化的量化統計與視覺化圖表。
-2. **輿論聲量指標 (Public Opinion Metrics)**：以符合爬蟲規範（Robots.txt）之方式抓取社群論壇（如 PTT、Dcard）、新聞及司法評論之元數據，計算討論聲量與情緒標籤，呈現公眾對於司法案件與各類議題之關注趨勢。
-
-藉由將兩者置於同一時間軸，平台能以量化圖表與對照矩陣，客觀呈現司法判決趨勢與公眾對於各類型犯罪（如詐欺、傷害等）的**關注度落差 (Attention Gaps)**。
-
-*   **進階特色 (Advanced Feature)**：將裁判書被告名單與中央選舉委員會（CEC）選舉資料庫進行交叉比對，探索特定案件的政商與政黨背景（例如貪瀆、賄選、選罷法案件等）。
+💡 **一個結合 Next.js 現代化儀表板與 Python 自動化數據管道的治安統計主題視覺化平台。以數據為基石，探索台灣治安趨勢、案類佔比與縣市分布特徵。**
 
 ---
 
-## 系統架構與資料流 (Architecture & Data Flow)
+## 🎯 專案核心定位
 
-本專案採用輕量、高性能且易於部署的技術架構：
+本專案非重建或儲存海量的裁判書全文庫，而是透過輕量、高效的自動化數據管道（Data Pipeline），提取並對照兩大核心維度：
+1. **司法裁判與案類特徵數據**：透過 Python 解析司法院刑事判決元數據，統計各類犯罪（如詐欺、人身安全等）的月份趨勢、縣市分布、增減率（YoY）與佔比關係。
+2. **高可用雙模架構 (Dual-Mode Design)**：
+   * **資料庫主動模式 (Database Mode)**：連接到 Supabase PostgreSQL 資料庫，即時載入最新月度與年度統計。
+   * **靜態備份模式 (Static API Fallback)**：當資料庫連線中斷或為零成本託管時，系統會自動降級讀取本地預先編譯的 `public/static_api/*.json` 靜態快取，確保服務 100% 不中斷。
 
-*   **前端展示**：採用 Vanilla HTML / CSS / JavaScript 打造單頁應用程式 (SPA)，具備現代化高密度數據儀表板視覺風格、毛玻璃光影效果與全響應式設計。
-*   **後端服務**：由 Python 提供資料爬取、解析與 API 服務，支援 SQLite 本地開發模式與 PostgreSQL / Supabase 雲端生產模式。
-*   **數據排程**：每日定時啟動輕量爬蟲與解析管道，僅針對新增的相關裁判書進行精確欄位提取。
+---
+
+## 🏗️ 系統架構與資料流 (Architecture & Data Flow)
 
 ```mermaid
 flowchart TD
-    subgraph 數據源 Ingestion
-        A[司法院公開裁判書網站 / API] -->|scrape_judicial_data.py| C[(SQLite / PostgreSQL)]
-        B[論壇 / 新聞輿情 metadata] -->|collect_opinion_metrics.py| C
-        D[中選會選舉資料庫] -->|build_political_index.py| C
+    subgraph 數據獲取與處理 (Data Pipeline)
+        A[司法院公開刑事數據 / API] -->|generate_static_json.py| B[編譯輸出 static_api JSON]
+        B -->|upload_to_supabase.py| C[(Supabase Postgres Database)]
     end
 
-    subgraph 後端 API 服務
-        C --> E[serve_review_dashboard.py]
+    subgraph 儀表板服務 (Next.js Dashboard)
+        D[Next.js API Routes] -->|優先讀取| C
+        D -->|連線失敗/缺省時自動降級| E[dashboard/public/static_api/*.json]
+        E --> F[React 前端展示 / Recharts 渲染]
+        C --> F
     end
 
-    subgraph 前端展示 SPA
-        E -->|API 數據傳輸| F[vanilla JS app.js]
-        F --> G[人口特徵 - 性別/年齡/職業/教育等統計]
-        F --> H[輿論情報 - 情感分析與議題摘要]
-        F --> I[數據對照 - 關注度差距矩陣]
-        F --> J[裁判分析 - 被告與進階政商背景對照]
-    end
-
-    subgraph 靜態 Live Demo 模式
-        C -->|generate_static_json.py| K[static_api/*.json]
-        K -->|自動降級加載| F
+    subgraph 靜態演示 (GitHub Pages SPA)
+        B -->|同步複製| G[docs/static_api/*.json]
+        H[Vanilla JS app.js] -->|直接載入| G
     end
 ```
 
 ---
 
-## 技術亮點 (Technical Highlights)
-
-1.  **結構化司法人口特徵提取**
-    透過網頁爬蟲取得裁判書內文後，利用特定規則與正則表達式（Regex），從被告宣告段落精確提取年齡、性別、職業、教育程度、收入背景等欄位，將非結構化判決文字轉化為具公共價值的量化數據。
-2.  **進階政黨與選舉背景比對 (未來計畫)**
-    對接中選會開放資料庫，將貪污、瀆職、賄選等公務人員犯罪被告與歷屆參選人名冊進行比對，呈現犯罪案件的政治光譜與結構分析。
-3.  **無後端靜態 Live Demo 降級方案**
-    前端 `app.js` 具備自適應偵測機制。當專案部署於靜態託管平台、或本地後端伺服器未啟動時，會自動改為載入 `static_api/` 目錄中預先匯出的 JSON 資料，並在前端以記憶體內（In-Memory）過濾與分頁技術實現無縫的數據檢索與圖表互動。
-
----
-
-## 本地執行指南 (Local Setup Guide)
-
-### 方式一：Windows 一鍵啟動 (推薦)
-
-在專案根目錄下直接點擊執行：
-```bat
-run.bat
-```
-在隨後出現的選單中：
-*   輸入 `1` 即可啟動本地 Web 伺服器並載入 SQLite 資料庫。
-*   開啟瀏覽器訪問 `http://127.0.0.1:8765` 即可使用完整功能。
-*   輸入 `2` 可手動啟動司法院裁判爬取與輿情生成管道。
-
-### 方式二：手動啟動
-
-1.  **安裝依賴與初始化資料庫**
-    專案主要使用 Python 3 標準庫與輕量爬蟲。若需執行後端 API，可直接執行：
-    ```bash
-    # 初始化資料庫並抓取最新裁判數據與輿論聲量
-    python scripts/run_daily_update.py
-    ```
-
-2.  **開啟本地 Web Server**
-    ```bash
-    python scripts/serve_review_dashboard.py --db data/local/public_safety.sqlite
-    ```
-    伺服器啟動後，訪問 `http://127.0.0.1:8765`。
-
-3.  **生成靜態 Demo 資料** (若欲進行靜態部署)
-    ```bash
-    python scripts/generate_static_json.py
-    ```
-    該指令會將資料庫中的統計與裁判明細匯出至 `web/static_api/` 中。
-
----
-
-## 目錄結構 (Directory Structure)
+## 🛠️ 目錄結構說明
 
 ```text
-Public-Safety-Integrity-Analytics/
-├── config/                      # 系統與案類權重配置
-├── data/
-│   └── local/                   # 本地 SQLite 資料庫 (public_safety.sqlite)
-├── output/
-│   └── official_statistics/     # 歷史下載的官方統計 JSON 快照
-├── sql/
-│   ├── schema_sqlite.sql        # SQLite 資料表結構
-│   └── schema_postgres.sql      # PostgreSQL / Supabase 資料表結構
-├── scripts/
-│   ├── run_daily_update.py      # 統一數據排程抓取主腳本
-│   ├── serve_review_dashboard.py# 本地 Python API 伺服器
-│   ├── generate_static_json.py  # 匯出靜態展示 API 檔腳本
-│   └── scrape_judicial_data.py  # 司法判決爬蟲與人口特徵提取腳本 (取代舊的 build_judgment_index.py)
-├── web/                         # 前端 SPA 網頁資源
-│   ├── static_api/              # 靜態降級 API JSON 目錄
-│   ├── index.html               # 儀表板 HTML 頁面
-│   ├── styles.css               # 數據密集儀表板 CSS
-│   └── app.js                   # 前端路由與數據處理邏輯
-├── run.bat                      # Windows 一鍵啟動腳本
+├── dashboard/                   # Next.js 14 現代化數據儀表板 (本專案核心)
+│   ├── src/app/                 # App Router (首頁、API 路由、折線與堆疊圖表)
+│   ├── public/static_api/       # 靜態降級 API 快取目錄 (由 Python 自動生成與同步)
+│   └── next.config.mjs          # 排除原生 pg 套件 Webpack 打包配置
+├── scripts/                     # Python 數據管道與編譯工具
+│   ├── generate_static_json.py  # [最重要] 爬蟲數據編譯與導出 (已 bypass ICCS 提速)
+│   ├── upload_to_supabase.py    # 同步 static_api 至 Supabase Database 腳本
+│   └── serve_review_dashboard.py# 舊版本地 Python API 伺服器 (供 Vanilla 測試)
+├── docs/                        # 用於 GitHub Pages 託管的 Vanilla JS 靜態版
+├── sql/                         # 資料庫結構描述檔 (SQLite / Postgres)
 └── README.md                    # 本說明文件
 ```
 
 ---
 
-## 授權說明 (License)
+## 🚀 部署指南 (Deployment Guide)
 
-本專案僅供學術探討、個人職涯作品集展示與技術驗證使用。請勿將其產出的輿情聲量模擬或預算數據直接引用為司法不公或犯罪現狀之實體結論。\n
+### 第一步：Supabase 資料庫設定與資料遷移
+
+1. **建立 Supabase 專案**：
+   前往 [Supabase](https://supabase.com) 註冊並新建一個資料庫專案。
+2. **匯入資料表結構**：
+   進入 Supabase 後台的 **SQL Editor**，複製並執行 `sql/schema_postgres.sql` 的內容，或直接建立存放彙整資料的 `official_summaries` 表：
+   ```sql
+   CREATE TABLE IF NOT EXISTS official_summaries (
+     source_month TEXT PRIMARY KEY,
+     summary_json JSONB NOT NULL,
+     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+   );
+   ```
+3. **執行 Python 資料上傳**：
+   在本地將資料庫連線字串設定至環境變數中，並執行遷移腳本將現有月份資料一次性同步至 Supabase：
+   ```bash
+   # 設定 Supabase 連線 URL
+   $env:PUBLIC_SAFETY_DATABASE_URL="your_supabase_postgresql_connection_string"
+   
+   # 執行上傳
+   python scripts/upload_to_supabase.py
+   ```
+
+---
+
+### 第二步：部署 Next.js 儀表板至 Vercel
+
+本專案完全支援 Vercel 一鍵部署：
+
+1. **將專案推送到您的 GitHub 儲存庫**：
+   請確保已將 `.env.local` 加入 `.gitignore` 中，**切勿將敏感私鑰推送到 GitHub**。
+2. **在 Vercel 中匯入專案**：
+   * 登入 Vercel 點選 **Add New > Project**，選取您的 GitHub 專案。
+   * 將 Root Directory 設定為 `dashboard`。
+3. **配置環境變數 (Environment Variables)**：
+   在 Vercel 專案設定的 Environment Variables 中，新增以下變數：
+   * **名稱**：`PUBLIC_SAFETY_DATABASE_URL`
+   * **值**：您的 Supabase PostgreSQL 連線字串（例如 `postgresql://postgres:password@db.xxxx.supabase.co:5432/postgres`）。
+4. **點擊 Deploy**：
+   部署完成後即可獲得專屬的線上儀表板連結！
+
+> [!NOTE]  
+> **無資料庫託管模式**：如果您在 Vercel 上不設定 `PUBLIC_SAFETY_DATABASE_URL` 環境變數，Next.js 會自動啟用備用模式，直接讀取並提供 `dashboard/public/static_api/` 下的 JSON 快取檔案。這適合用於低負擔、零成本的展示網站。
+
+---
+
+### 第三步：靜態網頁託管至 GitHub Pages
+
+本專案的 `docs` 目錄已預先同步了前端 Vanilla SPA 及完整的靜態快取資料。若您只想託管純靜態頁面：
+
+1. 前往 GitHub 該專案儲存庫的 **Settings** 頁面。
+2. 點選左欄 **Pages**。
+3. 在 Build and deployment 中，將 Source 設定為 **Deploy from a branch**。
+4. Branch 選擇 `main` (或您的主分支)，資料夾選取 **`/docs`** 點選 Save。
+5. 數分鐘後即可透過 `https://<username>.github.io/<repo-name>/` 存取靜態版治安檢視網！
+
+---
+
+## 💻 本地開發指南 (Local Development)
+
+### 1. 啟動 Next.js 數據儀表板
+```bash
+# 進入 dashboard 資料夾
+cd dashboard
+
+# 安裝 Node 依賴項目
+npm install
+
+# 啟動開發伺服器
+npm run dev
+```
+啟動後訪問 `http://localhost:3000` 即可進行預覽與修改。
+
+### 2. 重新編譯本地靜態快取
+當資料庫有更新或需要生成全新快取檔時，請在專案根目錄下執行：
+```bash
+python scripts/generate_static_json.py
+```
+*腳本會自動將產出的 JSON 檔案同步到 `docs/static_api/` 及 `dashboard/public/static_api/` 中。*
+
+---
+
+## 📝 授權與宣告 (License & Disclaimer)
+
+* 本專案開源授權採用 **MIT License**。
+* 本專案僅供學術探討、個人職涯作品集展示與技術驗證使用。請勿將其產出的輿情聲量模擬或預算數據直接引用為司法不公或犯罪現狀之實體結論。

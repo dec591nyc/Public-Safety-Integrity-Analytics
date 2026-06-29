@@ -1,5 +1,5 @@
 {
-  "raw_judgments_dir": "C:/Users/zifue/Documents/AgenticAI/CodexPlayground/Public-Safety-Integrity-Analytics/data/202604",
+  "raw_judgments_dir": "data/202604",
   "source_month": "202604",
   "local_db": {
     "driver": "sqlite",

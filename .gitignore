@@ -1,4 +1,6 @@
 data/20*/
+data/local/public_safety.sqlite
+data/local/*.bak
 data/api_judgments_metadata.json
 data/exports/
 data/official/

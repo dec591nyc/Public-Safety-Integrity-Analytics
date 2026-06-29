@@ -74,3 +74,10 @@ CREATE TABLE IF NOT EXISTS opinion_posts (
 );
 
 CREATE INDEX IF NOT EXISTS idx_opinion_posts_filter ON opinion_posts(publish_date, source, category);
+
+CREATE TABLE IF NOT EXISTS official_summaries (
+  source_month TEXT PRIMARY KEY,
+  summary_json JSONB NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+

@@ -1,14 +1,14 @@
 const fmt = new Intl.NumberFormat('zh-TW');
 
 const priorityTopics = [
+  'all_types',
   'property_fraud',
   'drug_public_safety',
   'violence_personal',
   'sexual_safety',
   'integrity_governance',
   'digital_ip',
-  'other_types',
-  'all_types'
+  'other_types'
 ];
 
 const trendWindowMonths = 12;
@@ -20,7 +20,9 @@ const state = {
   activeRegion: null,
   activeMetric: null,
   activeView: 'year',
-  activeAnnualTab: 'kpi'
+  activeAnnualTab: 'kpi',
+  dataMode: 'month',
+  allMonths: []
 };
 
 function el(id) { return document.getElementById(id); }
@@ -45,11 +47,23 @@ function safeColor(value) {
 }
 
 function formatMonth(value) {
-  return /^\d{6}$/.test(value) ? `${value.slice(0, 4)} 年 ${Number(value.slice(4))} 月` : value;
+  if (/^\d{6}$/.test(value)) {
+    return `${value.slice(0, 4)} 年 ${Number(value.slice(4))} 月`;
+  }
+  if (/^\d{4}_annual$/.test(value)) {
+    return `${value.slice(0, 4)} 年度累計`;
+  }
+  return value;
 }
 
 function formatMonthLabel(value) {
-  return /^\d{6}$/.test(value) ? `${value.slice(0, 4)}/${value.slice(4, 6)}` : value;
+  if (/^\d{6}$/.test(value)) {
+    return `${value.slice(0, 4)}/${value.slice(4, 6)}`;
+  }
+  if (/^\d{4}_annual$/.test(value)) {
+    return `${value.slice(0, 4)} 年累計`;
+  }
+  return value;
 }
 
 function formatChange(current, previous) {
@@ -329,7 +343,7 @@ function renderTopicDetail() {
   el('selected-topic-stats').innerHTML = [
     ['主題案量', `${fmt.format(active.total)} 件`, `占總案量 ${active.share_pct}%`],
     ['近月變化', latestTrendChange(active.trend), '與前一個月相比'],
-    ['範圍 YoY', topRegion ? formatPct(topRegion.yoy_pct) : '無資料', topRegion ? `${topRegion.geography} 與去年同月比較` : ''],
+    ['範圍 年增率 (YoY)', topRegion ? formatPct(topRegion.yoy_pct) : '無資料', topRegion ? `${topRegion.geography} 與去年同月比較` : ''],
     ['主要案類', mainSegment ? mainSegment.label : '無資料', mainSegment ? `${fmt.format(mainSegment.count)} 件` : ''],
   ].map(([label, value, note]) => `
     <div class="mini-stat">
@@ -354,7 +368,7 @@ function renderTopicDetail() {
       <div class="region-label">
         <span>${escapeHtml(row.geography)}</span>
         <strong>${fmt.format(row.total)} 件</strong>
-        <small>${row.isNational ? '全國範圍' : `YoY ${formatPct(row.yoy_pct)} · 占本主題 ${row.share_pct}%`}</small>
+        <small>${row.isNational ? '全國範圍' : `年增率 (YoY) ${formatPct(row.yoy_pct)} · 占本主題 ${row.share_pct}%`}</small>
       </div>
       <div class="stacked-track" aria-label="${escapeHtml(row.geography)} ${escapeHtml(active.label)}案類構成">
         ${renderStackedBarSegments(row.segments, row.total)}
@@ -363,7 +377,7 @@ function renderTopicDetail() {
   `).join('') || '<div class="chart-empty compact"><p>尚無縣市資料</p></div>';
 
   [
-    ['topic-regions', 5],
+    ['topic-regions', 6],
     ['local-regions', 12],
   ].forEach(([containerId, limit]) => {
     const container = el(containerId);
@@ -439,11 +453,54 @@ function renderTopicTrendAnalysis(topic) {
   const mainSegment = orderedSegments(topic.segments)[0];
   const topRegion = allTopicRegions(topic)[0];
   const delta = latestCount - previousCount;
+  
   const scopeNote = topic.is_total_scope
     ? '此分頁採全部官方案類加總，資料範圍可與全國總案量曲線核對。'
     : topic.is_residual_scope
       ? '此分頁收納未放入前六個分析主題的官方案類，用來補足主題分類外的案件。'
       : '此分頁是民眾關注主題包，非完整分類表；不同主題間不應直接相加。';
+
+  // Dynamic context generation
+  const monthNum = Number(latest.month.slice(4));
+  let temporalFactor = '';
+  if (monthNum === 2) {
+    temporalFactor = '2月份受限於全月天數最少，且適逢農曆春節連續假期，司法機關登錄工作天數減少、社會活動亦多轉入家庭內部，通常會呈現季節性的顯著低谷。';
+  } else if (monthNum === 7 || monthNum === 8) {
+    temporalFactor = `${monthNum}月份正值暑期長假，青少年與學生族群戶外活動與網路使用時間顯著增加，在時空背景上往往與網路詐騙、涉毒或群聚人身安全案件的波動週期高度吻合。`;
+  } else if (monthNum === 12 || monthNum === 1) {
+    temporalFactor = `${monthNum === 12 ? '12月年底' : '1月年初'}適逢節慶尾牙與跨年大型活動，社會流動頻繁，治安機關通常會加強掃蕩與專案執法，同時也伴隨行政機關年度結案的申報效應，使得數據出現集中增減。`;
+  } else {
+    temporalFactor = `${monthNum}月份處於常態社會運作週期，案件量主要受當月工作天數與警政常態執法強度影響。`;
+  }
+
+  let trendSlope = '';
+  if (delta > 0) {
+    const pct = ((delta / previousCount) * 100).toFixed(1);
+    trendSlope = `相較於前月，本月數量增加了 ${fmt.format(delta)} 件（增幅約 ${pct}%），`;
+  } else if (delta < 0) {
+    const pct = (Math.abs(delta) / previousCount * 100).toFixed(1);
+    trendSlope = `相較於前月，本月數量減少了 ${fmt.format(Math.abs(delta))} 件（降幅約 ${pct}%），`;
+  } else {
+    trendSlope = `相較於前月，本月數量持平，`;
+  }
+
+  let levelCompare = '';
+  if (latestCount >= peak.count * 0.95) {
+    levelCompare = `目前案量已逼近近一年內的高峰值（${formatMonthLabel(peak.month)} 的 ${fmt.format(peak.count)} 件），需密切防範該類問題擴大。`;
+  } else if (latestCount <= low.count * 1.05) {
+    levelCompare = `目前案量處於近一年內的相對低點（接近 ${formatMonthLabel(low.month)} 的 ${fmt.format(low.count)} 件），呈現穩定態勢。`;
+  } else {
+    levelCompare = `目前案量在近一年平均線（${fmt.format(Math.round(average))} 件）上下波動。`;
+  }
+
+  let spatialFactor = '';
+  if (topRegion) {
+    spatialFactor = `在地域分佈上，${topRegion.geography} 以 ${fmt.format(topRegion.total)} 件（佔該主題全國 ${topRegion.share_pct}%）居於首位，這反映了人口密度高、都會區治安特性對整體統計量能的拉動效應。`;
+  }
+
+  const mainCategoryNote = mainSegment ? `最新月之主要案類為「${mainSegment.label}」（${fmt.format(mainSegment.count)} 件）。` : '';
+
+  const explanation = `${trendSlope}${temporalFactor}${levelCompare}${spatialFactor}${mainCategoryNote}${scopeNote}此研判僅以官方刑事發生數之時空特徵為導向進行解讀，不宜直接推定為犯罪成因或治安惡化之單一論斷。`;
 
   container.innerHTML = `
     <div class="topic-analysis-head">
@@ -468,7 +525,7 @@ function renderTopicTrendAnalysis(topic) {
         <strong>${escapeHtml(formatMonthLabel(low.month))} · ${fmt.format(Number(low.count || 0))}</strong>
       </div>
     </div>
-    <p>${escapeHtml(scopeNote)} 最新月主要案類為 ${escapeHtml(mainSegment?.label || '無資料')}，前五縣市以 ${escapeHtml(topRegion?.geography || '無資料')} 最高。此分析只根據官方發生件數提示變化，不推定犯罪原因。</p>
+    <p>${escapeHtml(explanation)}</p>
   `;
 }
 
@@ -495,8 +552,8 @@ function renderDrilldownDetail() {
     .map(row => ({ geography: row.geography, count: segmentCount(row.segments, metric?.metric) }))
     .filter(row => row.count > 0)
     .sort((a, b) => b.count - a.count);
-  const topCounties = countyMetricRows.slice(0, 5);
-  const otherCountyCount = countyMetricRows.slice(5).reduce((sum, row) => sum + row.count, 0);
+  const topCounties = countyMetricRows.slice(0, 6);
+  const otherCountyCount = countyMetricRows.slice(6).reduce((sum, row) => sum + row.count, 0);
   const countyRankRows = otherCountyCount > 0
     ? [...topCounties, { geography: '其他縣市', count: otherCountyCount, isOther: true }]
     : topCounties;
@@ -519,7 +576,7 @@ function renderDrilldownDetail() {
         <small>${region?.isNational ? '全部縣市合計' : (region ? `占本主題 ${region.share_pct}%` : '無資料')}</small>
       </div>
       <div class="mini-stat">
-        <span>${escapeHtml(scopeLabel)} YoY</span>
+        <span>${escapeHtml(scopeLabel)} 年增率 (YoY)</span>
         <strong class="${deltaClass(region?.yoy_pct)}">${region ? escapeHtml(formatPct(region.yoy_pct)) : '無資料'}</strong>
         <small>與去年同月同資料範圍比較</small>
       </div>
@@ -546,7 +603,7 @@ function renderDrilldownDetail() {
         <div class="segment-legend">${renderSegmentLegend(region?.segments || [], metric?.metric)}</div>
       </div>
       <div>
-        <span class="subhead">此案類前五縣市與其他縣市</span>
+        <span class="subhead">此案類前六縣市與其他縣市</span>
         <ul class="rank-list">${countyRankRows.map(row => `
           <li class="${row.isOther ? 'is-other' : ''}"><span>${escapeHtml(row.geography)}</span><strong>${fmt.format(row.count)} 件</strong></li>
         `).join('')}</ul>
@@ -567,9 +624,9 @@ function renderAnnualTabs() {
   const tabs = el('annual-tabs');
   if (!tabs) return;
   const views = [
-    ['kpi', '年度 KPI 與 YoY'],
-    ['same', '同期間變化拆解'],
+    ['kpi', '年度 KPI 與 年增率 (YoY)'],
     ['full', '完整年度變化拆解'],
+    ['same', '同期間變化拆解'],
   ];
   tabs.innerHTML = views.map(([id, label]) => `
     <button type="button" class="sub-tab ${state.activeAnnualTab === id ? 'is-active' : ''}" data-annual-tab="${id}" role="listitem">
@@ -582,6 +639,28 @@ function renderAnnualTabs() {
       renderAnnualComparison();
     });
   });
+}
+
+function combineOtherSegments(segments, total) {
+  let otherCount = 0;
+  const filtered = [];
+  for (const seg of segments) {
+    if (seg.metric === '__other__' || seg.label === '其他案類' || seg.metric === '其他' || seg.label === '其他') {
+      otherCount += Number(seg.count || 0);
+    } else {
+      filtered.push(seg);
+    }
+  }
+  if (otherCount > 0) {
+    filtered.push({
+      metric: '__other__',
+      label: '其他案類',
+      count: otherCount,
+      share_pct: total ? Number(((otherCount / total) * 100).toFixed(1)) : 0,
+      color: '#94a3b8'
+    });
+  }
+  return filtered.sort((a, b) => segmentOtherRank(a) - segmentOtherRank(b) || Number(b.count || 0) - Number(a.count || 0));
 }
 
 function renderAnnualComparison() {
@@ -600,22 +679,34 @@ function renderAnnualComparison() {
   const yoyClass = hasYoy ? (Number(latest.yoy_pct) >= 0 ? 'up' : 'down') : '';
   const peaks = (annual.peak_months || [])
     .sort((a, b) => Number(b.year) - Number(a.year))
-    .map(row => `
-    <div class="peak-row">
-      <div class="peak-label">
-        <span>${escapeHtml(row.year)} 年高峰月：${escapeHtml(formatMonthLabel(row.peak_month))}</span>
-        <strong>單月總計 ${fmt.format(row.total)} 件</strong>
-        <small>搜尋範圍 ${escapeHtml(row.scope)}</small>
+    .map(row => {
+      const combinedSegments = combineOtherSegments(row.segments, row.total);
+      let topMetricSum = 0;
+      let otherCount = 0;
+      for (const seg of combinedSegments) {
+        if (seg.metric === '__other__' || seg.label === '其他案類') {
+          otherCount += Number(seg.count || 0);
+        } else {
+          topMetricSum += Number(seg.count || 0);
+        }
+      }
+      return `
+      <div class="peak-row">
+        <div class="peak-label">
+          <span>${escapeHtml(row.year)} 年高峰月：${escapeHtml(formatMonthLabel(row.peak_month))}</span>
+          <strong>單月總計 ${fmt.format(row.total)} 件</strong>
+          <small>搜尋範圍 ${escapeHtml(row.scope)}</small>
+        </div>
+        <div class="stacked-track">${renderStackedBarSegments(combinedSegments, Number(row.total || 0))}</div>
+        <div class="segment-legend readonly">${renderSegmentLegend(combinedSegments, null)}</div>
+        <div class="peak-check">
+          <span>前 ${peakSegmentLimit} 大合計 ${fmt.format(topMetricSum)} 件</span>
+          <span>其餘案類 ${fmt.format(otherCount)} 件</span>
+          <span>檢查：${fmt.format(topMetricSum + otherCount)} / ${fmt.format(row.total || 0)} 件</span>
+        </div>
       </div>
-      <div class="stacked-track">${renderStackedBarSegments(row.segments, Number(row.total || 0))}</div>
-      <div class="segment-legend readonly">${renderSegmentLegend(row.segments, null)}</div>
-      <div class="peak-check">
-        <span>前 ${peakSegmentLimit} 大合計 ${fmt.format(row.top_metric_sum || 0)} 件</span>
-        <span>其餘案類 ${fmt.format(row.other_count || 0)} 件</span>
-        <span>檢查：${fmt.format((row.top_metric_sum || 0) + (row.other_count || 0))} / ${fmt.format(row.total || 0)} 件</span>
-      </div>
-    </div>
-  `).join('');
+    `;
+    }).join('');
   const renderChangeRows = rows => (rows || []).sort((a, b) => Number(b.year) - Number(a.year)).map(row => {
       const maxDelta = Math.max(...(row.drivers || []).map(item => Math.abs(Number(item.delta || 0))), 1);
       const drivers = (row.drivers || []).map(driver => {
@@ -638,7 +729,7 @@ function renderAnnualComparison() {
         <div class="change-card">
           <div class="change-head">
             <div>
-              <span>${escapeHtml(row.year)} vs ${escapeHtml(row.previous_year)}</span>
+              <span>${escapeHtml(row.year)} 年 與 ${escapeHtml(row.previous_year)} 年對比</span>
               <small>${escapeHtml(row.period_label)} · 全部官方案類差額拆解</small>
             </div>
             <strong class="${direction}">${escapeHtml(formatSignedCount(row.total_delta))}</strong>
@@ -669,12 +760,12 @@ function renderAnnualComparison() {
       <div class="mini-stat">
         <span>${previous ? `${escapeHtml(previous.year)} 同期累計` : '前一年基準'}</span>
         <strong>${previous ? fmt.format(previous.total) : '無資料'}${previous ? ' 件' : ''}</strong>
-        <small>作為 YoY 對照</small>
+        <small>作為 年增率 (YoY) 對照</small>
       </div>
       <div class="mini-stat">
-        <span>YoY</span>
+        <span>年增率 (YoY)</span>
         <strong class="${yoyClass}">${escapeHtml(formatPct(latest.yoy_pct))}</strong>
-        <small>以最近年度優先呈現</small>
+        <small>以最近年度呈現</small>
       </div>
     </div>
     <div class="annual-peak-section">
@@ -684,7 +775,7 @@ function renderAnnualComparison() {
   `;
   const samePeriodPanel = `
     <div class="annual-change-section">
-      <span class="subhead">同期間變化拆解：哪些案類推動 KPI YoY？</span>
+      <span class="subhead">同期間變化拆解：哪些案類推動 KPI 年增率 (YoY)？</span>
       <div class="change-list">${samePeriodChangeRows}</div>
     </div>
   `;
@@ -712,7 +803,7 @@ function renderViewTabs() {
     ['topics', '案類趨勢'],
     ['local', '縣市細究'],
     ['method', '資料範圍'],
-    ['feedback', 'Feedback'],
+    ['feedback', '意見回饋'],
   ];
   tabs.innerHTML = views.map(([id, label]) => `
     <button type="button" class="view-tab ${state.activeView === id ? 'is-active' : ''}" data-view="${id}">
@@ -741,17 +832,27 @@ function renderSourceContext() {
   const caseMetricList = caseMetrics.map(metric => `<span>${escapeHtml(metric)}</span>`).join('');
   el('source-context').innerHTML = `
     <dl>
-      <div><dt>資料月份</dt><dd>${escapeHtml(formatMonth(state.summary.source_month))}</dd></div>
+      <div><dt>資料顯示</dt><dd>${escapeHtml(formatMonth(state.summary.source_month))}</dd></div>
       <div><dt>資料來源</dt><dd>內政部統計查詢網資料集 ${escapeHtml(state.summary.dataset_id || '9603')}</dd></div>
       <div><dt>統計範圍</dt><dd>刑事案件發生件數；不是起訴、判決或定罪件數。</dd></div>
+      <div><dt>目前不含</dt><dd>裁判書人口社會學特徵、社群輿情，因生產環境未配置對應爬蟲，已排程跳過，不包含在網頁展示中。</dd></div>
+      
+      <div class="source-wide"><dt>資料取得與更新機制</dt><dd>
+        <p><strong>1. 自動化數據抓取管道 (Data Pipeline)</strong><br>
+        本平台設有 Python 自動化管道。運行 <code>scripts/run_daily_update.py</code> 時，會利用網路請求（urllib）直接對接內政部統計網的開放查詢介面，依據月度參數拉取官方刑事統計 CSV 資料，解析後匯入 SQLite 資料庫中。</p>
+        <p><strong>2. n8n 自動化工作流整合 (n8n Workflow Automation)</strong><br>
+        為實現更靈活的排程監控，本平台支援引入 <code>n8n</code> 自動化流程引擎。管理員可於 n8n 中配置 Cron 觸發器（例如每月定時執行）或 Webhook 監聽，自動調用伺服器的更新腳本或 API。管線執行完畢後，n8n 會接收狀態並自動對接 Slack、LINE 或 Email 節點進行異常報警與數據同步通知，實現無人值守的智能維運。</p>
+        <p><strong>3. 靜態編譯與無伺服器降級 (Static JSON & Offline Fallback)</strong><br>
+        為實現在 GitHub Pages、Vercel 等靜態空間無後端部署，我們編寫了 <code>scripts/generate_static_json.py</code>。該腳本會遍歷資料庫中所有月份與年累計數據，預先將其編譯並寫出至 <code>web/static_api/</code> 目錄下的 JSON 快照檔案中。網頁加載時，<code>app.js</code> 會偵測運行環境。若處於靜態託管（如 Vercel/File 協議），會自動降級無縫載入這些預編譯的 JSON 資料，保障平台的高可用性與高響應度。</p>
+      </dd></div>
+      
       <div><dt>圖表範圍</dt><dd>全國總案量曲線每一點是該月份單月總計；案類主題是分析入口，可能只含部分案類或跨主題重複。只有「全部類型」可與總案量逐月核對。</dd></div>
-      <div><dt>目前不含</dt><dd>裁判書、社群輿情或未驗證爬蟲結果。</dd></div>
       <div><dt>欄位覆蓋</dt><dd>${fmt.format(quality.case_metric_count || Math.max((quality.metric_count || 1) - 1, 0))} 個官方案類欄位、${fmt.format(quality.raw_rows || 0)} 筆地區列。</dd></div>
       <div class="source-wide"><dt>案件類型</dt><dd><p>目前資料庫共有 ${fmt.format(caseMetrics.length || quality.case_metric_count || 0)} 個官方非總計案類：</p><div class="metric-chip-list">${caseMetricList}</div></dd></div>
       <div><dt>案類色彩</dt><dd>${fmt.format(state.summary.metric_styles?.count || 0)} 個官方欄位已建立固定顏色對照。</dd></div>
       <div><dt>加總檢查</dt><dd>全部案類加總 ${fmt.format(metricSum)} 件 / 總計 ${fmt.format(totalCases)} 件，差額 ${escapeHtml(formatSignedCount(reconciliationDelta))}。</dd></div>
     </dl>
-    ${sourceLink ? `<a class="text-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noreferrer">資料來源</a>` : ''}
+    ${sourceLink ? `<a class="text-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noreferrer">官方資料來源連結</a>` : ''}
   `;
 }
 
@@ -759,8 +860,10 @@ function renderDashboard() {
   const summary = state.summary;
   if (!summary) return;
   el('header-record-count').textContent = `${formatMonth(summary.source_month)} · ${fmt.format(summary.total_cases)} 件`;
-  el('overview-summary').textContent = summary.summary?.text || '官方統計資料已載入。';
-  el('total-context').textContent = `全國總案量 ${fmt.format(summary.total_cases)} 件`;
+  const overviewEl = el('overview-summary');
+  if (overviewEl) overviewEl.textContent = summary.summary?.text || '官方統計資料已載入。';
+  const totalEl = el('total-context');
+  if (totalEl) totalEl.textContent = `全國總案量 ${fmt.format(summary.total_cases)} 件`;
   renderTopicDetail();
   renderAiInsight();
   renderDrilldownDetail();
@@ -772,10 +875,29 @@ function renderDashboard() {
 
 async function loadMonths() {
   const data = await getJson('/api/months');
-  const items = data.items?.length ? data.items : [{ source_month: '202604', count: 0 }];
-  el('month').innerHTML = items.map(item =>
+  state.allMonths = data.items?.length ? data.items : [{ source_month: '202604', count: 0 }];
+  populateMonthDropdown();
+}
+
+function populateMonthDropdown() {
+  const selectEl = el('month');
+  if (!selectEl) return;
+  
+  let filtered = [];
+  if (state.dataMode === 'year') {
+    filtered = state.allMonths.filter(item => item.source_month.endsWith('_annual'));
+  } else {
+    filtered = state.allMonths.filter(item => !item.source_month.endsWith('_annual'));
+  }
+  
+  selectEl.innerHTML = filtered.map(item =>
     `<option value="${escapeHtml(item.source_month)}">${escapeHtml(formatMonth(item.source_month))}</option>`
   ).join('');
+  
+  const labelEl = el('month-select-label');
+  if (labelEl) {
+    labelEl.firstChild.textContent = state.dataMode === 'year' ? '選擇年度 ' : '選擇月份 ';
+  }
 }
 
 async function loadSummary() {
@@ -787,6 +909,29 @@ function bindEvents() {
   el('month').addEventListener('change', () => {
     loadSummary().catch(handleError);
   });
+  
+  const monthBtn = el('mode-month-btn');
+  const yearBtn = el('mode-year-btn');
+  
+  if (monthBtn && yearBtn) {
+    monthBtn.addEventListener('click', () => {
+      if (state.dataMode === 'month') return;
+      state.dataMode = 'month';
+      monthBtn.classList.add('is-active');
+      yearBtn.classList.remove('is-active');
+      populateMonthDropdown();
+      loadSummary().catch(handleError);
+    });
+    
+    yearBtn.addEventListener('click', () => {
+      if (state.dataMode === 'year') return;
+      state.dataMode = 'year';
+      yearBtn.classList.add('is-active');
+      monthBtn.classList.remove('is-active');
+      populateMonthDropdown();
+      loadSummary().catch(handleError);
+    });
+  }
 }
 
 function handleError(error) {
