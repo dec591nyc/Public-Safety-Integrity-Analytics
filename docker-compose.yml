@@ -1,0 +1,18 @@
+services:
+  n8n:
+    build:
+      context: .
+      dockerfile: Dockerfile.n8n
+    container_name: n8n-public-safety
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./:/home/node/public-safety-dashboard
+    environment:
+      - GENERIC_TIMEZONE=Asia/Taipei
+      - TZ=Asia/Taipei
+      - PUBLIC_SAFETY_DATABASE_URL=${PUBLIC_SAFETY_DATABASE_URL}      
+
+volumes:
+  n8n_data:
