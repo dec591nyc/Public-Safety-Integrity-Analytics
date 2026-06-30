@@ -9,7 +9,7 @@ from typing import Any
 
 from .db import db_execute
 
-def save_summary_report(conn: Any, db_type: str, key: str, payload: dict) -> None:
+def save_summary_report(conn: Any, db_type: str, key: str, payload: dict, commit: bool = True) -> None:
     """Save aggregated monthly/annual summaries to the structured crime_summary_reports table."""
     cursor = conn.cursor()
 
@@ -103,8 +103,12 @@ def save_summary_report(conn: Any, db_type: str, key: str, payload: dict) -> Non
                 report_key,
                 wrap_json(payload),
             ))
-            conn.commit()
+            if commit:
+                conn.commit()
             print(f"Database ({db_type}): Synced {report_type} report '{report_key}' and API payload cache.")
         except Exception as e:
-            conn.rollback()
+            if commit:
+                conn.rollback()
             print(f"Error syncing report '{suffix}' to crime_summary_reports: {e}")
+            if not commit:
+                raise

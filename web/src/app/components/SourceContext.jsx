@@ -52,7 +52,7 @@ export default function SourceContext({ summary }) {
             <dd>
               <ul>
                 <li><code>scripts/run_daily_update.py</code>：主爬蟲，下載 CSV 進行欄位對齊、計算檢驗和並寫入資料庫。</li>
-                <li><code>scripts/generate_static_json.py</code>：預計算分析核心，計算月趨勢、六都佔比與 YoY 差額，並將 JSON 以二進位 blob 形式上傳至資料庫，實現 API 的極速回應。</li>
+                <li><code>scripts/sync_summary_reports.py</code>：預計算分析核心，計算月趨勢、六都佔比與 YoY 差額，並將 API payload cache 與結構化報表同步至資料庫。</li>
               </ul>
             </dd>
           </div>

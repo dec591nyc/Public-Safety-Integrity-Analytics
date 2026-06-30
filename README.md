@@ -41,7 +41,7 @@ flowchart TD
 
     subgraph "自動化數據流水線 (n8n / Python ETL)"
         B["run_daily_update.py\n(下載、清洗、寫入 DB)"]
-        C["generate_static_json.py\n(數據轉型、計算指標與主題包)"]
+        C["sync_summary_reports.py\n(數據轉型、計算指標與主題包)"]
         A -->|CSV 數據| B
         B -->|官方原始統計數據| D["(Supabase 雲端資料庫 / SQLite)"]
         D -->|拉取並計算彙整指標| C
@@ -71,7 +71,7 @@ flowchart TD
 │   │   ├── transform.py         # 聚合月/年指標、YoY 計算、AI 趨勢研判
 │   │   └── load.py              # 將彙整結果同步寫入 DB (crime_summary_reports)
 │   ├── run_daily_update.py      # [主更新] 下載官方 CSV，對齊並寫入官方原始數據
-│   ├── generate_static_json.py  # [主編譯] 全記憶體運行，計算指標並同步至 Supabase
+│   ├── sync_summary_reports.py  # [主編譯] 全記憶體運行，計算指標並同步至 Supabase
 │   └── metric_styles.py         # 同步治安指標樣式配置
 ├── sql/                         # 資料庫結構描述檔 (SQLite / Postgres)
 ├── ref/                         # 參考文件 (如裁判書開放 API 規格說明)
@@ -100,7 +100,7 @@ pip install psycopg2-binary requests
 py scripts/run_daily_update.py --skip-existing --min-release-day 8
 
 # 2. 自動編譯指標並直接上傳至 Supabase
-py scripts/generate_static_json.py --latest-only
+py scripts/sync_summary_reports.py --latest-only
 ```
 
 ### 3. 本地啟動前端開發服務
@@ -117,9 +117,14 @@ npm run dev
 2. **手動歷史回填 (One-time Backfill)**：由於新部署的 Supabase 資料庫是空表，網頁可能無法顯示過去年份的下拉選單與年度比較。您可透過 n8n 執行一次性回填：
    * 在 n8n 中將 `Execute Command` 節點的指令暫時修改為：
      ```bash
-     cd /home/node/public-safety-dashboard && python3 scripts/run_daily_update.py --backfill 201801 && python3 scripts/generate_static_json.py --full-refresh
+     cd /home/node/public-safety-dashboard && python3 scripts/run_daily_update.py --backfill 201801 && python3 scripts/sync_summary_reports.py --full-refresh
      ```
      *(可將 `201801` 替換為您需要的起始年份月份)*
+   * 若只是補年度報表或年度比較欄位，不需要重算所有月報，可改用：
+     ```bash
+     cd /home/node/public-safety-dashboard && python3 scripts/sync_summary_reports.py --annual-only --from-year 2018 --to-year 2026
+     ```
+     批次重算會自動先將官方統計載入記憶體，減少對 Supabase 的重複查詢；只有診斷或比對舊流程時才需要加上 `--no-preload`。
    * 點擊 **Execute Node** 執行一次，即可完整下載並計算歷史統計數據寫入 Supabase。
    * 執行完畢後，記得將指令**改回預設**（移除 `--backfill` 參數，保留 `--skip-existing --min-release-day 8`），以保持每月的增量輕量更新。
 

@@ -145,7 +145,10 @@ def build_topic_monthly_trends(conn: Any, db_type: str, months: list[str], topic
         if topic.get("is_total_scope"):
             continue
         
-        metrics = topic["metrics"]
+        metrics = tuple(topic.get("metrics") or ())
+        if not metrics:
+            trends[topic["id"]] = [{"month": m, "count": 0} for m in months]
+            continue
         markers = ",".join("?" for _ in metrics)
         sql_topic = f"""
         SELECT source_month, SUM(raw_value) AS count
