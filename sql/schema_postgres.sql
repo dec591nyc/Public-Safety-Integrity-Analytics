@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS crime_summary_reports (
   iccs_breakdown JSONB NOT NULL,
   flags_summary JSONB NOT NULL,
   topic_drilldowns JSONB NOT NULL,
+  annual_comparison JSONB NOT NULL DEFAULT '{}'::jsonb,
   region_weighted_counts JSONB NOT NULL,
   region_counts JSONB NOT NULL,
   quality JSONB NOT NULL,

@@ -97,7 +97,7 @@ flowchart TD
 pip install psycopg2-binary requests
 
 # 1. 抓取最新月份官方資料並寫入資料庫
-py scripts/run_daily_update.py
+py scripts/run_daily_update.py --skip-existing --min-release-day 8
 
 # 2. 自動編譯指標並直接上傳至 Supabase
 py scripts/generate_static_json.py --latest-only
@@ -121,7 +121,7 @@ npm run dev
      ```
      *(可將 `201801` 替換為您需要的起始年份月份)*
    * 點擊 **Execute Node** 執行一次，即可完整下載並計算歷史統計數據寫入 Supabase。
-   * 執行完畢後，記得將指令**改回預設**（移除 `--backfill` 參數），以保持每月的增量輕量更新。
+   * 執行完畢後，記得將指令**改回預設**（移除 `--backfill` 參數，保留 `--skip-existing --min-release-day 8`），以保持每月的增量輕量更新。
 
 ---
 

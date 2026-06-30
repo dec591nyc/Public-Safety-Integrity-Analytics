@@ -34,9 +34,10 @@ def save_summary_report(conn: Any, db_type: str, key: str, payload: dict) -> Non
             INSERT INTO crime_summary_reports (
               report_key, report_type, source_year, source_month, source_url, dataset_id,
               total_cases, total_change_pct, safety_index, category_counts, iccs_breakdown,
-              flags_summary, topic_drilldowns, region_weighted_counts, region_counts, quality, summary, updated_at
+              flags_summary, topic_drilldowns, annual_comparison,
+              region_weighted_counts, region_counts, quality, summary, updated_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
             ON CONFLICT (report_key) DO UPDATE SET
               report_type = EXCLUDED.report_type,
               source_year = EXCLUDED.source_year,
@@ -50,6 +51,7 @@ def save_summary_report(conn: Any, db_type: str, key: str, payload: dict) -> Non
               iccs_breakdown = EXCLUDED.iccs_breakdown,
               flags_summary = EXCLUDED.flags_summary,
               topic_drilldowns = EXCLUDED.topic_drilldowns,
+              annual_comparison = EXCLUDED.annual_comparison,
               region_weighted_counts = EXCLUDED.region_weighted_counts,
               region_counts = EXCLUDED.region_counts,
               quality = EXCLUDED.quality,
@@ -78,6 +80,7 @@ def save_summary_report(conn: Any, db_type: str, key: str, payload: dict) -> Non
                 wrap_json(payload.get("iccs_breakdown", [])),
                 wrap_json(payload.get("flags_summary", {})),
                 wrap_json(payload.get("topic_drilldowns", [])),
+                wrap_json(payload.get("annual_comparison", {})),
                 wrap_json(payload.get("region_weighted_counts", [])),
                 wrap_json(payload.get("region_counts", [])),
                 wrap_json(payload.get("quality", {})),

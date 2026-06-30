@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "command": "cd /home/node/public-safety-dashboard && python3 scripts/run_daily_update.py && python3 scripts/generate_static_json.py --latest-only"
+        "command": "cd /home/node/public-safety-dashboard && python3 scripts/run_daily_update.py --skip-existing --min-release-day 8 && python3 scripts/generate_static_json.py --latest-only"
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,

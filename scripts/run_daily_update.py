@@ -18,12 +18,42 @@ from etl import (
     download_and_ingest_moi, sync_metric_styles
 )
 
+def shift_month(year: int, month: int, delta: int) -> tuple[int, int]:
+    month_index = (year * 12 + (month - 1)) + delta
+    return month_index // 12, (month_index % 12) + 1
+
+def default_update_month(min_release_day: int) -> str:
+    now = datetime.now()
+    lag_months = -1 if now.day >= min_release_day else -2
+    year, month = shift_month(now.year, now.month, lag_months)
+    return f"{year}{month:02d}"
+
+def has_month(conn, db_type: str, month: str) -> bool:
+    cursor = conn.cursor()
+    sql = """
+    SELECT 1
+    FROM official_statistics
+    WHERE source_month = ?
+    LIMIT 1
+    """
+    if db_type == "postgres":
+        sql = sql.replace("?", "%s")
+    cursor.execute(sql, (month,))
+    return cursor.fetchone() is not None
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db", type=Path, default=Path("data/local/public_safety.sqlite"))
     parser.add_argument("--sqlite", action="store_true", help="Force SQLite even when PUBLIC_SAFETY_DATABASE_URL is configured")
     parser.add_argument("--backfill", help="Start month for backfilling YYYYMM (e.g. 199301)")
     parser.add_argument("--month", help="Single Gregorian month to update YYYYMM")
+    parser.add_argument("--skip-existing", action="store_true", help="Skip download when the target month already exists in the database")
+    parser.add_argument(
+        "--min-release-day",
+        type=int,
+        default=8,
+        help="For automatic monthly runs, do not target the previous month until this day of the month",
+    )
     args = parser.parse_args()
     
     # Determine DB connection type and retrieve connection
@@ -38,18 +68,12 @@ def main() -> None:
         init_db(conn, db_type)
         
         # Determine months list
-        now = datetime.now()
         if args.month:
             months = [args.month]
         elif args.backfill:
             months = get_months_range(args.backfill)
         else:
-            prev_month = now.month - 1
-            prev_year = now.year
-            if prev_month == 0:
-                prev_month = 12
-                prev_year -= 1
-            months = [f"{prev_year}{prev_month:02d}"]
+            months = [default_update_month(args.min_release_day)]
             
         print(f"Update target months: {months}")
         
@@ -57,6 +81,10 @@ def main() -> None:
         synced_opinions = 0
         synced_judgments = 0
         for m in months:
+            if args.skip_existing and has_month(conn, db_type, m):
+                print(f"\nSkipping month {m}: already exists in database.")
+                continue
+
             print(f"\nProcessing month {m}...")
             stats_pts = download_and_ingest_moi(conn, db_type, m)
             synced_stats += stats_pts

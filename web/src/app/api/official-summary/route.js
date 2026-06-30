@@ -10,6 +10,127 @@ const CACHE_HEADERS = {
   'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
 };
 
+const hasAnnualComparisonRows = (value) => (
+  value &&
+  Array.isArray(value.rows) &&
+  value.rows.length > 0
+);
+
+const pctChange = (current, previous) => {
+  const currentNum = Number(current || 0);
+  const previousNum = Number(previous || 0);
+  if (!previousNum) {
+    return null;
+  }
+  return Number((((currentNum - previousNum) / previousNum) * 100).toFixed(1));
+};
+
+async function getStoredAnnualComparison(reportKey) {
+  try {
+    const result = await pool.query(
+      'SELECT annual_comparison FROM crime_summary_reports WHERE report_key = $1',
+      [reportKey]
+    );
+    return result.rows[0]?.annual_comparison || null;
+  } catch (e) {
+    if (e.code === '42703') {
+      return null;
+    }
+    throw e;
+  }
+}
+
+async function buildAnnualComparisonFromReports(reportKey) {
+  const isAnnual = reportKey.endsWith('_annual');
+  const selectedYear = isAnnual ? Number(reportKey.split('_')[0]) : Number(reportKey.slice(0, 4));
+  if (!selectedYear) {
+    return null;
+  }
+
+  let selectedMonthNum = isAnnual ? 12 : Number(reportKey.slice(4, 6));
+  if (isAnnual) {
+    const monthResult = await pool.query(
+      `
+      SELECT MAX(source_month) AS selected_month
+      FROM crime_summary_reports
+      WHERE report_type = 'monthly'
+        AND source_year = $1
+      `,
+      [selectedYear]
+    );
+    selectedMonthNum = Number(monthResult.rows[0]?.selected_month || selectedMonthNum);
+  }
+
+  if (!selectedMonthNum || selectedMonthNum < 1 || selectedMonthNum > 12) {
+    return null;
+  }
+
+  const result = await pool.query(
+    `
+    SELECT
+      source_year AS year,
+      SUM(total_cases)::bigint AS total,
+      COUNT(*)::int AS months_covered
+    FROM crime_summary_reports
+    WHERE report_type = 'monthly'
+      AND source_year <= $1
+      AND source_month <= $2
+    GROUP BY source_year
+    ORDER BY source_year ASC
+    `,
+    [selectedYear, selectedMonthNum]
+  );
+
+  const rowsAsc = result.rows
+    .map((row) => ({
+      year: Number(row.year),
+      total: Number(row.total || 0),
+      months_covered: Number(row.months_covered || 0),
+      yoy_pct: null,
+    }))
+    .filter((row) => row.year && row.months_covered > 0)
+    .slice(-8);
+
+  if (rowsAsc.length === 0) {
+    return null;
+  }
+
+  let previousTotal = null;
+  for (const row of rowsAsc) {
+    row.yoy_pct = pctChange(row.total, previousTotal);
+    if (row.total) {
+      previousTotal = row.total;
+    }
+  }
+
+  const selectedMonth = `${selectedYear}${String(selectedMonthNum).padStart(2, '0')}`;
+  const periodLabel = `1-${selectedMonthNum}月同期`;
+
+  return {
+    period_label: periodLabel,
+    selected_year: selectedYear,
+    selected_month: selectedMonth,
+    rows: [...rowsAsc].reverse(),
+    peak_months: [],
+    change_drivers: [],
+    full_year_change_drivers: [],
+    note: '此區塊由既有月報表重建年度 KPI；完整高峰月與案件拆解會在 n8n 重新產生 summary cache 後顯示。',
+  };
+}
+
+async function resolveAnnualComparison(reportKey, cachedValue = null) {
+  if (hasAnnualComparisonRows(cachedValue)) {
+    return cachedValue;
+  }
+
+  const storedValue = await getStoredAnnualComparison(reportKey);
+  if (hasAnnualComparisonRows(storedValue)) {
+    return storedValue;
+  }
+
+  return buildAnnualComparisonFromReports(reportKey);
+}
+
 const getSummaryReport = unstable_cache(
   async (reportKey) => {
     let payloadResult = null;
@@ -24,12 +145,12 @@ const getSummaryReport = unstable_cache(
       }
     }
 
-    if (payloadResult?.rows.length === 0) {
-      return null;
-    }
-
     if (payloadResult?.rows[0]?.payload) {
-      return payloadResult.rows[0].payload;
+      const payload = payloadResult.rows[0].payload;
+      const annualComparison = await resolveAnnualComparison(reportKey, payload.annual_comparison);
+      return annualComparison
+        ? { ...payload, annual_comparison: annualComparison }
+        : payload;
     }
 
     const isAnnual = reportKey.endsWith('_annual');
@@ -93,6 +214,7 @@ const getSummaryReport = unstable_cache(
       iccs_breakdown: summary.iccs_breakdown,
       flags_summary: summary.flags_summary,
       topic_drilldowns: summary.topic_drilldowns,
+      annual_comparison: await resolveAnnualComparison(reportKey),
       region_weighted_counts: summary.region_weighted_counts,
       region_metric: 'è©æ¬ºèƒŒä¿¡',
       region_counts: summary.region_counts,

@@ -82,6 +82,14 @@ def ensure_schema_migrations(conn: Any, db_type: str) -> None:
             conn,
             db_type,
             """
+            ALTER TABLE crime_summary_reports
+              ADD COLUMN IF NOT EXISTS annual_comparison JSONB NOT NULL DEFAULT '{}'::jsonb
+            """
+        )
+        db_execute(
+            conn,
+            db_type,
+            """
             CREATE TABLE IF NOT EXISTS crime_summary_payload_cache (
               cache_key TEXT PRIMARY KEY,
               report_key TEXT NOT NULL REFERENCES crime_summary_reports(report_key) ON DELETE CASCADE,
@@ -101,6 +109,12 @@ def ensure_schema_migrations(conn: Any, db_type: str) -> None:
         return
 
     cursor = conn.cursor()
+    cursor.execute("PRAGMA table_info(crime_summary_reports)")
+    existing_columns = {row[1] for row in cursor.fetchall()}
+    if "annual_comparison" not in existing_columns:
+        cursor.execute(
+            "ALTER TABLE crime_summary_reports ADD COLUMN annual_comparison TEXT NOT NULL DEFAULT '{}'"
+        )
     cursor.execute(
         """
         CREATE TABLE IF NOT EXISTS crime_summary_payload_cache (

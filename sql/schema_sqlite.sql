@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS crime_summary_reports (
   iccs_breakdown TEXT NOT NULL,
   flags_summary TEXT NOT NULL,
   topic_drilldowns TEXT NOT NULL,
+  annual_comparison TEXT NOT NULL DEFAULT '{}',
   region_weighted_counts TEXT NOT NULL,
   region_counts TEXT NOT NULL,
   quality TEXT NOT NULL,
