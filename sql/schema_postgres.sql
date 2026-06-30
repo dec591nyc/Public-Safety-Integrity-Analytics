@@ -1,35 +1,5 @@
 -- PostgreSQL Schema for Supabase Integration
 
-CREATE TABLE IF NOT EXISTS judgments (
-  jid TEXT PRIMARY KEY,
-  source_month TEXT NOT NULL,
-  court_folder TEXT NOT NULL,
-  case_domain TEXT NOT NULL,
-  file_path TEXT NOT NULL,
-  jyear TEXT,
-  jcase TEXT,
-  jno TEXT,
-  jdate TEXT,
-  jtitle TEXT,
-  jpdf TEXT,
-  text_length INTEGER NOT NULL DEFAULT 0,
-  excerpt TEXT,
-  category_flags JSONB NOT NULL DEFAULT '{}'::jsonb,
-  matched_keywords JSONB NOT NULL DEFAULT '[]'::jsonb,
-  age INTEGER,
-  gender TEXT,
-  occupation TEXT,
-  education TEXT,
-  income_level TEXT,
-  birth_city TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_judgments_source_month ON judgments(source_month);
-CREATE INDEX IF NOT EXISTS idx_judgments_jdate ON judgments(jdate);
-CREATE INDEX IF NOT EXISTS idx_judgments_jtitle ON judgments(jtitle);
-
 CREATE TABLE IF NOT EXISTS crime_categories (
   metric TEXT PRIMARY KEY,
   iccs_code TEXT NOT NULL,
@@ -75,9 +45,26 @@ CREATE TABLE IF NOT EXISTS opinion_posts (
 
 CREATE INDEX IF NOT EXISTS idx_opinion_posts_filter ON opinion_posts(publish_date, source, category);
 
-CREATE TABLE IF NOT EXISTS official_summaries (
-  source_month TEXT PRIMARY KEY,
-  summary_json JSONB NOT NULL,
+CREATE TABLE IF NOT EXISTS crime_summary_reports (
+  report_key TEXT PRIMARY KEY,       -- 'YYYYMM' or 'YYYY_annual' (e.g. '202604', '2026_annual')
+  report_type TEXT NOT NULL,         -- 'monthly' or 'annual'
+  source_year INTEGER NOT NULL,      -- YYYY (e.g. 2026)
+  source_month INTEGER,              -- MM (e.g. 4, NULL for annual reports)
+  source_url TEXT,
+  dataset_id TEXT,
+  total_cases INTEGER NOT NULL,
+  total_change_pct REAL,
+  safety_index INTEGER NOT NULL,
+  category_counts JSONB NOT NULL,
+  iccs_breakdown JSONB NOT NULL,
+  flags_summary JSONB NOT NULL,
+  topic_drilldowns JSONB NOT NULL,
+  region_weighted_counts JSONB NOT NULL,
+  region_counts JSONB NOT NULL,
+  quality JSONB NOT NULL,
+  summary JSONB NOT NULL,            -- { "text": "...", "method": "..." }
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+
 

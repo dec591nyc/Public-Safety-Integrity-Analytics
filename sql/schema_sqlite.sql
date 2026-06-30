@@ -1,55 +1,3 @@
-CREATE TABLE IF NOT EXISTS judgments (
-  jid TEXT PRIMARY KEY,
-  source_month TEXT NOT NULL,
-  court_folder TEXT NOT NULL,
-  case_domain TEXT NOT NULL,
-  file_path TEXT NOT NULL,
-  jyear TEXT,
-  jcase TEXT,
-  jno TEXT,
-  jdate TEXT,
-  jtitle TEXT,
-  jpdf TEXT,
-  text_length INTEGER NOT NULL DEFAULT 0,
-  excerpt TEXT,
-  category_flags TEXT NOT NULL DEFAULT '{}',
-  matched_keywords TEXT NOT NULL DEFAULT '[]',
-  age INTEGER,
-  gender TEXT,
-  occupation TEXT,
-  education TEXT,
-  income_level TEXT,
-  birth_city TEXT,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_judgments_source_month ON judgments(source_month);
-CREATE INDEX IF NOT EXISTS idx_judgments_jdate ON judgments(jdate);
-CREATE INDEX IF NOT EXISTS idx_judgments_jtitle ON judgments(jtitle);
-CREATE INDEX IF NOT EXISTS idx_judgments_court_folder ON judgments(court_folder);
-CREATE INDEX IF NOT EXISTS idx_judgments_case_domain ON judgments(case_domain);
-
-CREATE TABLE IF NOT EXISTS judgment_texts (
-  jid TEXT PRIMARY KEY,
-  jfull TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (jid) REFERENCES judgments(jid) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS pipeline_runs (
-  run_id TEXT PRIMARY KEY,
-  source_month TEXT NOT NULL,
-  source_dir TEXT NOT NULL,
-  local_db_path TEXT NOT NULL,
-  started_at TEXT NOT NULL,
-  finished_at TEXT,
-  files_seen INTEGER NOT NULL DEFAULT 0,
-  files_indexed INTEGER NOT NULL DEFAULT 0,
-  errors INTEGER NOT NULL DEFAULT 0,
-  status TEXT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS crime_categories (
   metric TEXT PRIMARY KEY,
   iccs_code TEXT NOT NULL,
@@ -94,4 +42,26 @@ CREATE TABLE IF NOT EXISTS opinion_posts (
 );
 
 CREATE INDEX IF NOT EXISTS idx_opinion_posts_filter ON opinion_posts(publish_date, source, category);
+
+CREATE TABLE IF NOT EXISTS crime_summary_reports (
+  report_key TEXT PRIMARY KEY,
+  report_type TEXT NOT NULL,
+  source_year INTEGER NOT NULL,
+  source_month INTEGER,
+  source_url TEXT,
+  dataset_id TEXT,
+  total_cases INTEGER NOT NULL,
+  total_change_pct REAL,
+  safety_index INTEGER NOT NULL,
+  category_counts TEXT NOT NULL,
+  iccs_breakdown TEXT NOT NULL,
+  flags_summary TEXT NOT NULL,
+  topic_drilldowns TEXT NOT NULL,
+  region_weighted_counts TEXT NOT NULL,
+  region_counts TEXT NOT NULL,
+  quality TEXT NOT NULL,
+  summary TEXT NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 

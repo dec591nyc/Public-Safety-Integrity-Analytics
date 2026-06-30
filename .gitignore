@@ -233,3 +233,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Ingestion run output
+output/
+
+# Next.js / Web Application
+web/node_modules/
+web/.next/
+web/out/
+web/build/
+web/.env*.local
+web/.vercel
+next-env.d.ts
